@@ -9,5 +9,5 @@ deploy HOST:
 
 
 [working-directory: 'ansible']
-edit vault:
+vault:
     EDITOR='code --wait' ansible-vault edit secrets.yml --vault-password-file <(just _ansible_vault_op)
