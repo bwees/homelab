@@ -1,0 +1,39 @@
+- name: Deploy Docker-Compose files to host
+  block:
+    - name: Create deploy directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        mode: '0755'
+        force: true
+
+    - name: Generate and transfer secret.env file
+      include_tasks: secret_gen.yml
+      vars:
+        vault_file: "../secrets.yml"
+        env_destination: "{{ deploy_dir }}/secret.env"
+
+    - name: Transfer docker-compose files to host
+      copy:
+        src: "{{ item }}"
+        dest: "{{ deploy_dir }}/"
+        mode: '0600'
+      with_fileglob:
+        - "{{ compose_dir }}/*.yml"
+
+    - name: Find all .yml files in deploy directory
+      find:
+        paths: "{{ deploy_dir }}"
+        patterns: "*.yml"
+      register: yml_files
+
+    - name: Deploy docker-compose files
+      community.docker.docker_compose_v2:
+        project_src: "{{ deploy_dir }}"
+        state: present
+        # Set the environment file
+        env_files: "{{ deploy_dir }}/secret.env"
+        files: "{{ item | basename }}"
+
+      with_fileglob:
+        - "{{ compose_dir }}/*.yml"

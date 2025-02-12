@@ -1,0 +1,207 @@
+name: media
+
+services:
+
+  # Tailscale Exit Node Router
+  # used for getting container traffic to linode exit node
+  exitnode:
+    image: tailscale/tailscale:latest
+    hostname: media_stack
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "tailscale status"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
+    environment:
+      - TZ=America/New_York
+      - TS_EXTRA_ARGS=--reset --exit-node=100.91.77.60 --exit-node-allow-lan-access=true 
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_ACCEPT_DNS=false
+      - TS_USERSPACE=false
+      - TS_TAILSCALED_EXTRA_ARGS=--tun=tailscale0
+    volumes:
+      - /home/bwees/storage/media/tailscale:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - bwees_traefik_backend
+    cap_add:
+      - net_admin
+      - sys_module
+    dns:
+      - 100.91.77.60
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.bittorrent.loadbalancer.server.port=8080"
+      - "traefik.http.routers.bittorrent.rule=Host(`bittorrent.bwees.lab`)"
+      - "traefik.http.routers.bittorrent.service=bittorrent"
+      - "traefik.http.routers.bittorrent.entrypoints=web,websecure"
+
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.bwees.lab`)"
+      - "traefik.http.routers.radarr.service=radarr"
+      - "traefik.http.routers.radarr.entrypoints=web,websecure"
+
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.bwees.lab`)"
+      - "traefik.http.routers.sonarr.service=sonarr"
+      - "traefik.http.routers.sonarr.entrypoints=web,websecure"
+
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.bwees.lab`)"
+      - "traefik.http.routers.jackett.service=jackett"
+      - "traefik.http.routers.jackett.entrypoints=web,websecure"
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - WEBUI_PORT=8080
+    volumes:
+      - /home/bwees/storage/media/qbittorrent:/config
+      - /home/bwees/storage/media/downloads:/downloads
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
+    restart: unless-stopped
+
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    volumes:
+      - /home/bwees/storage/media/jellyfin:/config
+      - /home/bwees/storage/media/movies:/movies:ro
+      - /home/bwees/storage/media/tv:/tv:ro
+    environment:
+      - JELLYFIN_PublishedServerUrl=jellyfin.bwees.lab
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    ports:
+      - 7359:7359/udp
+      - 1900:1900/udp
+    networks:
+      - bwees_traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.lab`) || Host(`jellyfin.bwees.io`)"
+      - "traefik.http.routers.jellyfin.service=jellyfin"
+      - "traefik.http.routers.jellyfin.entrypoints=web,websecure"
+    devices:
+      - "/dev/dri:/dev/dri"
+
+    restart: unless-stopped
+  
+  ###########
+  ## ARR Apps
+  ###########
+
+  radarr:
+    image: linuxserver/radarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/bwees/storage/media/radarr:/config
+      - /home/bwees/storage/media/downloads:/downloads
+      - /home/bwees/storage/media/movies:/movies
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/bwees/storage/media/sonarr:/config
+      - /home/bwees/storage/media/downloads:/downloads
+      - /home/bwees/storage/media/tv:/tv
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/bwees/storage/media/jackett/config:/config
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    environment:
+      - TZ=America/Chicago
+      - PORT=5055
+    volumes:
+      - /home/bwees/storage/media/jellyseer:/app/config
+    restart: unless-stopped
+    networks:
+      - bwees_traefik_backend
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.services.jellyseer.loadbalancer.server.port=5055"
+      - "traefik.http.routers.jellyseer.rule=Host(`jellyseer.bwees.lab`)"
+      - "traefik.http.routers.jellyseer.service=jellyseer"
+      - "traefik.http.routers.jellyseer.entrypoints=web,websecure"
+
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    networks:
+      - bwees_traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
+
+      - "traefik.http.routers.tdarr.rule=Host(`tdarr.bwees.lab`)"
+      - "traefik.http.routers.tdarr.service=tdarr"
+      - "traefik.http.routers.tdarr.entrypoints=web,websecure"
+    ports:
+      - 8265:8265 # webUI port
+      - 8266:8266 # server port
+    environment:
+      - TZ=America/Chicago
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=002
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - ffmpegVersion=6
+      - nodeName=MyInternalNode
+    volumes:
+      - /home/bwees/storage/media/tdarr/server:/app/server
+      - /home/bwees/storage/media/tdarr/configs:/app/configs
+      - /home/bwees/storage/media/tdarr/logs:/app/logs
+      - /home/bwees/storage/media/tdarr/cache:/temp
+
+      # Libraries
+      - /home/bwees/storage/media/tv:/tv
+      - /home/bwees/storage/media/movies:/movies
+      
+    devices:
+      - /dev/dri:/dev/dri
+
+networks:
+  bwees_traefik_backend:
+    external: true

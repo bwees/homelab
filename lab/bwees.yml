@@ -1,0 +1,179 @@
+
+name: bwees
+
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api=true"
+      - "--api.dashboard=true"
+
+      - "--metrics"
+      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_backend"
+
+      - "--providers.file=true"
+      - "--providers.file.directory=/fileprovider"
+      - "--providers.file.watch=true"
+
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.jellyweb.address=:7500"
+      - "--entryPoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+
+    ports:
+      - 80:80
+      - 7500:7500
+      - 443:443
+
+    labels:
+
+      - "traefik.http.middlewares.redirecthttps.redirectScheme.scheme=https"
+      - "traefik.http.middlewares.redirecthttps.redirectScheme.permanent=true"
+      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
+
+      # Dashboard
+      - "traefik.enable=true"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
+      - "traefik.http.routers.traefik.rule=Host(`traefik.bwees.lab`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=web,websecure"
+      - "traefik.http.routers.traefik.middlewares=authtraefik,redirecthttps"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/bwees/storage/traefik/dynamic:/fileprovider
+      - /home/bwees/storage/traefik/acme.json:/acme.json
+      - /home/bwees/storage/traefik/certs:/etc/traefik/certs:ro
+    networks:
+      - traefik_backend
+
+    restart: unless-stopped
+
+  changedetection:
+    image: ghcr.io/dgtlmoon/changedetection.io:latest
+    volumes:
+      - /home/bwees/storage/changedetection:/datastore
+    networks:
+      - traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
+
+      - "traefik.http.routers.changedetection.rule=Host(`changedetection.bwees.lab`)"
+      - "traefik.http.routers.changedetection.service=changedetection"
+      - "traefik.http.routers.changedetection.entrypoints=web,websecure"
+
+      - "traefik.http.routers.changedetection.middlewares=redirecthttps"
+
+    environment:
+      PLAYWRIGHT_DRIVER_URL: "ws://sockpuppetbrowser:3000"
+    restart: unless-stopped
+
+  sockpuppetbrowser:
+    image: 'dgtlmoon/sockpuppetbrowser:latest'
+    shm_size: 2g
+    environment:
+      DEFAULT_LAUNCH_ARGS: "[\"--window-size=1920,1080\"]"
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  gitea:
+    image: gitea/gitea:latest
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    networks:
+      - traefik_backend
+    volumes:
+      - /home/bwees/storage/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.git.loadbalancer.server.port=3000"
+
+      - "traefik.http.routers.git.rule=Host(`git.bwees.io`)"
+      - "traefik.http.routers.git.service=git"
+      - "traefik.http.routers.git.entrypoints=web,websecure"
+
+      - "traefik.http.routers.git.middlewares=redirecthttps"
+
+
+    restart: unless-stopped
+
+  cah:
+    image: ghcr.io/bwees/cah-discord:latest
+    volumes:
+      - /home/bwees/storage/cah:/etc/app/cards
+    environment:
+      - TOKEN=${CAH_TOKEN}
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  node-red:
+    image: ghcr.io/bwees/nodered-ffmpeg:latest
+    environment:
+      - TZ=America/New_York
+    networks:
+      - traefik_backend
+    volumes:
+      - /home/bwees/storage/nodered:/data
+      - /home/bwees/storage/podcasts:/static/podcasts
+      - /home/bwees/storage/ytdl/wan:/ytdl/wan
+    healthcheck:
+      disable: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+
+      - "traefik.http.routers.nodered.rule=Host(`nodered.bwees.lab`)"
+      - "traefik.http.routers.nodered.service=nodered"
+      - "traefik.http.routers.nodered.entrypoints=web,websecure"
+
+      - "traefik.http.routers.nodered.middlewares=redirecthttps"
+
+    ports:
+      - 1880:1880
+    restart: unless-stopped
+#    entrypoint: "npm start -- --userDir /data --safe"
+
+  youtube-dl:
+    image: "ghcr.io/alexta69/metube"
+    volumes:
+      - /home/bwees/storage/ytdl:/downloads
+    environment:
+      TEMP_DIR: "/tmp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.ytdl.loadbalancer.server.port=8081"
+
+      - "traefik.http.routers.ytdl.rule=Host(`ytdl.bwees.lab`)"
+      - "traefik.http.routers.ytdl.service=ytdl"
+      - "traefik.http.routers.ytdl.entrypoints=web,websecure"
+
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+networks:
+  traefik_backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24

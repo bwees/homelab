@@ -1,0 +1,127 @@
+name: home
+
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api=true"
+      - "--api.dashboard=true"
+
+      - "--metrics"
+      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_backend"
+
+      - "--providers.file=true"
+      - "--providers.file.directory=/fileprovider"
+      - "--providers.file.watch=true"
+
+      - "--entrypoints.web.address=:80"
+
+    ports:
+      - 80:80
+      - 443:443
+  
+    labels:
+      # Dashboard
+      - "traefik.enable=true"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
+      - "traefik.http.routers.traefik.rule=Host(`traefik.bwees.home`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.middlewares=authtraefik"
+      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/bwees/cluster-storage/traefik/route_files:/fileprovider
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  bind9:
+    image: ubuntu/bind9:latest
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - /home/bwees/cluster-storage/bind:/etc/bind
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    volumes:
+      - /home/bwees/cluster-storage/jellyfin:/config
+      - /home/bwees/nas-media:/media-library:ro
+      - /home/bwees/cluster-storage/transmission/downloads/jellyfin:/transmission:ro
+    environment:
+      - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
+    ports:
+      - 7359:7359/udp
+      - 1900:1900/udp
+    networks:
+      - traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.home`)"
+      - "traefik.http.routers.jellyfin.service=jellyfin"
+      - "traefik.http.routers.jellyfin.entrypoints=web"
+    devices:
+      - "/dev/dri:/dev/dri"
+    restart: unless-stopped
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - /home/bwees/cluster-storage/hass:/config
+    network_mode: host
+    environment:
+      TZ: America/New_York
+    restart: unless-stopped
+
+  photoframe:
+    image: ghcr.io/bwees/photoframe:latest
+    volumes:
+      - /home/bwees/cluster-storage/photoframe:/app/static/images
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.photoframe.loadbalancer.server.port=8000"
+
+      - "traefik.http.routers.photoframe.rule=Host(`frame.bwees.home`)"
+      - "traefik.http.routers.photoframe.service=photoframe"
+      - "traefik.http.routers.photoframe.entrypoints=web"
+    restart: unless-stopped
+
+networks:
+  traefik_backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.50.0.0/24
+
+  home_macvlan:
+    driver: macvlan
+    driver_opts:
+      parent: eno1  # Replace with your network interface, like eth0 or en0
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24  # Adjust the subnet to match your network
+          gateway: 10.0.1.1    # Adjust the gateway IP if needed
