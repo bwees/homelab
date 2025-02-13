@@ -21,12 +21,6 @@
       with_fileglob:
         - "{{ compose_dir }}/*.yml"
 
-    - name: Find all .yml files in deploy directory
-      find:
-        paths: "{{ deploy_dir }}"
-        patterns: "*.yml"
-      register: yml_files
-
     - name: Deploy docker-compose files
       community.docker.docker_compose_v2:
         project_src: "{{ deploy_dir }}"
