@@ -1,7 +1,6 @@
 # Homelab
 
-These are the docker-compose and ansible deployment playbooks for my homelab.
-
+This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All machines run on Ubuntu 24.04 and use Docker for application deployment.
 
 ## Hosts
 - Lab (homelab-bwees)
