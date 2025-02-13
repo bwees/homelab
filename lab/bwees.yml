@@ -147,9 +147,6 @@ services:
       - "traefik.http.routers.nodered.entrypoints=web,websecure"
 
       - "traefik.http.routers.nodered.middlewares=redirecthttps"
-
-    ports:
-      - 1880:1880
     restart: unless-stopped
 #    entrypoint: "npm start -- --userDir /data --safe"
 
