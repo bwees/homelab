@@ -1,0 +1,13 @@
+- name: Update TAMU Router Tailscale
+  hosts: tamu-router
+  gather_facts: false
+  tasks:
+    - name: Pull down latest Tailsclae update script
+      raw: wget https://raw.githubusercontent.com/Admonstrator/glinet-tailscale-updater/main/update-tailscale.sh
+      register: tailscale_update
+      changed_when: tailscale_update.stdout.find('200 OK') != -1
+
+    - name: Run Tailscale update script
+      raw: ./update-tailscale.sh --force
+      register: tailscale_update
+      changed_when: tailscale_update.rc == 0
