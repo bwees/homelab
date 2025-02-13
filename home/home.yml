@@ -37,7 +37,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/cluster-storage/traefik/route_files:/fileprovider
+      - /home/bwees/storage/traefik/route_files:/fileprovider
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     volumes:
-      - /home/bwees/cluster-storage/bind:/etc/bind
+      - /home/bwees/storage/bind:/etc/bind
     restart: unless-stopped
 
   cloudflared:
@@ -63,9 +63,9 @@ services:
   jellyfin:
     image: linuxserver/jellyfin:latest
     volumes:
-      - /home/bwees/cluster-storage/jellyfin:/config
+      - /home/bwees/storage/jellyfin:/config
       - /home/bwees/nas-media:/media-library:ro
-      - /home/bwees/cluster-storage/transmission/downloads/jellyfin:/transmission:ro
+      - /home/bwees/storage/transmission/downloads/jellyfin:/transmission:ro
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
     ports:
@@ -87,7 +87,7 @@ services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     volumes:
-      - /home/bwees/cluster-storage/hass:/config
+      - /home/bwees/storage/hass:/config
     network_mode: host
     environment:
       TZ: America/New_York
@@ -96,7 +96,7 @@ services:
   photoframe:
     image: ghcr.io/bwees/photoframe:latest
     volumes:
-      - /home/bwees/cluster-storage/photoframe:/app/static/images
+      - /home/bwees/storage/photoframe:/app/static/images
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
