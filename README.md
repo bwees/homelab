@@ -6,14 +6,14 @@ This repository houses the infrastructure configuration files (docker-compose) f
 - Lab (homelab-bwees)
   - This is my main homelab machine that self-hosts the majority of my applications.
 - Home (homelab-home)
-  - This machine stays at my parent's huse and provides Home Assistant, Jellyfin, and a few other services.
+  - This machine stays at my parent's house and provides Home Assistant, Jellyfin, and a few other services.
 - Linode (homelab-linode)
   - This is a Linode VPS (1 CPU, 1GB RAM) that provides a Tailscale Exit Node for the media stack and hosts some mission critical services.
  
 ## Tailscale
 Tailscale is used for all private networking. I have 2 domains that are routed over Tailscale (using custom split DNS servers): 
-  - *.bwees.lab - Personal Services
-  - *.bwees.home - Family Services
+  - `*.bwees.lab` - Personal Services
+  - `*.bwees.home` - Family Services
 
 ## Cloudflare Tunnels
 Cloudflare tunnels is used to route any services that need to be publicly accessible on my domain. This simplifies a lot of firewall configuration and is rarely used since most traffic is routed through Tailscale.
