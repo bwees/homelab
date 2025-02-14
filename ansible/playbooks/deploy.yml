@@ -6,7 +6,7 @@
       include_tasks: tasks/docker_deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../lab"
+        compose_dir: "../../compose/lab"
 
 - name: Deploy Home
   hosts: home
@@ -16,7 +16,7 @@
       include_tasks: tasks/docker_deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../home"
+        compose_dir: "../../compose/home"
 
 - name: Deploy Linode
   hosts: linode
@@ -26,4 +26,4 @@
       include_tasks: tasks/docker_deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../linode"
+        compose_dir: "../../compose/linode"
