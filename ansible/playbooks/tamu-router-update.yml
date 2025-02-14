@@ -2,12 +2,24 @@
   hosts: tamu-router
   gather_facts: false
   tasks:
-    - name: Pull down latest Tailsclae update script
+    - name: Check if Tailscale script exists
+      raw: ls update-tailscale.sh
+      register: script_exists
+      changed_when: false
+
+    - name: Pull down latest Tailscale update script
       raw: wget https://raw.githubusercontent.com/Admonstrator/glinet-tailscale-updater/main/update-tailscale.sh
-      register: tailscale_update
-      changed_when: tailscale_update.stdout.find('200 OK') != -1
+      register: download_script
+      changed_when: download_script.stdout.find('200 OK') != -1
+      failed_when: download_script.rc != 0
+      when: script_exists.rc != 0
 
     - name: Run Tailscale update script
       raw: ./update-tailscale.sh --force
       register: tailscale_update
-      changed_when: tailscale_update.rc == 0
+      changed_when: tailscale_update.stdout.find('You already have the latest version') == -1
+      failed_when: tailscale_update.rc != 0
+
+    - name: Print update script stdout
+      debug:
+        var: tailscale_update.stdout_lines
