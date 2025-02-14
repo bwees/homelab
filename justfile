@@ -1,7 +1,8 @@
 set shell := ["zsh", "-c"]
 
+[private]
 _ansible_vault_op:
-    op read "op://Homelab/2fgepkgmadwfgejymkitatma6u/password"
+    @op read "op://Homelab/2fgepkgmadwfgejymkitatma6u/password"
 
 [working-directory: 'ansible']
 deploy HOST:
