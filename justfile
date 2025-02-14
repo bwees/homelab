@@ -9,7 +9,7 @@ deploy HOST:
 
 [working-directory: 'ansible']
 update-tamu:
-    ansible-playbook playbooks/tamu-router-update.yml --ask-pass --limit tamu-router
+    ansible-playbook playbooks/tamu-router-update.yml --ask-pass --limit tamu_router
 
 
 [working-directory: 'ansible']
