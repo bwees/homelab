@@ -116,12 +116,3 @@ networks:
     ipam:
       config:
         - subnet: 172.50.0.0/24
-
-  home_macvlan:
-    driver: macvlan
-    driver_opts:
-      parent: eno1  # Replace with your network interface, like eth0 or en0
-    ipam:
-      config:
-        - subnet: 10.0.1.0/24  # Adjust the subnet to match your network
-          gateway: 10.0.1.1    # Adjust the gateway IP if needed
