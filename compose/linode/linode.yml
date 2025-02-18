@@ -114,7 +114,7 @@ services:
     networks:
       - traefik_backend
     environment:
-      - APP_URL=https://beszel.bwees.lab
+      - BESZEL_HUB_APP_URL=https://beszel.bwees.lab
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.beszel.loadbalancer.server.port=8090"
