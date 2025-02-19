@@ -1,7 +1,5 @@
 - name: Update TAMU Router Tailscale
-  hosts: tamu-router
-  gather_facts: false
-  tasks:
+  block:
     - name: Check if Tailscale script exists
       raw: ls update-tailscale.sh
       register: script_exists
@@ -20,6 +18,7 @@
       changed_when: tailscale_update.stdout.find('You already have the latest version') == -1
       failed_when: tailscale_update.rc != 0
 
-    - name: Print update script stdout
+    - name: Print stdout if error
       debug:
         var: tailscale_update.stdout_lines
+      when: tailscale_update.rc != 0

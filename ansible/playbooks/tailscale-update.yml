@@ -1,0 +1,29 @@
+- name: Update TAMU Tailscale
+  hosts: tamu-router
+  gather_facts: false
+
+  tasks:
+    - name: Get SSH password
+      pause:
+        prompt: "SSH Password:"
+        echo: false # secure input
+      register: result
+    - name: Set SSH password dynamically
+      set_fact:
+        ansible_ssh_pass: "{{ result.user_input }}"
+
+    - name: Update TAMU Router Tailscale
+      include_tasks: tasks/tamu-router-update.yml
+
+- name: Update Tailscale with tailscale update
+  hosts: all:!tamu-router
+  gather_facts: false
+  tasks:
+    - name: Update Tailscale
+      block:
+        - name: Run `tailscale update`
+          command: tailscale update
+          register: tailscale_update
+          become: true
+          changed_when: tailscale_update.stdout.find('no update needed') == -1
+          failed_when: tailscale_update.rc != 0
