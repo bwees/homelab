@@ -15,6 +15,8 @@ Tailscale is used for all private networking. I have 2 domains that are routed o
   - `*.bwees.lab` - Personal Services
   - `*.bwees.home` - Family Services
 
+The Ansible host inventory uses Tailscale for all communication in playbooks.
+
 ## Cloudflare Tunnels
 Cloudflare tunnels is used to route any services that need to be publicly accessible on my domain. This simplifies a lot of firewall configuration and is rarely used since most traffic is routed through Tailscale.
 
