@@ -16,3 +16,7 @@ tailscale-update HOST:
 vault ACTION:
     EDITOR='code --wait' ansible-vault {{ACTION}} secrets.yml --vault-password-file <(just _ansible_vault_op)
 
+[working-directory: 'ansible']
+install-beszel HOST:
+    ansible-playbook playbooks/install-beszel.yml --vault-password-file <(just _ansible_vault_op) --limit {{HOST}}
+
