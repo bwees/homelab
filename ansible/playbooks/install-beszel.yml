@@ -3,16 +3,6 @@
   gather_facts: false
 
   tasks:
-    - name: Get SSH password
-      pause:
-        prompt: "SSH Password:"
-        echo: false # secure input
-      register: result
-
-    - name: Set SSH password dynamically
-      set_fact:
-        ansible_ssh_pass: "{{ result.user_input }}"
-
     - name: Download Beszel Agent
       raw: |
         curl -sL https://github.com/henrygd/beszel/releases/download/v0.9.1/beszel-agent_linux_arm.tar.gz -o "/tmp/beszel-agent_linux_arm.tar.gz" &&
