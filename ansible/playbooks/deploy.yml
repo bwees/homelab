@@ -3,7 +3,7 @@
   gather_facts: false
   tasks:
     - name: Deploy Docker-Compose files to host
-      include_tasks: tasks/docker_deploy.yml
+      include_tasks: tasks/docker-deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
         compose_dir: "../../compose/lab"
@@ -13,7 +13,7 @@
   gather_facts: false
   tasks:
     - name: Deploy Docker-Compose files to host
-      include_tasks: tasks/docker_deploy.yml
+      include_tasks: tasks/docker-deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
         compose_dir: "../../compose/home"
@@ -23,7 +23,7 @@
   gather_facts: false
   tasks:
     - name: Deploy Docker-Compose files to host
-      include_tasks: tasks/docker_deploy.yml
+      include_tasks: tasks/docker-deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
         compose_dir: "../../compose/linode"

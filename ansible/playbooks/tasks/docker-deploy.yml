@@ -8,7 +8,7 @@
         force: true
 
     - name: Generate and transfer secret.env file
-      include_tasks: secret_gen.yml
+      include_tasks: secret-gen.yml
       vars:
         vault_file: "../secrets.yml"
         env_destination: "{{ deploy_dir }}/secret.env"
