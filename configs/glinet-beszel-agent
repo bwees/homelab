@@ -9,7 +9,7 @@ start_service() {
     procd_set_param user beszel
     procd_set_param pidfile /var/run/beszel-agent.pid
     procd_set_param env PORT="45876"
-    procd_set_param env KEY="{{BESZEL_KEY}}"
+    procd_set_param env KEY="BESZEL_KEY"
     procd_set_param stdout 1
     procd_set_param stderr 1
     procd_close_instance
