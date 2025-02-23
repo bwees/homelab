@@ -14,6 +14,7 @@ This repository houses the infrastructure configuration files (docker-compose) f
 Tailscale is used for all private networking. I have 2 domains that are routed over Tailscale (using custom split DNS servers): 
   - `*.bwees.lab` - Personal Services
   - `*.bwees.home` - Family Services
+These internal domains' DNS are served by 2 Bind DNS servers. One on `homelab-linode`, and one on `homelab-home`. They are configured in `configs/dns/<host>` and dynamically updated with `just dns`
 
 The Ansible host inventory uses Tailscale for all communication in playbooks.
 
