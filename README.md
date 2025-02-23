@@ -27,6 +27,9 @@ Cloudflare tunnels is used to route any services that need to be publicly access
 This year I decided to try and automate some of the tasks in my lab with Ansible. Ansible currently handles the following operations:
 - Deployment of Docker-compose files and related secrets to each machine
 - Secret Management
+- Installation of Beszel Agent
+- Updating Tailscale
+- DNS Configuration Deployment
 
 ### Secret Management
 Secrets are saved in a Ansible Vault inside of `ansible/secrets.yml` (not commited for security reasons). The vault is unlocked by Ansible with the 1Password CLI tool. `justfile` provides the necessary functions to retrieve the password for the Ansible deployment and vault commands.
