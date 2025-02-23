@@ -1,0 +1,14 @@
+@  IN SOA  . root.bwees.lab. ( 
+             20250222  ; serial number of zone file (yyyymmdd##)	
+             604800    ; refresh time	
+             86400     ; retry time in case of problem  
+             2419200   ; expiry time
+             604800)   ; maximum caching time in case of failed lookups
+   IN NS     . 
+   IN A      100.65.90.4 ; lab
+
+*  IN A      100.65.90.4 ; lab
+
+kuma IN A    100.91.77.60 ; linode
+beszel IN A  100.91.77.60 ; linode
+linode IN A  100.91.77.60 ; linode

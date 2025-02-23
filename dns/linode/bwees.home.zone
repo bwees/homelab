@@ -1,0 +1,10 @@
+@  IN SOA  . root.bwees.home. ( 
+             20250222  ; serial number of zone file (yyyymmdd##)	
+             604800    ; refresh time	
+             86400     ; retry time in case of problem  
+             2419200   ; expiry time
+             604800)   ; maximum caching time in case of failed lookups
+   IN NS     . 
+   IN A      100.78.133.134
+
+*  IN A      100.78.133.134 ; home
