@@ -11,13 +11,14 @@ This repository houses the infrastructure configuration files (docker-compose) f
   - This is a Linode VPS (1 CPU, 1GB RAM) that provides a Tailscale Exit Node for the media stack and hosts some mission critical services.
  
 ## Tailscale
-Tailscale is used for all private networking. I have 2 domains that are routed over Tailscale (using custom split DNS servers): 
+Tailscale is used for all private networking. The Ansible host inventory uses Tailscale for all communication in playbooks.
+
+I have 2 domains that are routed over Tailscale (using custom split DNS servers): 
   - `*.bwees.lab` - Personal Services
   - `*.bwees.home` - Family Services
 
 These internal domains' DNS are served by 2 Bind DNS servers. One on `homelab-linode`, and one on `homelab-home`. They are configured in `configs/dns/<host>` and dynamically updated with `just dns`
 
-The Ansible host inventory uses Tailscale for all communication in playbooks.
 
 ## Cloudflare Tunnels
 Cloudflare tunnels is used to route any services that need to be publicly accessible on my domain. This simplifies a lot of firewall configuration and is rarely used since most traffic is routed through Tailscale.
