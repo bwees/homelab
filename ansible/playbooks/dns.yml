@@ -7,7 +7,7 @@
   tasks:
     - name: Copy folder with DNS configuration files
       copy:
-        src: "../../dns/{{ stack_name }}/"
+        src: "../../configs/dns/{{ stack_name }}/"
         dest: "/home/bwees/storage/bind"
       notify: Reload Bind9
 
