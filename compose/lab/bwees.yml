@@ -185,6 +185,23 @@ services:
       - "traefik.http.routers.spoolman.entrypoints=web,websecure"
     restart: unless-stopped
 
+  actual-server:
+      image: actualbudget/actual-server:latest
+      volumes:
+          - /home/bwees/storage/actual:/data
+      ports:
+          - 5006:5006
+      networks:
+        - traefik_backend
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.actual.loadbalancer.server.port=5006"
+
+        - "traefik.http.routers.actual.rule=Host(`finance.bwees.lab`)"
+        - "traefik.http.routers.actual.service=actual"
+        - "traefik.http.routers.actual.entrypoints=web,websecure"
+      restart: unless-stopped
+
 networks:
   traefik_backend:
     driver: bridge
