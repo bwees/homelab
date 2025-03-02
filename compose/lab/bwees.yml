@@ -164,6 +164,10 @@ services:
       - "traefik.http.routers.ytdl.service=ytdl"
       - "traefik.http.routers.ytdl.entrypoints=web,websecure"
 
+      - "traefik.http.routers.ytdl-public.rule=Host(`ytdl.bwees.io`)"
+      - "traefik.http.routers.ytdl-public.service=ytdl"
+      - "traefik.http.routers.ytdl-public.entrypoints=web,websecure"
+
     networks:
       - traefik_backend
     restart: unless-stopped
