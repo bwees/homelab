@@ -5,7 +5,7 @@
   tasks:
     - name: Download Beszel Agent
       raw: |
-        curl -sL https://github.com/henrygd/beszel/releases/download/v0.9.1/beszel-agent_linux_arm.tar.gz -o "/tmp/beszel-agent_linux_arm.tar.gz" &&
+        curl -sL https://github.com/henrygd/beszel/releases/latest/download/beszel-agent_linux_arm.tar.gz  -o "/tmp/beszel-agent_linux_arm.tar.gz" &&
         tar -xzvf "/tmp/beszel-agent_linux_arm.tar.gz" -C /tmp &&
         rm "/tmp/beszel-agent_linux_arm.tar.gz" &&
         chmod +x "/tmp/beszel-agent"
