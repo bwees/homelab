@@ -68,9 +68,6 @@ services:
       - /home/bwees/storage/transmission/downloads/jellyfin:/transmission:ro
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
-    ports:
-      - 7359:7359/udp
-      - 1900:1900/udp
     networks:
       - traefik_backend
     labels:
