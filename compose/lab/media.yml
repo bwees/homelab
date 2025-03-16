@@ -1,5 +1,34 @@
 name: media
 
+networks:
+  bwees_traefik_backend:
+    external: true
+
+volumes:
+  nas-media:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.10.188,nolock,soft,rw"
+      device: ":/mnt/main/homelab/media"
+
+#
+# NFS Subdirectory Mounts
+#
+x-nas-media-tv: &nas-media-tv
+  type: volume
+  source: nas-media
+  target: /tv
+  volume:
+    subpath: tv
+    
+x-nas-media-movies: &nas-media-movies
+  type: volume
+  source: nas-media
+  target: /movies
+  volume:
+    subpath: movies
+
 services:
 
   # Tailscale Exit Node Router
@@ -72,8 +101,9 @@ services:
     image: linuxserver/jellyfin:latest
     volumes:
       - /home/bwees/storage/media/jellyfin:/config
-      - /home/bwees/storage/media/movies:/movies:ro
-      - /home/bwees/storage/media/tv:/tv:ro
+      - <<: *nas-media-tv
+      - <<: *nas-media-movies
+
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.lab
       - PUID=1000
@@ -109,7 +139,7 @@ services:
     volumes:
       - /home/bwees/storage/media/radarr:/config
       - /home/bwees/storage/media/downloads:/downloads
-      - /home/bwees/storage/media/movies:/movies
+      - <<: *nas-media-movies
     network_mode: service:exitnode
     depends_on:
       - exitnode
@@ -124,7 +154,7 @@ services:
     volumes:
       - /home/bwees/storage/media/sonarr:/config
       - /home/bwees/storage/media/downloads:/downloads
-      - /home/bwees/storage/media/tv:/tv
+      - <<: *nas-media-tv
     network_mode: service:exitnode
     depends_on:
       - exitnode
@@ -193,12 +223,8 @@ services:
       - /home/bwees/storage/media/tdarr/cache:/temp
 
       # Libraries
-      - /home/bwees/storage/media/tv:/tv
-      - /home/bwees/storage/media/movies:/movies
+      - <<: *nas-media-tv
+      - <<: *nas-media-movies
       
     devices:
       - /dev/dri:/dev/dri
-
-networks:
-  bwees_traefik_backend:
-    external: true
