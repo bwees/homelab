@@ -34,7 +34,7 @@ services:
   # Tailscale Exit Node Router
   # used for getting container traffic to linode exit node
   exitnode:
-    image: tailscale/tailscale:latest
+    image: tailscale/tailscale:v1.80.3
     hostname: media_stack
     restart: unless-stopped
     healthcheck:
