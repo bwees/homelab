@@ -1,0 +1,33 @@
+- name: Update Beszel (GL.iNet)
+  hosts: tamu-router
+  gather_facts: false
+
+  tasks:
+    - name: Download Beszel Agent
+      raw: |
+        /usr/sbin/beszel-agent update
+      register: beszel_update
+      changed_when: beszel_update.rc != 0
+
+    - name: Restart Beszel Agent Service
+      raw: |
+        /etc/init.d/beszel-agent stop
+        /etc/init.d/beszel-agent start
+      register: beszel_restart
+      changed_when: beszel_restart.rc != 0
+
+- name: Update Beszel
+  hosts: all:!tamu-router
+  gather_facts: false
+
+  tasks:
+    - name: Download Beszel Agent
+      raw: |
+        /opt/beszel-agent/beszel-agent update
+      register: beszel_update
+      changed_when: beszel_update.rc != 0
+
+    - name: Restart Beszel Agent Service
+      service:
+        name: beszel-agent
+        state: restarted

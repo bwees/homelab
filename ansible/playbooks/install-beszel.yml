@@ -46,7 +46,7 @@
 
     - name: Install Beszel Agent
       raw: |
-          echo -e "y\n" | ./install-agent.sh -p 45876 -k "{{ secrets.other.beszel_key }}"
+          echo -e "y\n" | bash /tmp/install-agent.sh -p 45876 -k "{{ secrets.other.beszel_key }}"
       register: beszel_install
       changed_when: beszel_install.rc != 0
 

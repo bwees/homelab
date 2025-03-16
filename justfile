@@ -21,5 +21,9 @@ install-beszel HOST:
     ansible-playbook playbooks/install-beszel.yml --vault-password-file <(just _ansible_vault_op) --limit {{ HOST }}
 
 [working-directory: 'ansible']
+update-beszel HOST:
+    ansible-playbook playbooks/update-beszel.yml --limit {{ HOST }}
+
+[working-directory: 'ansible']
 dns HOST="linode,home":
     ansible-playbook playbooks/dns.yml --limit {{ HOST }}
