@@ -20,7 +20,7 @@ volumes:
 
 services:
   traefik:
-    image: traefik:v2.9
+    image: traefik:3.3.4
     command:
       - "--api=true"
       - "--api.dashboard=true"
