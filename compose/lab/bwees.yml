@@ -1,6 +1,23 @@
 
 name: bwees
 
+networks:
+  traefik_backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24
+
+volumes:
+  nas-media:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.10.188,nolock,soft,rw"
+      device: ":/mnt/main/homelab/media"
+
+
+
 services:
   traefik:
     image: traefik:v2.9
@@ -47,7 +64,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/bwees/storage/traefik/dynamic:/fileprovider
-      - /home/bwees/storage/traefik/acme.json:/acme.json
       - /home/bwees/storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend
@@ -153,7 +169,11 @@ services:
   youtube-dl:
     image: "ghcr.io/alexta69/metube"
     volumes:
-      - /home/bwees/storage/ytdl:/downloads
+      - type: volume
+        source: nas-media
+        target: /downloads
+        volume:
+          subpath: ytdl
     environment:
       TEMP_DIR: "/tmp"
     labels:
@@ -206,9 +226,3 @@ services:
         - "traefik.http.routers.actual.entrypoints=web,websecure"
       restart: unless-stopped
 
-networks:
-  traefik_backend:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.40.0.0/24
