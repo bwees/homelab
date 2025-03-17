@@ -63,8 +63,8 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/storage/traefik/dynamic:/fileprovider
-      - /home/bwees/storage/traefik/certs:/etc/traefik/certs:ro
+      - /storage/traefik/dynamic:/fileprovider
+      - /storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend
 
@@ -73,7 +73,7 @@ services:
   changedetection:
     image: ghcr.io/dgtlmoon/changedetection.io:latest
     volumes:
-      - /home/bwees/storage/changedetection:/datastore
+      - /storage/changedetection:/datastore
     networks:
       - traefik_backend
     labels:
@@ -107,7 +107,7 @@ services:
     networks:
       - traefik_backend
     volumes:
-      - /home/bwees/storage/gitea:/data
+      - /storage/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
@@ -126,7 +126,7 @@ services:
   cah:
     image: ghcr.io/bwees/cah-discord:latest
     volumes:
-      - /home/bwees/storage/cah:/etc/app/cards
+      - /storage/cah:/etc/app/cards
     environment:
       - TOKEN=${CAH_TOKEN}
     networks:
@@ -149,9 +149,9 @@ services:
     networks:
       - traefik_backend
     volumes:
-      - /home/bwees/storage/nodered:/data
-      - /home/bwees/storage/podcasts:/static/podcasts
-      - /home/bwees/storage/ytdl/wan:/ytdl/wan
+      - /storage/nodered:/data
+      - /storage/podcasts:/static/podcasts
+      - /storage/ytdl/wan:/ytdl/wan
     healthcheck:
       disable: true
     labels:
@@ -195,7 +195,7 @@ services:
   spoolman:
     image: ghcr.io/donkie/spoolman:latest
     volumes:
-      - /home/bwees/storage/spoolman:/home/app/.local/share/spoolman
+      - /storage/spoolman:/home/app/.local/share/spoolman
     environment:
       - TZ=America/Chicago
     networks:
@@ -212,7 +212,7 @@ services:
   actual-server:
       image: actualbudget/actual-server:latest
       volumes:
-          - /home/bwees/storage/actual:/data
+          - /storage/actual:/data
       ports:
           - 5006:5006
       networks:

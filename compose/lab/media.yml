@@ -50,7 +50,7 @@ services:
       - TS_USERSPACE=false
       - TS_TAILSCALED_EXTRA_ARGS=--tun=tailscale0
     volumes:
-      - /home/bwees/storage/media/tailscale:/var/lib/tailscale
+      - /storage/media/tailscale:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     networks:
@@ -90,8 +90,8 @@ services:
       - TZ=America/New_York
       - WEBUI_PORT=8080
     volumes:
-      - /home/bwees/storage/media/qbittorrent:/config
-      - /home/bwees/storage/media/downloads:/downloads
+      - /storage/media/qbittorrent:/config
+      - /storage/media/downloads:/downloads
     network_mode: service:exitnode
     depends_on:
       - exitnode
@@ -100,7 +100,7 @@ services:
   jellyfin:
     image: linuxserver/jellyfin:latest
     volumes:
-      - /home/bwees/storage/media/jellyfin:/config
+      - /storage/media/jellyfin:/config
       - <<: *nas-media-tv
       - <<: *nas-media-movies
 
@@ -137,8 +137,8 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /home/bwees/storage/media/radarr:/config
-      - /home/bwees/storage/media/downloads:/downloads
+      - /storage/media/radarr:/config
+      - /storage/media/downloads:/downloads
       - <<: *nas-media-movies
     network_mode: service:exitnode
     depends_on:
@@ -152,8 +152,8 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /home/bwees/storage/media/sonarr:/config
-      - /home/bwees/storage/media/downloads:/downloads
+      - /storage/media/sonarr:/config
+      - /storage/media/downloads:/downloads
       - <<: *nas-media-tv
     network_mode: service:exitnode
     depends_on:
@@ -167,7 +167,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /home/bwees/storage/media/jackett/config:/config
+      - /storage/media/jackett/config:/config
     network_mode: service:exitnode
     depends_on:
       - exitnode
@@ -179,7 +179,7 @@ services:
       - TZ=America/Chicago
       - PORT=5055
     volumes:
-      - /home/bwees/storage/media/jellyseer:/app/config
+      - /storage/media/jellyseer:/app/config
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
@@ -217,10 +217,10 @@ services:
       - ffmpegVersion=6
       - nodeName=MyInternalNode
     volumes:
-      - /home/bwees/storage/media/tdarr/server:/app/server
-      - /home/bwees/storage/media/tdarr/configs:/app/configs
-      - /home/bwees/storage/media/tdarr/logs:/app/logs
-      - /home/bwees/storage/media/tdarr/cache:/temp
+      - /storage/media/tdarr/server:/app/server
+      - /storage/media/tdarr/configs:/app/configs
+      - /storage/media/tdarr/logs:/app/logs
+      - /storage/media/tdarr/cache:/temp
 
       # Libraries
       - <<: *nas-media-tv
