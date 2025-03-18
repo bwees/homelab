@@ -4,5 +4,6 @@
     "config:recommended"
   ],
   "baseBranches": ["main"],
-  "enabled": true
+  "enabled": true,
+  "dependencyDashboard": false
 }
