@@ -14,7 +14,7 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/lscr.io/linuxserver/qbittorrent"],
-      "ignoreVersions": ["20.04.*"]
+      "allowedVersions": "<20.04 || >20.04"
     }
   ]
 }
