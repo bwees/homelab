@@ -5,5 +5,5 @@
   ],
   "baseBranches": ["main"],
   "enabled": true,
-  "dependencyDashboard": false
+  "dependencyDashboard": true
 }
