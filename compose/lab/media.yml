@@ -83,7 +83,7 @@ services:
       - "traefik.http.routers.jackett.entrypoints=web,websecure"
 
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: lscr.io/linuxserver/qbittorrent:5.0.4
     environment:
       - PUID=1000
       - PGID=1000
@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: linuxserver/jellyfin:latest
+    image: linuxserver/jellyfin:10.10.6
     volumes:
       - /storage/media/jellyfin:/config
       - <<: *nas-media-tv
@@ -131,7 +131,7 @@ services:
   ###########
 
   radarr:
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr:5.20.2
     environment:
       - PUID=1000
       - PGID=1000
@@ -146,7 +146,7 @@ services:
     restart: unless-stopped
 
   sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
+    image: lscr.io/linuxserver/sonarr:4.0.14
     environment:
       - PUID=1000
       - PGID=1000
@@ -161,7 +161,7 @@ services:
     restart: unless-stopped
 
   jackett:
-    image: lscr.io/linuxserver/jackett:latest
+    image: lscr.io/linuxserver/jackett:0.22.1660
     environment:
       - PUID=1000
       - PGID=1000
@@ -193,7 +193,7 @@ services:
       - "traefik.http.routers.jellyseer.entrypoints=web,websecure"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:latest
+    image: ghcr.io/haveagitgat/tdarr:2.35.02
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
