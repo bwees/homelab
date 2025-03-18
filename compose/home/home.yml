@@ -2,7 +2,7 @@ name: home
 
 services:
   traefik:
-    image: traefik:v2.9
+    image: traefik:3.3.4
     command:
       - "--api=true"
       - "--api.dashboard=true"
@@ -43,7 +43,7 @@ services:
     restart: unless-stopped
 
   bind9:
-    image: ubuntu/bind9:latest
+    image: ubuntu/bind9:9.18-24.04_beta
     ports:
       - "53:53/udp"
       - "53:53/tcp"
@@ -52,7 +52,7 @@ services:
     restart: unless-stopped
 
   cloudflared:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:2025.2.1
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
@@ -61,7 +61,7 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: linuxserver/jellyfin:latest
+    image: linuxserver/jellyfin:10.10.6
     volumes:
       - /home/bwees/storage/jellyfin:/config
       - /home/bwees/nas-media:/media-library:ro

@@ -71,7 +71,7 @@ services:
     restart: unless-stopped
 
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:latest
+    image: ghcr.io/dgtlmoon/changedetection.io:0.49.4
     volumes:
       - /storage/changedetection:/datastore
     networks:
@@ -91,7 +91,7 @@ services:
     restart: unless-stopped
 
   sockpuppetbrowser:
-    image: 'dgtlmoon/sockpuppetbrowser:latest'
+    image: dgtlmoon/sockpuppetbrowser:0.0.1
     shm_size: 2g
     environment:
       DEFAULT_LAUNCH_ARGS: "[\"--window-size=1920,1080\"]"
@@ -100,7 +100,7 @@ services:
     restart: unless-stopped
 
   gitea:
-    image: gitea/gitea:latest
+    image: gitea/gitea:1.23
     environment:
       - USER_UID=1000
       - USER_GID=1000
@@ -134,7 +134,7 @@ services:
     restart: unless-stopped
 
   cloudflared:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:2025.2.1
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
@@ -167,7 +167,7 @@ services:
 #    entrypoint: "npm start -- --userDir /data --safe"
 
   youtube-dl:
-    image: "ghcr.io/alexta69/metube"
+    image: alexta69/metube:2025-03-07
     volumes:
       - type: volume
         source: nas-media
@@ -193,7 +193,7 @@ services:
     restart: unless-stopped
 
   spoolman:
-    image: ghcr.io/donkie/spoolman:latest
+    image: ghcr.io/donkie/spoolman:0.22.0
     volumes:
       - /storage/spoolman:/home/app/.local/share/spoolman
     environment:
@@ -210,7 +210,7 @@ services:
     restart: unless-stopped
 
   actual-server:
-      image: actualbudget/actual-server:latest
+      image: actualbudget/actual-server:25.3.1
       volumes:
           - /storage/actual:/data
       ports:
