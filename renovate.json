@@ -13,9 +13,8 @@
   "packageRules": [
     {
       "description": "Linuxserver ignore qBittorrent 20.04.1, they have an old image version that triggers renovatebot",
-      "matchDatasources": ["docker"],
       "matchPackageNames": ["linuxserver/qbittorrent"],
-      "allowedVersions": "!/24.04.1/"
+      "allowedVersions": "!/^24\\.04\\.1$/"
     }
   ]
 }
