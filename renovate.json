@@ -14,7 +14,7 @@
     {
       "description": "Linuxserver ignore qBittorrent 20.04.1, they have an old image version that triggers renovatebot",
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
+      "matchPackageNames": ["linuxserver/qbittorrent"],
       "allowedVersions": "!/24.04.1/"
     }
   ]
