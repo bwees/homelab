@@ -5,5 +5,11 @@
   ],
   "baseBranches": ["main"],
   "enabled": true,
-  "dependencyDashboard": true
+  "dependencyDashboard": true,
+  "docker-compose": {
+    "fileMatch": [
+      "compose/**/*.yml",
+      "compose/**/*.yaml"
+    ]
+  }
 }
