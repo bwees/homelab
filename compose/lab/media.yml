@@ -83,7 +83,7 @@ services:
       - "traefik.http.routers.jackett.entrypoints=web,websecure"
 
   qbittorrent:
-    image: ghcr.io/linuxserver/qbittorrent:5.0.4
+    image: ghcr.io/linuxserver/qbittorrent:20.04.1
     environment:
       - PUID=1000
       - PGID=1000
