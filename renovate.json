@@ -9,5 +9,12 @@
     "fileMatch": [
       "^compose/.*\\.ya?ml$"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Linuxserver ignore qBittorrent 20.04.1, they have an old image version that triggers renovatebot",
+      "matchPackageNames": ["linuxserver/qbittorrent"],
+      "allowedVersions": "<20.0.0"
+    }
+  ]
 }
