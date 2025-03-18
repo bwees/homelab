@@ -9,7 +9,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.10.188,nolock,soft,rw"
+      o: "addr=nas.bwees.lab,nolock,soft,rw"
       device: ":/mnt/main/homelab/media"
 
 #

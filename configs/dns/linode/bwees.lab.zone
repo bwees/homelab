@@ -12,3 +12,5 @@
 kuma IN A    100.91.77.60 ; linode
 beszel IN A  100.91.77.60 ; linode
 linode IN A  100.91.77.60 ; linode
+
+nas IN A 192.168.10.188 ; nas (local ip on glinet, subnet routed over ts)
