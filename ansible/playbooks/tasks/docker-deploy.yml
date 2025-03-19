@@ -33,7 +33,9 @@
         - "{{ compose_dir }}/*.yml"
 
     - name: Prune unused objects
-      raw: docker image prune -a -f
+      raw: |
+        docker image prune -a -f
+        docker volume prune -a -f
       register: prune_output
       # Only mark as changed if there was space reclaimed (when :0B is not in the output)
       changed_when: prune_output.stdout.find(' 0B') == -1
