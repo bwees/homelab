@@ -214,8 +214,8 @@ services:
       - webUIPort=8265
       - internalNode=true
       - inContainer=true
-      - ffmpegVersion=6
-      - nodeName=MyInternalNode
+      - ffmpegVersion=7
+      - nodeName=homelab-bwees
     volumes:
       - /storage/media/tdarr/server:/app/server
       - /storage/media/tdarr/configs:/app/configs
@@ -225,6 +225,7 @@ services:
       # Libraries
       - <<: *nas-media-tv
       - <<: *nas-media-movies
-      
+    ports:
+      - 8266:8266
     devices:
       - /dev/dri:/dev/dri
