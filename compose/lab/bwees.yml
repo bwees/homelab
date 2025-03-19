@@ -193,7 +193,7 @@ services:
     restart: unless-stopped
 
   spoolman:
-    image: ghcr.io/donkie/spoolman:0.22.0
+    image: ghcr.io/donkie/spoolman:0.22.1
     volumes:
       - /storage/spoolman:/home/app/.local/share/spoolman
     environment:
