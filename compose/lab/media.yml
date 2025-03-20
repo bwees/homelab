@@ -29,6 +29,13 @@ x-nas-media-movies: &nas-media-movies
   volume:
     subpath: movies
 
+x-nas-tdarr-cache: &nas-tdarr-cache
+  type: volume
+  source: nas-media
+  target: /temp
+  volume:
+    subpath: tdarr-cache
+
 services:
 
   # Tailscale Exit Node Router
@@ -220,11 +227,11 @@ services:
       - /storage/media/tdarr/server:/app/server
       - /storage/media/tdarr/configs:/app/configs
       - /storage/media/tdarr/logs:/app/logs
-      - /storage/media/tdarr/cache:/temp
 
       # Libraries
       - <<: *nas-media-tv
       - <<: *nas-media-movies
+      - <<: *nas-tdarr-cache
     ports:
       - 8266:8266
     devices:
