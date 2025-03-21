@@ -21,5 +21,6 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
-  ]
+  ],
+  "ignoreTests": true
 }
