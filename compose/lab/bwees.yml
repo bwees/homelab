@@ -16,8 +16,6 @@ volumes:
       o: "addr=nas.bwees.lab,nolock,soft,rw"
       device: ":/mnt/main/homelab/media"
 
-
-
 services:
   traefik:
     image: traefik:3.3.4
