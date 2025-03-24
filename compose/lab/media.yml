@@ -138,7 +138,7 @@ services:
   ###########
 
   radarr:
-    image: linuxserver/radarr:5.20.2
+    image: linuxserver/radarr:5.21.1
     environment:
       - PUID=1000
       - PGID=1000
