@@ -28,6 +28,7 @@
         # Set the environment file
         env_files: "{{ deploy_dir }}/secret.env"
         files: "{{ item | basename }}"
+        remove_orphans: true
 
       with_fileglob:
         - "{{ compose_dir }}/*.yml"
