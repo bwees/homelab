@@ -21,7 +21,7 @@
       raw: |
         curl -sL https://raw.githubusercontent.com/bwees/homelab/refs/heads/main/configs/glinet-beszel-agent -o "/etc/init.d/beszel-agent" &&
         chmod +x "/etc/init.d/beszel-agent" &&
-        sed -i "s/BESZEL_KEY/{{ secrets.other.beszel_key }}/g" "/etc/init.d/beszel-agent" &&
+        sed -i "s/BESZEL_KEY/{{ secrets.other.BESZEL_KEY }}/g" "/etc/init.d/beszel-agent" &&
         mv "/tmp/beszel-agent" "/usr/sbin/beszel-agent" &&
         /etc/init.d/beszel-agent enable &&
         /etc/init.d/beszel-agent start
@@ -46,7 +46,7 @@
 
     - name: Install Beszel Agent
       raw: |
-          echo -e "y\n" | bash /tmp/install-agent.sh -p 45876 -k "{{ secrets.other.beszel_key }}"
+          echo -e "y\n" | bash /tmp/install-agent.sh -p 45876 -k "{{ secrets.other.BESZEL_KEY }}"
       register: beszel_install
       changed_when: beszel_install.rc != 0
 

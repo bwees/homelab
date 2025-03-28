@@ -2,7 +2,7 @@ services:
   beszel-agent:
     container_name: beszel-agent
     environment:
-      KEY: INSERT_KEY_HERE
+      KEY: {{ secrets.other.BESZEL_KEY }}
       LISTEN: 45876
     image: henrygd/beszel-agent:0.10.2
     network_mode: host
