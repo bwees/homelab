@@ -17,6 +17,12 @@
       "allowedVersions": "<12.0.0"
     },
     {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.io/redis", "docker.io/tensorchord/pgvecto-rs"],
+      "matchPaths": ["compose/lab/immich.yml"],
+      "enabled": false
+    },
+    {
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     }
