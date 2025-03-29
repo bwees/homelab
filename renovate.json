@@ -4,7 +4,9 @@
     "config:recommended",
     ":dependencyDashboard"
   ],
-  "baseBranches": ["main"],
+  "baseBranches": [
+    "main"
+  ],
   "docker-compose": {
     "fileMatch": [
       "^compose/.*\\.ya?ml$"
@@ -13,17 +15,29 @@
   "packageRules": [
     {
       "description": "Linuxserver ignore qBittorrent old ubuntu versions. Originally tagged based on the ubuntu image they based on which triggers renovatebot.",
-      "matchPackageNames": ["linuxserver/qbittorrent"],
+      "matchPackageNames": [
+        "linuxserver/qbittorrent"
+      ],
       "allowedVersions": "<12.0.0"
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["docker.io/redis", "docker.io/tensorchord/pgvecto-rs"],
-      "matchPaths": ["compose/lab/immich.yml"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "docker.io/redis",
+        "docker.io/tensorchord/pgvecto-rs"
+      ],
+      "matchFileNames": [
+        "compose/lab/immich.yml"
+      ],
       "enabled": false
     },
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     }
   ],
