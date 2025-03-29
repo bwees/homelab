@@ -9,6 +9,9 @@ This repository houses the infrastructure configuration files (docker-compose) f
   - This machine stays at my parent's house and provides Home Assistant, Jellyfin, and a few other services.
 - Linode (homelab-linode)
   - This is a Linode VPS (1 CPU, 1GB RAM) that provides a Tailscale Exit Node for the media stack and hosts some mission critical services.
+- NAS (bwees-nas)
+  - This is my main TrueNAS SCALE server. This repo manages the docker containers that run via SCALE's app system.
+  - Credentials are handled via Jinja2 templating instead of env variables since SCALE does not support docker-compose deployment.
 - TAMU Router (tamu-router)
   - This is a Gl.iNet Travel Router. Currently this repo manages the installation/updates of external applications on the router, not the actual router config.
  
