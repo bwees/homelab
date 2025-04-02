@@ -39,18 +39,13 @@
           include_vars:
             file: "../secrets.yml"
             name: secrets
-          delegate_to: localhost
 
         - name: Get all compose files
           find:
             paths: "../../compose/nas"
             patterns: "*.yml"
           register: template_files
-          delegate_to: localhost
 
-    - name: Render templates and upload
-      delegate_to: localhost
-      block:
         - name: Create template output directory
           file:
             path: "/tmp/.ansible_deploy/"
@@ -65,7 +60,7 @@
           register: rendered_files
 
         - name: Deploy docker-compose to TrueNAS
-          command: python3 ../scripts/truenas-upload.py {{ item.path }}
+          command: python3 ../scripts/truenas-upload.py {{ item.dest }}
           environment:
             TRUENAS_API_KEY: "{{ secrets.other.TRUENAS_KEY }}"
           with_items: "{{ rendered_files.results }}"
