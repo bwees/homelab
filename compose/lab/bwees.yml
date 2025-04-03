@@ -69,7 +69,7 @@ services:
     restart: unless-stopped
 
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:0.49.10
+    image: ghcr.io/dgtlmoon/changedetection.io:0.49.11
     volumes:
       - /storage/changedetection:/datastore
     networks:
