@@ -61,7 +61,7 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: linuxserver/jellyfin:10.10.6
+    image: linuxserver/jellyfin:10.10.7
     volumes:
       - /home/bwees/storage/jellyfin:/config
       - /home/bwees/nas-media:/media-library:ro
