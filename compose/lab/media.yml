@@ -105,7 +105,7 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: linuxserver/jellyfin:10.10.6
+    image: linuxserver/jellyfin:10.10.7
     volumes:
       - /storage/media/jellyfin:/config
       - <<: *nas-media-tv
