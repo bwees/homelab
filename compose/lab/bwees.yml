@@ -35,20 +35,16 @@ services:
       - "--providers.file.watch=true"
 
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.jellyweb.address=:7500"
       - "--entryPoints.websecure.address=:443"
       - "--entrypoints.websecure.http.tls=true"
 
     ports:
       - 80:80
-      - 7500:7500
       - 443:443
 
     labels:
-
       - "traefik.http.middlewares.redirecthttps.redirectScheme.scheme=https"
       - "traefik.http.middlewares.redirecthttps.redirectScheme.permanent=true"
-      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
 
       # Dashboard
       - "traefik.enable=true"
@@ -58,6 +54,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web,websecure"
       - "traefik.http.routers.traefik.middlewares=authtraefik,redirecthttps"
+      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -143,7 +140,7 @@ services:
   node-red:
     image: ghcr.io/bwees/nodered-ffmpeg:latest
     environment:
-      - TZ=America/New_York
+      - TZ=America/Chicago
     networks:
       - traefik_backend
     volumes:
