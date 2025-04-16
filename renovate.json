@@ -37,6 +37,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/immich-app/immich-server", "ghcr.io/immich-app/immich-machine-learning"],
       "groupName": "immich"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/haveagitgat/tdarr", "haveagitgat/tdarr_node"],
+      "groupName": "tdarr"
     }
   ],
   "ignoreTests": true
