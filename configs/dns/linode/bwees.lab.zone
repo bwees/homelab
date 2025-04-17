@@ -9,8 +9,8 @@
 
 *  IN A      100.65.90.4 ; lab
 
-kuma IN A    100.91.77.60 ; linode
-beszel IN A  100.91.77.60 ; linode
-linode IN A  100.91.77.60 ; linode
+kuma IN A    100.109.20.66 ; linode
+beszel IN A  100.109.20.66 ; linode
+linode IN A  100.109.20.66 ; linode
 
 nas IN A 192.168.10.188 ; nas (local ip on glinet, subnet routed over ts)

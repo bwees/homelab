@@ -42,8 +42,8 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/storage/traefik/dynamic:/fileprovider
-      - /home/bwees/storage/traefik/certs:/etc/traefik/certs:ro
+      - /storage/traefik/dynamic:/fileprovider
+      - /storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
   uptimekuma:
     image: louislam/uptime-kuma:1.23.16
     volumes:
-      - /home/bwees/storage/uptimekuma:/app/data
+      - /storage/uptimekuma:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/share/ca-certificates:/certs:ro
     environment:
@@ -85,13 +85,13 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     volumes:
-      - /home/bwees/storage/bind:/etc/bind
+      - /storage/bind:/etc/bind
     restart: unless-stopped
 
   portainer:
     image: portainer/portainer-ce:2.29.0
     volumes:
-      - /home/bwees/storage/portainer:/data
+      - /storage/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - traefik_backend
@@ -110,7 +110,7 @@ services:
     image: henrygd/beszel:0.10.2
     restart: unless-stopped
     volumes:
-      - /home/bwees/storage/beszel:/beszel_data
+      - /storage/beszel:/beszel_data
     networks:
       - traefik_backend
     environment:
