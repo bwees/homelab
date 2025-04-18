@@ -8,13 +8,11 @@
       copy:
         src: "../../configs/dns/{{ stack_name }}/"
         dest: "/home/bwees/storage/bind"
-      notify: Reload Bind9
 
-  handlers:
     - name: Reload Bind9
-      community.docker.docker_container_exec:
-        container: "{{ stack_name }}-bind9-1"
-        command: "rndc reload"
+      community.docker.docker_container:
+        name: "{{ stack_name }}-bind9-1"
+        restart: true
 
 - name: Configure Bind DNS Servers
   hosts:
@@ -26,10 +24,8 @@
       copy:
         src: "../../configs/dns/{{ stack_name }}/"
         dest: "/storage/bind"
-      notify: Reload Bind9
 
-  handlers:
     - name: Reload Bind9
-      community.docker.docker_container_exec:
-        container: "{{ stack_name }}-bind9-1"
-        command: "rndc reload"
+      community.docker.docker_container:
+        name: "{{ stack_name }}-bind9-1"
+        restart: true
