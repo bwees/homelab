@@ -183,9 +183,6 @@ services:
       - "traefik.http.routers.ytdl.service=ytdl"
       - "traefik.http.routers.ytdl.entrypoints=web,websecure"
 
-      - "traefik.http.routers.ytdl-public.rule=Host(`ytdl.bwees.io`)"
-      - "traefik.http.routers.ytdl-public.service=ytdl"
-      - "traefik.http.routers.ytdl-public.entrypoints=web,websecure"
 
     networks:
       - traefik_backend
@@ -209,19 +206,17 @@ services:
     restart: unless-stopped
 
   actual-server:
-      image: actualbudget/actual-server:25.4.0
-      volumes:
-          - /storage/actual:/data
-      ports:
-          - 5006:5006
-      networks:
-        - traefik_backend
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.services.actual.loadbalancer.server.port=5006"
+    image: actualbudget/actual-server:25.4.0
+    volumes:
+        - /storage/actual:/data
+    networks:
+      - traefik_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.actual.loadbalancer.server.port=5006"
 
-        - "traefik.http.routers.actual.rule=Host(`finance.bwees.lab`)"
-        - "traefik.http.routers.actual.service=actual"
-        - "traefik.http.routers.actual.entrypoints=web,websecure"
-      restart: unless-stopped
+      - "traefik.http.routers.actual.rule=Host(`finance.bwees.lab`)"
+      - "traefik.http.routers.actual.service=actual"
+      - "traefik.http.routers.actual.entrypoints=web,websecure"
+    restart: unless-stopped
 
