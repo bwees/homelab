@@ -13,4 +13,6 @@ kuma IN A    100.109.20.66 ; linode
 beszel IN A  100.109.20.66 ; linode
 linode IN A  100.109.20.66 ; linode
 
-nas IN A 192.168.10.188 ; nas (local ip on glinet, subnet routed over ts)
+unifi IN A   100.85.70.91 ; homelab-router
+
+nas IN A 192.168.50.4 ; nas (local ip on ux7, subnet routed over ts)
