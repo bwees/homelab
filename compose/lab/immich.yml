@@ -18,7 +18,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.131.3
+    image: ghcr.io/immich-app/immich-server:v1.132.1
     volumes:
       - nas:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
