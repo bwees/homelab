@@ -1,29 +1,12 @@
 - name: Configure Bind DNS Servers
-  hosts:
-    - homelab-home
+  hosts: all
   gather_facts: false
 
   tasks:
     - name: Copy folder with DNS configuration files
       copy:
         src: "../../configs/dns/{{ stack_name }}/"
-        dest: "/home/bwees/storage/bind"
-
-    - name: Reload Bind9
-      community.docker.docker_container:
-        name: "{{ stack_name }}-bind9-1"
-        restart: true
-
-- name: Configure Bind DNS Servers
-  hosts:
-    - homelab-linode
-  gather_facts: false
-
-  tasks:
-    - name: Copy folder with DNS configuration files
-      copy:
-        src: "../../configs/dns/{{ stack_name }}/"
-        dest: "/storage/bind"
+        dest: "{{ dns_folder }}"
 
     - name: Reload Bind9
       community.docker.docker_container:

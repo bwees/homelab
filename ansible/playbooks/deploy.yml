@@ -1,32 +1,12 @@
-- name: Deploy Lab
-  hosts: lab
+- name: Deploy Docker Hosts
+  hosts: all:!nas
   gather_facts: false
   tasks:
     - name: Deploy Docker-Compose files to host
       include_tasks: tasks/docker-deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../compose/lab"
-
-- name: Deploy Home
-  hosts: home
-  gather_facts: false
-  tasks:
-    - name: Deploy Docker-Compose files to host
-      include_tasks: tasks/docker-deploy.yml
-      vars:
-        deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../compose/home"
-
-- name: Deploy Linode
-  hosts: linode
-  gather_facts: false
-  tasks:
-    - name: Deploy Docker-Compose files to host
-      include_tasks: tasks/docker-deploy.yml
-      vars:
-        deploy_dir: "/home/bwees/deploy"
-        compose_dir: "../../compose/linode"
+        compose_dir: "../../compose/{{ deploy_source }}"
 
 - name: Deploy NAS
   hosts: nas

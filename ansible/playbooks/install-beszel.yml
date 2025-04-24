@@ -1,35 +1,5 @@
-- name: Install Beszel (GL.iNet)
-  hosts: tamu-router
-  gather_facts: false
-
-  tasks:
-    - name: Download Beszel Agent
-      raw: |
-        curl -sL https://github.com/henrygd/beszel/releases/latest/download/beszel-agent_linux_arm.tar.gz  -o "/tmp/beszel-agent_linux_arm.tar.gz" &&
-        tar -xzvf "/tmp/beszel-agent_linux_arm.tar.gz" -C /tmp &&
-        rm "/tmp/beszel-agent_linux_arm.tar.gz" &&
-        chmod +x "/tmp/beszel-agent"
-      register: beszel_download
-      changed_when: beszel_download.rc != 0
-
-    - name: Load secrets from Ansible Vault file
-      include_vars:
-        file: "../secrets.yml"
-        name: secrets
-
-    - name: Install Beszel Agent
-      raw: |
-        curl -sL https://raw.githubusercontent.com/bwees/homelab/refs/heads/main/configs/glinet-beszel-agent -o "/etc/init.d/beszel-agent" &&
-        chmod +x "/etc/init.d/beszel-agent" &&
-        sed -i "s/BESZEL_KEY/{{ secrets.other.BESZEL_KEY }}/g" "/etc/init.d/beszel-agent" &&
-        mv "/tmp/beszel-agent" "/usr/sbin/beszel-agent" &&
-        /etc/init.d/beszel-agent enable &&
-        /etc/init.d/beszel-agent start
-      register: beszel_install
-      changed_when: beszel_install.rc != 0
-
 - name: Install Beszel
-  hosts: all:!tamu-router
+  hosts: all
   gather_facts: false
 
   tasks:
