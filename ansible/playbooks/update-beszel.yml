@@ -5,11 +5,7 @@
   tasks:
     - name: Download Beszel Agent
       raw: |
-        /opt/beszel-agent/beszel-agent update
+        sudo /opt/beszel-agent/beszel-agent update
+        sudo service beszel-agent restart
       register: beszel_update
       changed_when: beszel_update.rc != 0
-
-    - name: Restart Beszel Agent Service
-      service:
-        name: beszel-agent
-        state: restarted
