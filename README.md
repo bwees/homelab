@@ -1,6 +1,6 @@
 # Homelab
 
-This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All compute machines (i.e. non-appliance devices like NAS and TAMU Router) run on Ubuntu 24.04 and use Docker for application deployment.
+This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All compute machines (excluding appliance devices like NAS and Homelab Router) run on Ubuntu 24.04 and use Docker for application deployment.
 
 ## Hosts
 - Lab (homelab-bwees)
@@ -12,8 +12,8 @@ This repository houses the infrastructure configuration files (docker-compose) f
 - NAS (bwees-nas)
   - This is my main TrueNAS SCALE server. This repo manages the docker containers that run via SCALE's app system.
   - Credentials are handled via Jinja2 templating instead of env variables since SCALE does not support docker-compose deployment.
-- TAMU Router (tamu-router)
-  - This is a Gl.iNet Travel Router. Currently this repo manages the installation/updates of external applications on the router, not the actual router config.
+- Homelab Router (homelab-router)
+  - This is a Unifi Express 7. Under the hood it runs debian and thus can be controlled quite easily with Ansible.
  
 ## Tailscale
 Tailscale is used for all private networking. The Ansible host inventory uses Tailscale for all communication in playbooks.
