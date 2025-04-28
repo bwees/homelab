@@ -107,7 +107,7 @@ services:
 
 
   beszel:
-    image: henrygd/beszel:0.10.2
+    image: henrygd/beszel:0.11.0
     restart: unless-stopped
     volumes:
       - /storage/beszel:/beszel_data
