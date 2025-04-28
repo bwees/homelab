@@ -42,6 +42,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/haveagitgat/tdarr", "haveagitgat/tdarr_node"],
       "groupName": "tdarr"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["henrygd/beszel", "henrygd/beszel-agent"],
+      "groupName": "beszel"
     }
   ],
   "ignoreTests": true
