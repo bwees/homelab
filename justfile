@@ -17,7 +17,7 @@ vault ACTION:
     EDITOR='code --wait' ansible-vault {{ ACTION }} secrets.yml --vault-password-file <(just _ansible_vault_op)
 
 [working-directory: 'ansible']
-beszel ACTION HOST:
+beszel ACTION HOST="linode,home,lab,router":
     if [ "{{ ACTION }}" = "install" ]; then \
         ansible-playbook playbooks/install-beszel.yml --vault-password-file <(just _ansible_vault_op) --limit {{ HOST }}; \
     elif [ "{{ ACTION }}" = "update" ]; then \
