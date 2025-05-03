@@ -19,6 +19,11 @@
       "allowedVersions": "<12.0.0"
     },
     {
+      "description": "Linuxserver ignore jellyfin old year based tags",
+      "matchPackageNames": ["linuxserver/jellyfin"],
+      "allowedVersions": "<2020.0.0"
+    },
+    {
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "docker.io/redis",
