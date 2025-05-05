@@ -86,7 +86,7 @@ services:
     restart: unless-stopped
 
   sockpuppetbrowser:
-    image: dgtlmoon/sockpuppetbrowser:0.0.1
+    image: dgtlmoon/sockpuppetbrowser:0.0.2
     shm_size: 2g
     environment:
       DEFAULT_LAUNCH_ARGS: "[\"--window-size=1920,1080\"]"
