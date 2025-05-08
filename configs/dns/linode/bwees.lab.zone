@@ -15,4 +15,6 @@ linode IN A  100.109.20.66 ; linode
 
 unifi IN A   100.85.70.91 ; homelab-router
 
+coreone IN A 192.168.10.185 ; 3d-printer
+
 nas IN A 192.168.50.4 ; nas (local ip on ux7, subnet routed over ts)
