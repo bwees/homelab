@@ -89,7 +89,7 @@ services:
     restart: unless-stopped
 
   portainer:
-    image: portainer/portainer-ce:2.29.2
+    image: portainer/portainer-ce:2.30.0
     volumes:
       - /storage/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
