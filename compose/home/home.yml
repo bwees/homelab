@@ -2,7 +2,7 @@ name: home
 
 services:
   traefik:
-    image: traefik:v3.4.0
+    image: traefik:v3.4.1
     command:
       - "--api=true"
       - "--api.dashboard=true"
