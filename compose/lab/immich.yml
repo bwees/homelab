@@ -43,7 +43,7 @@ services:
       - "traefik.docker.network=bwees_traefik_backend"
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.133.1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.134.0
     volumes:
       - model-cache:/cache
     networks:
