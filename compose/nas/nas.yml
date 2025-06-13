@@ -19,7 +19,7 @@ services:
       - PGID=1000
       - UMASK_SET=002
       - nodeName=bwees-nas
-      - serverIP=192.168.10.200
+      - serverIP=192.168.50.200
       - serverPort=8266
       - inContainer=true
       - ffmpegVersion=7
