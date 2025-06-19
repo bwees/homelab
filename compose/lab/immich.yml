@@ -18,7 +18,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.135.0
+    image: ghcr.io/immich-app/immich-server:v1.135.1
     volumes:
       - nas:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
@@ -43,7 +43,7 @@ services:
       - "traefik.docker.network=bwees_traefik_backend"
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.135.0
+    image: ghcr.io/immich-app/immich-machine-learning:v1.135.1
     volumes:
       - model-cache:/cache
     networks:
