@@ -154,7 +154,7 @@ services:
     restart: unless-stopped
 
   sonarr:
-    image: ghcr.io/linuxserver/sonarr:4.0.14
+    image: ghcr.io/linuxserver/sonarr:4.0.15
     environment:
       - PUID=1000
       - PGID=1000
