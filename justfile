@@ -1,4 +1,3 @@
-set shell := ["zsh", "-c"]
 
 [private]
 _resolve_secrets:
