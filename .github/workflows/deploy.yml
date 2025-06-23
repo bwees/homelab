@@ -36,8 +36,7 @@ jobs:
 
       - name: Add SSH Key
         run: |
-          eval "$(ssh-agent -s)"
-          op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key" | ssh-add -
+          op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key" > ~/.ssh/id_rsa
 
       - name: Deploy playbook
         run: just deploy
