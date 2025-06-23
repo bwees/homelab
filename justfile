@@ -1,25 +1,29 @@
 set shell := ["zsh", "-c"]
 
 [private]
-_ansible_vault_op:
-    @op read "op://Homelab/2fgepkgmadwfgejymkitatma6u/password"
+_resolve_secrets:
+    @op inject -i "ansible/secrets.yml" -o "ansible/secrets.resolved.yml" -f
+
+[private]
+_cleanup_secrets:
+    @rm -f ansible/secrets.resolved.yml
 
 [working-directory: 'ansible']
 deploy HOST="linode,home,nas,lab":
-    ansible-playbook playbooks/deploy.yml --vault-password-file <(just _ansible_vault_op) --limit {{ HOST }}
+    @just _resolve_secrets
+    ansible-playbook playbooks/deploy.yml --limit {{ HOST }}
+    @just _cleanup_secrets
 
 [working-directory: 'ansible']
 tailscale-update HOST:
     ansible-playbook playbooks/tailscale-update.yml --limit {{ HOST }}
 
 [working-directory: 'ansible']
-vault ACTION:
-    EDITOR='code --wait' ansible-vault {{ ACTION }} secrets.yml --vault-password-file <(just _ansible_vault_op)
-
-[working-directory: 'ansible']
 beszel ACTION HOST="linode,home,lab,router":
     if [ "{{ ACTION }}" = "install" ]; then \
-        ansible-playbook playbooks/install-beszel.yml --vault-password-file <(just _ansible_vault_op) --limit {{ HOST }}; \
+        just _resolve_secrets \
+        ansible-playbook playbooks/install-beszel.yml --limit {{ HOST }}; \
+        just _cleanup_secrets \
     elif [ "{{ ACTION }}" = "update" ]; then \
         ansible-playbook playbooks/update-beszel.yml --limit {{ HOST }}; \
     else \

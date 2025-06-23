@@ -2,7 +2,7 @@
   hosts: all:!nas
   gather_facts: false
   tasks:
-    - name: Deploy Docker-Compose files to host
+    - name: Deploy Docker-Compose files to Docker hosts
       include_tasks: tasks/docker-deploy.yml
       vars:
         deploy_dir: "/home/bwees/deploy"
@@ -12,43 +12,7 @@
   hosts: nas
   gather_facts: false
   tasks:
-    - name: Prepare compose files
-      delegate_to: localhost
-      block:
-        - name: Load secrets from Ansible Vault file
-          include_vars:
-            file: "../secrets.yml"
-            name: secrets
-
-        - name: Get all compose files
-          find:
-            paths: "../../compose/nas"
-            patterns: "*.yml"
-          register: template_files
-
-        - name: Create template output directory
-          file:
-            path: "/tmp/.ansible_deploy/"
-            state: directory
-            mode: '0755'
-
-        - name: Render the template to destination directory
-          template:
-            src: "{{ item.path }}"
-            dest: "/tmp/.ansible_deploy/{{ item.path | basename }}"
-          with_items: "{{ template_files.files }}"
-          register: rendered_files
-
-        - name: Deploy docker-compose to TrueNAS
-          command: python3 ../scripts/truenas-upload.py {{ item.dest }}
-          environment:
-            TRUENAS_API_KEY: "{{ secrets.other.TRUENAS_KEY }}"
-          with_items: "{{ rendered_files.results }}"
-          register: upload_results
-          changed_when: upload_results.stdout.find('uploaded successfully') != -1
-          failed_when: upload_results.stdout.find('uploaded successfully') == -1
-
-        - name: Delete "/tmp/.ansible_deploy/"
-          file:
-            path: "/tmp/.ansible_deploy/"
-            state: absent
+    - name: Deploy Docker-Compose files to TrueNAS
+      include_tasks: tasks/truenas-deploy.yml
+      vars:
+        compose_dir: "../../compose/{{ deploy_source }}"

@@ -3,4 +3,4 @@
 .ansible
 .vscode
 
-secrets.yml
+secrets.resolved.yml

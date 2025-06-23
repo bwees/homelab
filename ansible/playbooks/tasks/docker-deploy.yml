@@ -10,7 +10,7 @@
     - name: Generate and transfer secret.env file
       include_tasks: secret-gen.yml
       vars:
-        vault_file: "../secrets.yml"
+        secret_file: "../secrets.resolved.yml"
         env_destination: "{{ deploy_dir }}/secret.env"
 
     - name: Transfer docker-compose files to host
