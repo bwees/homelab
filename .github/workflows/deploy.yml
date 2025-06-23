@@ -34,6 +34,10 @@ jobs:
           oauth-secret: ${{ secrets.TS_CLIENT_SECRET }}
           tags: tag:ci
 
+      - name: Add SSH Key
+        run: |
+          op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key" | ssh-add -
+            
       - name: Deploy playbook
         run: just deploy
         env:
