@@ -37,4 +37,4 @@ This year I decided to try and automate some of the tasks in my lab with Ansible
 - DNS Configuration Deployment
 
 ### Secret Management
-Secrets are saved in a Ansible Vault inside of `ansible/secrets.yml` (not commited for security reasons). The vault is unlocked by Ansible with the 1Password CLI tool. `justfile` provides the necessary functions to retrieve the password for the Ansible deployment and vault commands.
+Secrets are stored in 1Password, with their 1Password URIs configured in `ansible/secrets.yml`. Secrets are injected into the YAML with 1Password CLI, loaded into Ansible as a resource, and rendered out to individual env files for each host. 

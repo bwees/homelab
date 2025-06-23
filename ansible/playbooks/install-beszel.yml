@@ -5,7 +5,7 @@
   tasks:
     - name: Load secrets from Ansible Vault file
       include_vars:
-        file: "../secrets.yml"
+        file: "../secrets.resolved.yml"
         name: secrets
 
     - name: Download Beszel Agent
