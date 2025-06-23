@@ -36,6 +36,8 @@ jobs:
 
       - name: Add SSH Key
         run: |
+          mkdir -p ~/.ssh
+          chmod 600 ~/.ssh
           op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key" > ~/.ssh/id_rsa
 
       - name: Deploy playbook
