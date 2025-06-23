@@ -38,7 +38,6 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh
 
       - name: Deploy playbook
         run: just deploy
