@@ -36,4 +36,6 @@ jobs:
 
       - name: Deploy playbook
         run: just deploy
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
 
