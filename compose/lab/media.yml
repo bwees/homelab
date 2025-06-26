@@ -191,7 +191,6 @@ services:
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
-
     labels:
       - "traefik.enable=true"
 
@@ -237,3 +236,10 @@ services:
       - 8266:8266
     devices:
       - /dev/dri:/dev/dri
+      
+  flaresolverr:
+    image: 'ghcr.io/flaresolverr/flaresolverr:latest'
+    restart: unless-stopped
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
