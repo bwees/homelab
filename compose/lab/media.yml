@@ -169,7 +169,7 @@ services:
     restart: unless-stopped
 
   jackett:
-    image: ghcr.io/linuxserver/jackett:0.22.2054
+    image: ghcr.io/linuxserver/jackett:0.22.2056
     environment:
       - PUID=1000
       - PGID=1000
