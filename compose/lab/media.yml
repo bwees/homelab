@@ -104,6 +104,7 @@ services:
     depends_on:
       - exitnode
     restart: unless-stopped
+    # Traefik config defined at exitnode
 
   jellyfin:
     image: linuxserver/jellyfin:10.10.7
@@ -152,6 +153,7 @@ services:
     depends_on:
       - exitnode
     restart: unless-stopped
+    # Traefik config defined at exitnode
 
   sonarr:
     image: ghcr.io/linuxserver/sonarr:4.0.15
@@ -167,6 +169,7 @@ services:
     depends_on:
       - exitnode
     restart: unless-stopped
+    # Traefik config defined at exitnode
 
   jackett:
     image: ghcr.io/linuxserver/jackett:0.22.2097
@@ -180,6 +183,7 @@ services:
     depends_on:
       - exitnode
     restart: unless-stopped
+    # Traefik config defined at exitnode
 
   jellyseerr:
     image: fallenbagel/jellyseerr:2.7.0
