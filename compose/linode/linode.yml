@@ -105,7 +105,6 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls=true"
 
-
   beszel:
     image: henrygd/beszel:0.11.1
     restart: unless-stopped
