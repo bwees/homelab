@@ -11,7 +11,12 @@ volumes:
       type: "nfs"
       o: "addr=nas.bwees.lab,nolock,soft,rw"
       device: ":/mnt/main/homelab/media"
-
+  nas-homelab:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=nas.bwees.lab,nolock,soft,rw"
+      device: ":/mnt/main/homelab"
 #
 # NFS Subdirectory Mounts
 #
@@ -35,6 +40,12 @@ x-nas-tdarr-cache: &nas-tdarr-cache
   target: /temp
   volume:
     subpath: tdarr-cache
+
+x-nas-homelab: &nas-homelab-folder
+  type: volume
+  source: nas-homelab
+  target: /homelab
+
 
 services:
 
@@ -100,6 +111,7 @@ services:
     volumes:
       - /storage/media/qbittorrent:/config
       - /storage/media/downloads:/downloads
+      - <<: *nas-homelab-folder
     network_mode: service:exitnode
     depends_on:
       - exitnode
