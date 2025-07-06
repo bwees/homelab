@@ -52,7 +52,7 @@ services:
       retries: 60
     environment:
       - TZ=America/Chicago
-      - TS_EXTRA_ARGS=--reset --exit-node=100.109.20.66 --exit-node-allow-lan-access=true 
+      - TS_EXTRA_ARGS=--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true 
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_ACCEPT_DNS=false
       - TS_USERSPACE=false
