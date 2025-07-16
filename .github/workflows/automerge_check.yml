@@ -1,0 +1,31 @@
+name: Notify on Renovate PR without automerge
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, labeled]
+    branches:
+      - main  # or your default branch
+
+jobs:
+  check-renovate-pr:
+    if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR is automerged
+        id: check
+        run: |
+          body="${{ github.event.pull_request.body }}"
+          echo "PR body: $body"
+
+          if echo "$body" | grep -q "\*\*Automerge\*\*: Disabled"; then
+            echo "automerge=false" >> $GITHUB_OUTPUT
+          else
+            echo "automerge=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send message to Discord if not automerge
+        if: steps.check.outputs.automerge == 'false'
+        run: |
+          curl -H "Content-Type: application/json" -X POST \
+            -d "{\"content\": \"🚨 Renovate PR #${{ github.event.pull_request.number }} does not have automerge enabled. <${{ github.event.pull_request.html_url }}>\"}" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
