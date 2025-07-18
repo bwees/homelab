@@ -242,12 +242,14 @@ services:
       - /storage/n8n:/home/node/.n8n
     networks:
       - traefik_backend
+    environment:
+      - TZ=America/Chicago
+      - N8N_EDITOR_BASE_URL=https://n8n.bwees.io
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.n8n.loadbalancer.server.port=5678"
 
-      - "traefik.http.routers.n8n.rule=Host(`n8n.bwees.lab`)"
+      - "traefik.http.routers.n8n.rule=Host(`n8n.bwees.lab`) || Host(`n8n.bwees.io`)"
       - "traefik.http.routers.n8n.service=n8n"
       - "traefik.http.routers.n8n.entrypoints=websecure"
       - "traefik.http.routers.n8n.tls=true"
-    command: "n8n start --tunnel"
