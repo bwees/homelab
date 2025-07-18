@@ -182,8 +182,6 @@ services:
       - "traefik.http.routers.ytdl.rule=Host(`ytdl.bwees.lab`)"
       - "traefik.http.routers.ytdl.service=ytdl"
       - "traefik.http.routers.ytdl.entrypoints=web,websecure"
-
-
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -238,7 +236,7 @@ services:
       - "traefik.http.routers.glance.tls=true"
 
   n8n:
-    image: n8nio/n8n
+    image: n8nio/n8n:1.102.4
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
@@ -252,3 +250,4 @@ services:
       - "traefik.http.routers.n8n.service=n8n"
       - "traefik.http.routers.n8n.entrypoints=websecure"
       - "traefik.http.routers.n8n.tls=true"
+    command: "n8n start --tunnel"
