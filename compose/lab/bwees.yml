@@ -236,7 +236,7 @@ services:
       - "traefik.http.routers.glance.tls=true"
 
   n8n:
-    image: n8nio/n8n:1.102.4
+    image: n8nio/n8n:1.103.1
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
@@ -248,7 +248,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.n8n.loadbalancer.server.port=5678"
-
       - "traefik.http.routers.n8n.rule=Host(`n8n.bwees.lab`) || (Host(`n8n.bwees.io`) && PathRegexp(`^/[^/]*webhook[^/]*`))"
       - "traefik.http.routers.n8n.service=n8n"
       - "traefik.http.routers.n8n.entrypoints=websecure"
