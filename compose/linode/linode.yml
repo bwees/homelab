@@ -2,7 +2,7 @@ name: linode
 
 services:
   traefik:
-    image: traefik:v3.4.4
+    image: traefik:v3.5.0
     command:
       - "--api=true"
       - "--api.dashboard=true"
