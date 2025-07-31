@@ -20,7 +20,7 @@ services:
   immich-server:
     image: ghcr.io/immich-app/immich-server:v1.137.0
     volumes:
-      - nas:/usr/src/app/upload
+      - nas:/data
       - /etc/localtime:/etc/localtime:ro
     user: 1000:1000
     environment:
