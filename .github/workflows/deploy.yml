@@ -6,7 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -23,8 +22,7 @@ jobs:
 
       - name: Install Ansible & Python Dependencies
         run: |
-          sudo apt update
-          sudo apt install -y ansible
+          pip3 install ansible
           pip3 install -r ansible/scripts/requirements.txt
 
       - name: Install Just
@@ -50,4 +48,3 @@ jobs:
         run: just deploy
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
-
