@@ -3,38 +3,38 @@
   block:
     - name: Load secrets from Ansible Vault file
       include_vars:
-        file: "../secrets.resolved.yml"
+        file: '../secrets.resolved.yml'
         name: secrets
 
     - name: Get all compose files
       find:
-        paths: "{{ compose_dir }}"
-        patterns: "*.yml"
+        paths: '{{ compose_dir }}'
+        patterns: '*.yml'
       register: template_files
 
     - name: Create template output directory
       file:
-        path: "/tmp/.ansible_deploy/"
+        path: '/tmp/.ansible_deploy/'
         state: directory
         mode: '0755'
 
     - name: Render the template to destination directory
       template:
-        src: "{{ item.path }}"
-        dest: "/tmp/.ansible_deploy/{{ item.path | basename }}"
-      with_items: "{{ template_files.files }}"
+        src: '{{ item.path }}'
+        dest: '/tmp/.ansible_deploy/{{ item.path | basename }}'
+      with_items: '{{ template_files.files }}'
       register: rendered_files
 
     - name: Deploy docker-compose to TrueNAS
       command: python3 ../scripts/truenas-upload.py {{ item.dest }}
       environment:
-        TRUENAS_API_KEY: "{{ secrets.other.TRUENAS_KEY }}"
-      with_items: "{{ rendered_files.results }}"
+        TRUENAS_API_KEY: '{{ secrets.other.TRUENAS_KEY }}'
+      with_items: '{{ rendered_files.results }}'
       register: upload_results
       changed_when: upload_results.stdout.find('uploaded successfully') != -1
       failed_when: upload_results.stdout.find('uploaded successfully') == -1
 
     - name: Delete "/tmp/.ansible_deploy/"
       file:
-        path: "/tmp/.ansible_deploy/"
+        path: '/tmp/.ansible_deploy/'
         state: absent

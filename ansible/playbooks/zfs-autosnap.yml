@@ -5,16 +5,16 @@
   tasks:
     - name: Transfer docker-compose files to host
       copy:
-        src: "../../zfs/homelab-bwees-snapshot.sh"
-        dest: "/home/zfsrepl/zfs-snapshot.sh"
+        src: '../../zfs/homelab-bwees-snapshot.sh'
+        dest: '/home/zfsrepl/zfs-snapshot.sh'
         mode: '0755'
         force: true
 
     - name: Create cron job for ZFS Auto-snapshot, run every 12 hours
       cron:
-        name: "ZFS Auto-snapshot"
-        minute: "0"
-        hour: "*/12"
-        job: "/home/zfsrepl/zfs-snapshot.sh"
-        user: "zfsrepl"
+        name: 'ZFS Auto-snapshot'
+        minute: '0'
+        hour: '*/12'
+        job: '/home/zfsrepl/zfs-snapshot.sh'
+        user: 'zfsrepl'
         state: present

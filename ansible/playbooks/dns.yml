@@ -5,10 +5,10 @@
   tasks:
     - name: Copy folder with DNS configuration files
       copy:
-        src: "../../configs/dns/{{ stack_name }}/"
-        dest: "{{ dns_folder }}"
+        src: '../../configs/dns/{{ stack_name }}/'
+        dest: '{{ dns_folder }}'
 
     - name: Reload Bind9
       community.docker.docker_container:
-        name: "{{ stack_name }}-bind9-1"
+        name: '{{ stack_name }}-bind9-1'
         restart: true

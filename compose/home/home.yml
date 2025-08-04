@@ -4,36 +4,36 @@ services:
   traefik:
     image: traefik:v3.5.0
     command:
-      - "--api=true"
-      - "--api.dashboard=true"
+      - '--api=true'
+      - '--api.dashboard=true'
 
-      - "--metrics"
-      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+      - '--metrics'
+      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
 
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=traefik_backend"
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=traefik_backend'
 
-      - "--providers.file=true"
-      - "--providers.file.directory=/fileprovider"
-      - "--providers.file.watch=true"
+      - '--providers.file=true'
+      - '--providers.file.directory=/fileprovider'
+      - '--providers.file.watch=true'
 
-      - "--entrypoints.web.address=:80"
+      - '--entrypoints.web.address=:80'
 
     ports:
       - 80:80
       - 443:443
-  
+
     labels:
       # Dashboard
-      - "traefik.enable=true"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
 
-      - "traefik.http.routers.traefik.rule=Host(`traefik.bwees.home`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.middlewares=authtraefik"
-      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
+      - 'traefik.http.routers.traefik.rule=Host(`traefik.bwees.home`)'
+      - 'traefik.http.routers.traefik.service=api@internal'
+      - 'traefik.http.routers.traefik.entrypoints=web'
+      - 'traefik.http.routers.traefik.middlewares=authtraefik'
+      - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -45,8 +45,8 @@ services:
   bind9:
     image: ubuntu/bind9:9.18-24.04_beta
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
+      - '53:53/udp'
+      - '53:53/tcp'
     volumes:
       - /home/bwees/storage/bind:/etc/bind
     restart: unless-stopped
@@ -71,14 +71,14 @@ services:
     networks:
       - traefik_backend
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.jellyfin.loadbalancer.server.port=8096'
 
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.home`)"
-      - "traefik.http.routers.jellyfin.service=jellyfin"
-      - "traefik.http.routers.jellyfin.entrypoints=web"
+      - 'traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.home`)'
+      - 'traefik.http.routers.jellyfin.service=jellyfin'
+      - 'traefik.http.routers.jellyfin.entrypoints=web'
     devices:
-      - "/dev/dri:/dev/dri"
+      - '/dev/dri:/dev/dri'
     restart: unless-stopped
 
   homeassistant:
@@ -99,12 +99,12 @@ services:
     networks:
       - traefik_backend
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.photoframe.loadbalancer.server.port=8000"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.photoframe.loadbalancer.server.port=8000'
 
-      - "traefik.http.routers.photoframe.rule=Host(`frame.bwees.home`)"
-      - "traefik.http.routers.photoframe.service=photoframe"
-      - "traefik.http.routers.photoframe.entrypoints=web"
+      - 'traefik.http.routers.photoframe.rule=Host(`frame.bwees.home`)'
+      - 'traefik.http.routers.photoframe.service=photoframe'
+      - 'traefik.http.routers.photoframe.entrypoints=web'
     restart: unless-stopped
 
 networks:

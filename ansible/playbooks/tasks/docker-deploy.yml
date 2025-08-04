@@ -2,7 +2,7 @@
   block:
     - name: Create deploy directory
       file:
-        path: "{{ deploy_dir }}"
+        path: '{{ deploy_dir }}'
         state: directory
         mode: '0755'
         force: true
@@ -10,28 +10,28 @@
     - name: Generate and transfer secret.env file
       include_tasks: secret-gen.yml
       vars:
-        secret_file: "../secrets.resolved.yml"
-        env_destination: "{{ deploy_dir }}/secret.env"
+        secret_file: '../secrets.resolved.yml'
+        env_destination: '{{ deploy_dir }}/secret.env'
 
     - name: Transfer docker-compose files to host
       copy:
-        src: "{{ item }}"
-        dest: "{{ deploy_dir }}/"
+        src: '{{ item }}'
+        dest: '{{ deploy_dir }}/'
         mode: '0600'
       with_fileglob:
-        - "{{ compose_dir }}/*.yml"
+        - '{{ compose_dir }}/*.yml'
 
     - name: Deploy docker-compose files
       community.docker.docker_compose_v2:
-        project_src: "{{ deploy_dir }}"
+        project_src: '{{ deploy_dir }}'
         state: present
         # Set the environment file
-        env_files: "{{ deploy_dir }}/secret.env"
-        files: "{{ item | basename }}"
+        env_files: '{{ deploy_dir }}/secret.env'
+        files: '{{ item | basename }}'
         remove_orphans: true
 
       with_fileglob:
-        - "{{ compose_dir }}/*.yml"
+        - '{{ compose_dir }}/*.yml'
 
     - name: Prune unused objects
       raw: |

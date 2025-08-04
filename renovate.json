@@ -1,56 +1,36 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":dependencyDashboard"
-  ],
-  "baseBranches": [
-    "main"
-  ],
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "baseBranches": ["main"],
   "docker-compose": {
-    "managerFilePatterns": [
-      "/^compose/.*\\.ya?ml$/"
-    ]
+    "managerFilePatterns": ["/^compose/.*\\.ya?ml$/"]
   },
   "packageRules": [
     {
       "description": "Linuxserver ignore qBittorrent old ubuntu versions. Originally tagged based on the ubuntu image they based on which triggers renovatebot.",
-      "matchPackageNames": [
-        "linuxserver/qbittorrent"
-      ],
+      "matchPackageNames": ["linuxserver/qbittorrent"],
       "allowedVersions": "<12.0.0"
     },
     {
       "description": "Linuxserver ignore jellyfin old year based tags",
-      "matchPackageNames": [
-        "linuxserver/jellyfin"
-      ],
+      "matchPackageNames": ["linuxserver/jellyfin"],
       "allowedVersions": "<2020.0.0"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "docker.io/redis",
         "docker.io/tensorchord/pgvecto-rs"
       ],
-      "matchFileNames": [
-        "compose/lab/immich.yml"
-      ],
+      "matchFileNames": ["compose/lab/immich.yml"],
       "enabled": false
     },
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/immich-app/immich-server",
         "ghcr.io/immich-app/immich-machine-learning"
@@ -58,9 +38,7 @@
       "groupName": "immich"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/haveagitgat/tdarr",
         "haveagitgat/tdarr_node"
@@ -68,13 +46,8 @@
       "groupName": "tdarr"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "henrygd/beszel",
-        "henrygd/beszel-agent"
-      ],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["henrygd/beszel", "henrygd/beszel-agent"],
       "groupName": "beszel"
     }
   ],

@@ -8,15 +8,15 @@ volumes:
   nas-media:
     driver: local
     driver_opts:
-      type: "nfs"
-      o: "addr=nas.bwees.lab,nolock,soft,rw"
-      device: ":/mnt/main/homelab/media"
+      type: 'nfs'
+      o: 'addr=nas.bwees.lab,nolock,soft,rw'
+      device: ':/mnt/main/homelab/media'
   nas-homelab:
     driver: local
     driver_opts:
-      type: "nfs"
-      o: "addr=nas.bwees.lab,nolock,soft,rw"
-      device: ":/mnt/main/homelab"
+      type: 'nfs'
+      o: 'addr=nas.bwees.lab,nolock,soft,rw'
+      device: ':/mnt/main/homelab'
 #
 # NFS Subdirectory Mounts
 #
@@ -26,7 +26,7 @@ x-nas-media-tv: &nas-media-tv
   target: /tv
   volume:
     subpath: tv
-    
+
 x-nas-media-movies: &nas-media-movies
   type: volume
   source: nas-media
@@ -46,9 +46,7 @@ x-nas-homelab: &nas-homelab-folder
   source: nas-homelab
   target: /homelab
 
-
 services:
-
   # Tailscale Exit Node Router
   # used for getting container traffic to linode exit node
   # cursed fact: you must subnet route on the host at least one time for this to work
@@ -57,13 +55,13 @@ services:
     hostname: media_stack
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "tailscale status"]
+      test: ['CMD-SHELL', 'tailscale status']
       interval: 1s
       timeout: 5s
       retries: 60
     environment:
       - TZ=America/Chicago
-      - TS_EXTRA_ARGS=--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true 
+      - TS_EXTRA_ARGS=--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_ACCEPT_DNS=false
       - TS_USERSPACE=false
@@ -80,26 +78,26 @@ services:
     dns:
       - 100.109.20.66
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.bittorrent.loadbalancer.server.port=8080"
-      - "traefik.http.routers.bittorrent.rule=Host(`bittorrent.bwees.lab`)"
-      - "traefik.http.routers.bittorrent.service=bittorrent"
-      - "traefik.http.routers.bittorrent.entrypoints=web,websecure"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.bittorrent.loadbalancer.server.port=8080'
+      - 'traefik.http.routers.bittorrent.rule=Host(`bittorrent.bwees.lab`)'
+      - 'traefik.http.routers.bittorrent.service=bittorrent'
+      - 'traefik.http.routers.bittorrent.entrypoints=web,websecure'
 
-      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.bwees.lab`)"
-      - "traefik.http.routers.radarr.service=radarr"
-      - "traefik.http.routers.radarr.entrypoints=web,websecure"
+      - 'traefik.http.services.radarr.loadbalancer.server.port=7878'
+      - 'traefik.http.routers.radarr.rule=Host(`radarr.bwees.lab`)'
+      - 'traefik.http.routers.radarr.service=radarr'
+      - 'traefik.http.routers.radarr.entrypoints=web,websecure'
 
-      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.bwees.lab`)"
-      - "traefik.http.routers.sonarr.service=sonarr"
-      - "traefik.http.routers.sonarr.entrypoints=web,websecure"
+      - 'traefik.http.services.sonarr.loadbalancer.server.port=8989'
+      - 'traefik.http.routers.sonarr.rule=Host(`sonarr.bwees.lab`)'
+      - 'traefik.http.routers.sonarr.service=sonarr'
+      - 'traefik.http.routers.sonarr.entrypoints=web,websecure'
 
-      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
-      - "traefik.http.routers.jackett.rule=Host(`jackett.bwees.lab`)"
-      - "traefik.http.routers.jackett.service=jackett"
-      - "traefik.http.routers.jackett.entrypoints=web,websecure"
+      - 'traefik.http.services.jackett.loadbalancer.server.port=9117'
+      - 'traefik.http.routers.jackett.rule=Host(`jackett.bwees.lab`)'
+      - 'traefik.http.routers.jackett.service=jackett'
+      - 'traefik.http.routers.jackett.entrypoints=web,websecure'
 
   qbittorrent:
     image: linuxserver/qbittorrent:5.1.2
@@ -136,17 +134,17 @@ services:
     networks:
       - bwees_traefik_backend
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.jellyfin.loadbalancer.server.port=8096'
 
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.lab`) || Host(`jellyfin.bwees.io`)"
-      - "traefik.http.routers.jellyfin.service=jellyfin"
-      - "traefik.http.routers.jellyfin.entrypoints=web,websecure"
+      - 'traefik.http.routers.jellyfin.rule=Host(`jellyfin.bwees.lab`) || Host(`jellyfin.bwees.io`)'
+      - 'traefik.http.routers.jellyfin.service=jellyfin'
+      - 'traefik.http.routers.jellyfin.entrypoints=web,websecure'
     devices:
-      - "/dev/dri:/dev/dri"
+      - '/dev/dri:/dev/dri'
 
     restart: unless-stopped
-  
+
   ###########
   ## ARR Apps
   ###########
@@ -208,12 +206,12 @@ services:
     networks:
       - bwees_traefik_backend
     labels:
-      - "traefik.enable=true"
+      - 'traefik.enable=true'
 
-      - "traefik.http.services.jellyseer.loadbalancer.server.port=5055"
-      - "traefik.http.routers.jellyseer.rule=Host(`jellyseer.bwees.lab`)"
-      - "traefik.http.routers.jellyseer.service=jellyseer"
-      - "traefik.http.routers.jellyseer.entrypoints=web,websecure"
+      - 'traefik.http.services.jellyseer.loadbalancer.server.port=5055'
+      - 'traefik.http.routers.jellyseer.rule=Host(`jellyseer.bwees.lab`)'
+      - 'traefik.http.routers.jellyseer.service=jellyseer'
+      - 'traefik.http.routers.jellyseer.entrypoints=web,websecure'
 
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:2.45.01
@@ -221,12 +219,12 @@ services:
     networks:
       - bwees_traefik_backend
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.tdarr.loadbalancer.server.port=8265'
 
-      - "traefik.http.routers.tdarr.rule=Host(`tdarr.bwees.lab`)"
-      - "traefik.http.routers.tdarr.service=tdarr"
-      - "traefik.http.routers.tdarr.entrypoints=web,websecure"
+      - 'traefik.http.routers.tdarr.rule=Host(`tdarr.bwees.lab`)'
+      - 'traefik.http.routers.tdarr.service=tdarr'
+      - 'traefik.http.routers.tdarr.entrypoints=web,websecure'
     environment:
       - TZ=America/Chicago
       - PUID=1000
@@ -252,7 +250,7 @@ services:
       - 8266:8266
     devices:
       - /dev/dri:/dev/dri
-      
+
   flaresolverr:
     image: 'ghcr.io/flaresolverr/flaresolverr:latest'
     restart: unless-stopped

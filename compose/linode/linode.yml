@@ -4,41 +4,41 @@ services:
   traefik:
     image: traefik:v3.5.0
     command:
-      - "--api=true"
-      - "--api.dashboard=true"
+      - '--api=true'
+      - '--api.dashboard=true'
 
-      - "--metrics"
-      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+      - '--metrics'
+      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
 
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=traefik_backend"
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=traefik_backend'
 
-      - "--providers.file=true"
-      - "--providers.file.directory=/fileprovider"
-      - "--providers.file.watch=true"
+      - '--providers.file=true'
+      - '--providers.file.directory=/fileprovider'
+      - '--providers.file.watch=true'
 
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
-      
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
+      - '--entrypoints.web.http.redirections.entrypoint.permanent=true'
+
     ports:
       - 80:80
       - 443:443
 
     labels:
       # Dashboard
-      - "traefik.enable=true"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
 
-      - "traefik.http.routers.traefik.rule=Host(`traefik.bwees.io`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.middlewares=authtraefik"
-      - "traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}"
+      - 'traefik.http.routers.traefik.rule=Host(`traefik.bwees.io`)'
+      - 'traefik.http.routers.traefik.service=api@internal'
+      - 'traefik.http.routers.traefik.entrypoints=websecure'
+      - 'traefik.http.routers.traefik.tls=true'
+      - 'traefik.http.routers.traefik.middlewares=authtraefik'
+      - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -65,25 +65,25 @@ services:
       - /usr/local/share/ca-certificates:/certs:ro
     environment:
       - NODE_EXTRA_CA_CERTS=/certs/bwees-ca.crt
-    entrypoint: "node server/server.js"
+    entrypoint: 'node server/server.js'
     networks:
       - traefik_backend
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.uptimekuma.loadbalancer.server.port=3001"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.uptimekuma.loadbalancer.server.port=3001'
 
-      - "traefik.http.routers.uptimekuma.rule=Host(`kuma.bwees.lab`)"
-      - "traefik.http.routers.uptimekuma.service=uptimekuma"
-      - "traefik.http.routers.uptimekuma.entrypoints=websecure"
-      - "traefik.http.routers.uptimekuma.tls=true"
+      - 'traefik.http.routers.uptimekuma.rule=Host(`kuma.bwees.lab`)'
+      - 'traefik.http.routers.uptimekuma.service=uptimekuma'
+      - 'traefik.http.routers.uptimekuma.entrypoints=websecure'
+      - 'traefik.http.routers.uptimekuma.tls=true'
 
     restart: unless-stopped
 
   bind9:
     image: ubuntu/bind9:9.18-24.04_beta
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
+      - '53:53/udp'
+      - '53:53/tcp'
     volumes:
       - /storage/bind:/etc/bind
     restart: unless-stopped
@@ -97,13 +97,13 @@ services:
       - traefik_backend
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.portainer.loadbalancer.server.port=9000'
 
-      - "traefik.http.routers.portainer.rule=Host(`lab.bwees.io`)"
-      - "traefik.http.routers.portainer.service=portainer"
-      - "traefik.http.routers.portainer.entrypoints=websecure"
-      - "traefik.http.routers.portainer.tls=true"
+      - 'traefik.http.routers.portainer.rule=Host(`lab.bwees.io`)'
+      - 'traefik.http.routers.portainer.service=portainer'
+      - 'traefik.http.routers.portainer.entrypoints=websecure'
+      - 'traefik.http.routers.portainer.tls=true'
 
   beszel:
     image: henrygd/beszel:0.12.2
@@ -115,14 +115,13 @@ services:
     environment:
       - BESZEL_HUB_APP_URL=https://beszel.bwees.lab
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.beszel.loadbalancer.server.port=8090"
+      - 'traefik.enable=true'
+      - 'traefik.http.services.beszel.loadbalancer.server.port=8090'
 
-      - "traefik.http.routers.beszel.rule=Host(`beszel.bwees.lab`)"
-      - "traefik.http.routers.beszel.service=beszel"
-      - "traefik.http.routers.beszel.entrypoints=websecure"
-      - "traefik.http.routers.beszel.tls=true"
-
+      - 'traefik.http.routers.beszel.rule=Host(`beszel.bwees.lab`)'
+      - 'traefik.http.routers.beszel.service=beszel'
+      - 'traefik.http.routers.beszel.entrypoints=websecure'
+      - 'traefik.http.routers.beszel.tls=true'
 
 networks:
   traefik_backend:
