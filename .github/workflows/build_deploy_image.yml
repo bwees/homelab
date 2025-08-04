@@ -38,4 +38,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/bwees/homelab-deploy:latest
+            ghcr.io/${{ github.repository }}:latest
