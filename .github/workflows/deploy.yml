@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '!Dockerfile'
-      - '!.github/workflows/build_deploy_image.yml'
   workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,8 +14,6 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/bwees/homelab:latest
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
@@ -25,8 +21,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install Python Dependencies
+      - name: Install Ansible & Python Dependencies
         run: |
+          sudo apt update
+          sudo apt install -y ansible
           pip3 install -r ansible/scripts/requirements.txt
 
       - name: Install Just
@@ -52,3 +50,4 @@ jobs:
         run: just deploy
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
+
