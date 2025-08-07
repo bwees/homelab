@@ -3,7 +3,10 @@
   "extends": ["config:recommended", ":dependencyDashboard"],
   "baseBranches": ["main"],
   "docker-compose": {
-    "managerFilePatterns": ["/^compose/.*\\.ya?ml$/"]
+    "managerFilePatterns": ["/^compose/.*\\.ya?ml$/"],
+    "digest": {
+      "enabled": false
+    }
   },
   "packageRules": [
     {
