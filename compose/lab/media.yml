@@ -182,7 +182,7 @@ services:
     # Traefik config defined at exitnode
 
   jackett:
-    image: ghcr.io/linuxserver/jackett:0.22.2248
+    image: ghcr.io/linuxserver/jackett:0.22.2256
     environment:
       - PUID=1000
       - PGID=1000
