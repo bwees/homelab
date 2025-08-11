@@ -234,7 +234,7 @@ services:
       - 'traefik.http.routers.glance.tls=true'
 
   n8n:
-    image: n8nio/n8n:1.106.2
+    image: n8nio/n8n:1.107.0
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
