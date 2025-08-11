@@ -52,6 +52,10 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["henrygd/beszel", "henrygd/beszel-agent"],
       "groupName": "beszel"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/jackett"],
+      "schedule": ["* * * * 6"]
     }
   ],
   "ignoreTests": true
