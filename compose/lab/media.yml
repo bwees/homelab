@@ -196,7 +196,7 @@ services:
     # Traefik config defined at exitnode
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:2.7.2
+    image: fallenbagel/jellyseerr:2.7.3
     environment:
       - TZ=America/Chicago
       - PORT=5055
