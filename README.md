@@ -37,7 +37,6 @@ This year I decided to try and automate some of the tasks in my lab with Ansible
 
 - Deployment of Docker-compose files and related secrets to each machine
 - Secret Management
-- Installation of Beszel Agent
 - Updating Tailscale
 - DNS Configuration Deployment
 

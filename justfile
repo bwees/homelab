@@ -8,7 +8,7 @@ _cleanup_secrets:
     @rm -f ansible/secrets.resolved.yml
 
 [working-directory: 'ansible']
-deploy HOST="linode,home,nas,lab":
+deploy HOST="linode,home,nas,lab,stepien":
     @just _resolve_secrets
 
     ansible-playbook playbooks/deploy.yml --limit {{ HOST }}
@@ -18,20 +18,6 @@ deploy HOST="linode,home,nas,lab":
 [working-directory: 'ansible']
 tailscale-update HOST:
     ansible-playbook playbooks/tailscale-update.yml --limit {{ HOST }}
-
-[working-directory: 'ansible']
-beszel ACTION HOST="linode,home,lab,router":
-    just _resolve_secrets
-
-    if [ "{{ ACTION }}" = "install" ]; then \
-        ansible-playbook playbooks/install-beszel.yml --limit {{ HOST }}; \
-    elif [ "{{ ACTION }}" = "update" ]; then \
-        ansible-playbook playbooks/update-beszel.yml --limit {{ HOST }}; \
-    else \
-        echo "Invalid action. Use 'install' or 'update'."; \
-    fi
-
-    just _cleanup_secrets
 
 [working-directory: 'ansible']
 dns HOST="linode,home":
