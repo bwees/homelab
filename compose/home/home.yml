@@ -52,7 +52,7 @@ services:
     restart: unless-stopped
 
   cloudflared:
-    image: cloudflare/cloudflared:2025.8.0
+    image: cloudflare/cloudflared:2025.8.1
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
