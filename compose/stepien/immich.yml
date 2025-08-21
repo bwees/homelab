@@ -1,0 +1,80 @@
+
+name: immich
+
+volumes:
+  model-cache:
+
+  nas:
+    driver: local
+    driver_opts:
+      type: 'nfs'
+      o: 'addr=10.0.0.80,nolock,soft,rw'
+      device: ':/volume1/immich'
+
+#
+# NFS Subdirectory Mounts
+#
+x-nas-library: &nas-library
+  type: volume
+  source: nas
+  target: /data
+  volume:
+    subpath: library
+
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:v1.138.1
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - <<: *nas-library
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      - TZ=America/New_York
+    ports:
+      - '2283:2283'
+    depends_on:
+      - redis
+      - database
+    restart: always
+    healthcheck:
+      disable: false
+
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    device_cgroup_rules:
+      - 'c 189:* rmw'
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - model-cache:/cache
+      - /dev/bus/usb:/dev/bus/usb
+    restart: always
+    healthcheck:
+      disable: false
+
+  redis:
+    container_name: immich_redis
+    image: docker.io/valkey/valkey:8-bookworm@sha256:5b8f8c333bef895c925f56629d6ba90aea95a4f7391f62411e625267c600b19c
+    healthcheck:
+      test: redis-cli ping || exit 1
+    restart: always
+
+  database:
+    container_name: immich_postgres
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:32324a2f41df5de9efe1af166b7008c3f55646f8d0e00d9550c16c9822366b4a
+    environment:
+      POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_DB: immich
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+      # Uncomment the DB_STORAGE_TYPE: 'HDD' var if your database isn't stored on SSDs
+      # DB_STORAGE_TYPE: 'HDD'
+    volumes:
+      - /home/bwees/immich/postgres:/var/lib/postgresql/data
+    shm_size: 128mb
+    restart: always
+
