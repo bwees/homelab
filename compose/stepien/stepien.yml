@@ -1,0 +1,60 @@
+name: stepien
+
+networks:
+  traefik_backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2025.8.1
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+
+  traefik:
+    image: traefik:v3.5.0
+    command:
+      - '--api=true'
+      - '--api.dashboard=true'
+
+      - '--metrics'
+      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
+
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=traefik_backend'
+
+      - '--entrypoints.web.address=:80'
+      - '--entryPoints.websecure.address=:443'
+      - '--entrypoints.websecure.http.tls=true'
+
+    ports:
+      - 80:80
+      - 443:443
+
+    labels:
+      - 'traefik.http.middlewares.redirecthttps.redirectScheme.scheme=https'
+      - 'traefik.http.middlewares.redirecthttps.redirectScheme.permanent=true'
+
+      # Dashboard
+      - 'traefik.enable=true'
+      - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
+
+      - 'traefik.http.routers.traefik.rule=Host(`traefik-stepien.bwees.lab`)'
+      - 'traefik.http.routers.traefik.service=api@internal'
+      - 'traefik.http.routers.traefik.entrypoints=web,websecure'
+      - 'traefik.http.routers.traefik.middlewares=authtraefik,redirecthttps'
+      - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik_backend
+
+    restart: unless-stopped
