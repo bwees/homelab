@@ -4,7 +4,7 @@ services:
     environment:
       KEY: '{{ secrets.other.BESZEL_KEY }}'
       LISTEN: 45876
-    image: henrygd/beszel-agent:0.12.5
+    image: henrygd/beszel-agent:0.12.6
     network_mode: host
     restart: unless-stopped
     volumes:
