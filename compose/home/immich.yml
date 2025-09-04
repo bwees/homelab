@@ -1,0 +1,66 @@
+name: immich
+
+volumes:
+  model-cache:
+
+
+networks:
+  home_traefik_backend:
+    external: true
+  backend:
+
+services:
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:v1.140.1
+    volumes:
+      - /home/bwees/nas-media:/nas-media
+      - /home/bwees/storage/immich/library:/data
+      - /etc/localtime:/etc/localtime:ro
+    user: 1000:1000
+    environment:
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+    depends_on:
+      - redis
+      - database
+    restart: unless-stopped
+    networks:
+      - backend
+      - home_traefik_backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.immich.loadbalancer.server.port=2283'
+      - 'traefik.http.routers.immich.rule=Host(`immich.bwees.home`)'
+      - 'traefik.http.routers.immich.service=immich'
+      - 'traefik.http.routers.immich.entrypoints=web'
+      - 'traefik.docker.network=home_traefik_backend'
+
+  immich-machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:v1.140.1
+    volumes:
+      - model-cache:/cache
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      disable: false
+
+  redis:
+    image: docker.io/valkey/valkey:8-bookworm@sha256:facc1d2c3462975c34e10fccb167bfa92b0e0dbd992fc282c29a61c3243afb11
+    healthcheck:
+      test: redis-cli ping || exit 1
+    networks:
+      - backend
+    restart: unless-stopped
+
+  database:
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0
+    environment:
+      POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_DB: immich
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+    volumes:
+      - /home/bwees/immich/postgres:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: unless-stopped
