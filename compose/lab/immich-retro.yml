@@ -49,6 +49,9 @@ services:
       - backend
     restart: unless-stopped
 
+
+    
+
   database:
     image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0
     environment:
