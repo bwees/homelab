@@ -20,15 +20,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-          cache: 'pip'
-
+      - uses: jdx/mise-action@v2
+      
       - name: Install Ansible & Python Dependencies
         run: |
-          pip install ansible
-          pip install -r ansible/scripts/requirements.txt
+          pip install --user -r ansible/scripts/requirements.txt
 
       - name: Install Just
         uses: extractions/setup-just@v3
