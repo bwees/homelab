@@ -59,7 +59,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:v1.140.1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.141.1
     device_cgroup_rules:
       - 'c 189:* rmw'
     devices:
