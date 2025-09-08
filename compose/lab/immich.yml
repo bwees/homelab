@@ -16,7 +16,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.140.1
+    image: ghcr.io/immich-app/immich-server:v1.141.1
     volumes:
       - nas:/data
       - /etc/localtime:/etc/localtime:ro
