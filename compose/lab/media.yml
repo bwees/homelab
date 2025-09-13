@@ -46,6 +46,13 @@ x-nas-homelab: &nas-homelab-folder
   source: nas-homelab
   target: /homelab
 
+x-nas-qbt: &nas-qbt-folder
+  type: volume
+  source: nas-media
+  target: /nas
+  volume:
+    subpath: qbt
+
 services:
   # Tailscale Exit Node Router
   # used for getting container traffic to linode exit node
@@ -109,7 +116,7 @@ services:
     volumes:
       - /storage/media/qbittorrent:/config
       - /storage/media/downloads:/downloads
-      - <<: *nas-homelab-folder
+      - <<: *nas-qbt-folder
     network_mode: service:exitnode
     depends_on:
       - exitnode
