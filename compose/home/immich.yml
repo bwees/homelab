@@ -11,7 +11,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.141.1
+    image: ghcr.io/immich-app/immich-server:v1.142.0
     volumes:
       - /home/bwees/nas-media:/nas-media
       - /home/bwees/storage/immich/library:/data
@@ -35,7 +35,7 @@ services:
       - 'traefik.docker.network=home_traefik_backend'
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.141.1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.142.0
     volumes:
       - model-cache:/cache
     networks:
