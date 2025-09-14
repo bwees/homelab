@@ -12,6 +12,7 @@
       vars:
         secret_file: '../secrets.resolved.yml'
         env_destination: '{{ deploy_dir }}/secret.env'
+      register: secret_result
 
     - name: Transfer docker-compose files to host
       copy:
@@ -20,6 +21,7 @@
         mode: '0600'
       with_fileglob:
         - '{{ compose_dir }}/*.yml'
+      register: compose_result
 
     - name: Deploy docker-compose files
       community.docker.docker_compose_v2:
@@ -29,7 +31,7 @@
         env_files: '{{ deploy_dir }}/secret.env'
         files: '{{ item | basename }}'
         remove_orphans: true
-
+      when: secret_result.changed or compose_result.changed
       with_fileglob:
         - '{{ compose_dir }}/*.yml'
 
@@ -38,5 +40,6 @@
         docker image prune -a -f
         docker volume prune -a -f
       register: prune_output
+      when: secret_result.changed or compose_result.changed
       # Only mark as changed if there was space reclaimed (when :0B is not in the output)
       changed_when: prune_output.stdout.find(' 0B') == -1
