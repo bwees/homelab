@@ -9,7 +9,7 @@ networks:
 
 services:
   cloudflared:
-    image: cloudflare/cloudflared:2025.8.1
+    image: cloudflare/cloudflared:2025.9.0
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
