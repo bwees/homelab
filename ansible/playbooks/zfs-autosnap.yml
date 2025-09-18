@@ -5,7 +5,7 @@
   tasks:
     - name: Transfer docker-compose files to host
       copy:
-        src: '../../zfs/homelab-bwees-snapshot.sh'
+        src: '../../scripts/homelab-bwees-snapshot.sh'
         dest: '/home/zfsrepl/zfs-snapshot.sh'
         mode: '0755'
         force: true
