@@ -30,7 +30,7 @@ services:
       - '--providers.docker.network=traefik_backend'
 
       - '--providers.file=true'
-      - '--providers.file.directory=/fileprovider'
+      - '--providers.file.directory=/dynamic'
       - '--providers.file.watch=true'
 
       - '--entrypoints.web.address=:80'
@@ -57,7 +57,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /storage/traefik/dynamic:/fileprovider
+      - /home/bwees/deploy/traefik:/dynamic
       - /storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend

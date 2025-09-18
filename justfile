@@ -20,9 +20,5 @@ tailscale-update HOST:
     ansible-playbook playbooks/tailscale-update.yml --limit {{ HOST }}
 
 [working-directory: 'ansible']
-dns HOST="linode,home":
-    ansible-playbook playbooks/dns.yml --limit {{ HOST }}
-
-[working-directory: 'ansible']
 zfs-autosnap HOST:
     ansible-playbook playbooks/zfs-autosnap.yml --limit {{ HOST }}

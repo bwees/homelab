@@ -1,0 +1,14 @@
+http:
+  routers:
+    starforge-api-dev:
+      rule: "Host(`sf.bwees.io`)"  # The rule to match the domain
+      service: starforge-service  # The name of the service
+      entryPoints:
+        - web
+        - websecure
+
+  services:
+    starforge-service:
+      loadBalancer:
+        servers:
+          - url: "http://100.85.233.125:8787"

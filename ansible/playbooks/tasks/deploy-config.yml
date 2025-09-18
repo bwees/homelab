@@ -1,0 +1,41 @@
+- name: Copy service config files
+  block:
+    - name: Find all service directories under configs/
+      find:
+        paths: "../../configs"
+        file_type: directory
+        depth: 1
+      delegate_to: localhost
+      register: service_dirs
+
+    - name: Check if each service has host-specific config
+      stat:
+        path: "{{ item.path }}/{{ deploy_source }}"
+      delegate_to: localhost
+      register: service_config
+      loop: "{{ service_dirs.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+    - name: Copy configs if they exist
+      copy:
+        src: "{{ item.item.path }}/{{ deploy_source }}/"
+        dest: "{{ deploy_dir }}/{{ item.item.path | basename }}/"
+        mode: "0644"
+      when: item.stat.exists
+      loop: "{{ service_config.results }}"
+      loop_control:
+        label: "{{ item.item.path | basename }}"
+      register: config_copy
+    
+    - name: Restart bind if dns config changed
+      community.docker.docker_container:
+        name: '{{ deploy_source }}-bind9-1'
+        restart: true
+      when: >
+        config_copy.results
+        | selectattr('changed')
+        | selectattr('dest', 'defined')
+        | selectattr('dest', 'search', 'dns')
+        | list
+        | length > 0

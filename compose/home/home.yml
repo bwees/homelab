@@ -15,7 +15,7 @@ services:
       - '--providers.docker.network=traefik_backend'
 
       - '--providers.file=true'
-      - '--providers.file.directory=/fileprovider'
+      - '--providers.file.directory=/dynamic'
       - '--providers.file.watch=true'
 
       - '--entrypoints.web.address=:80'
@@ -37,7 +37,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/storage/traefik/route_files:/fileprovider
+      - /home/bwees/deploy/traefik:/dynamic
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
       - '53:53/udp'
       - '53:53/tcp'
     volumes:
-      - /home/bwees/storage/bind:/etc/bind
+      - /home/bwees/deploy/bind:/etc/bind
     restart: unless-stopped
 
   cloudflared:

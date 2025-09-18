@@ -23,6 +23,8 @@
         src: '{{ item.path }}'
         dest: '/tmp/.ansible_deploy/{{ item.path | basename }}'
       with_items: '{{ template_files.files }}'
+      loop_control:
+        label: "{{ item.path | basename }}"
       register: rendered_files
 
     - name: Deploy docker-compose to TrueNAS
@@ -30,6 +32,8 @@
       environment:
         TRUENAS_API_KEY: '{{ secrets.other.TRUENAS_KEY }}'
       with_items: '{{ rendered_files.results }}'
+      loop_control:
+        label: "{{ item.dest | basename }}"
       register: upload_results
       changed_when: upload_results.stdout.find('uploaded successfully') != -1
       failed_when: upload_results.stdout.find('uploaded successfully') == -1

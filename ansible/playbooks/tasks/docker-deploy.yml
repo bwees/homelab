@@ -23,6 +23,9 @@
         - '{{ compose_dir }}/*.yml'
       register: compose_result
 
+    - name: Deploy config files
+      include_tasks: deploy-config.yml
+
     - name: Deploy docker-compose files
       community.docker.docker_compose_v2:
         project_src: '{{ deploy_dir }}'
