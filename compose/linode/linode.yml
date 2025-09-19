@@ -3,56 +3,19 @@ name: linode
 services:
   traefik:
     image: traefik:v3.5.2
-    command:
-      - '--api=true'
-      - '--api.dashboard=true'
-
-      - '--metrics'
-      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
-
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.network=traefik_backend'
-
-      - '--providers.file=true'
-      - '--providers.file.directory=/dynamic'
-      - '--providers.file.watch=true'
-
-      - '--entrypoints.web.address=:80'
-      - '--entrypoints.websecure.address=:443'
-      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
-      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
-      - '--entrypoints.web.http.redirections.entrypoint.permanent=true'
-
     ports:
       - 100.109.20.66:80:80
       - 100.109.20.66:443:443
-
-    labels:
-      # Dashboard
-      - 'traefik.enable=true'
-      - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
-
-      - 'traefik.http.routers.traefik.rule=Host(`traefik.bwees.io`)'
-      - 'traefik.http.routers.traefik.service=api@internal'
-      - 'traefik.http.routers.traefik.entrypoints=websecure'
-      - 'traefik.http.routers.traefik.tls=true'
-      - 'traefik.http.routers.traefik.middlewares=authtraefik'
-      - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
-
+      - 96.126.113.207:80:81
+      - 96.126.113.207:443:444
+    command:
+      - '--configFile=/etc/traefik/config.yml'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/deploy/traefik:/dynamic
       - /storage/traefik/certs:/etc/traefik/certs:ro
-    networks:
-      - traefik_backend
-    restart: unless-stopped
-
-  cloudflared:
-    image: cloudflare/cloudflared:2025.9.0
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+      - /storage/traefik/acme.json:/etc/traefik/acme.json
+      - /home/bwees/deploy/traefik/dynamic:/dynamic
+      - /home/bwees/deploy/traefik/config.yml:/etc/traefik/config.yml:ro
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -74,7 +37,7 @@ services:
 
       - 'traefik.http.routers.uptimekuma.rule=Host(`kuma.bwees.lab`)'
       - 'traefik.http.routers.uptimekuma.service=uptimekuma'
-      - 'traefik.http.routers.uptimekuma.entrypoints=websecure'
+      - 'traefik.http.routers.uptimekuma.entrypoints=privatesecure'
       - 'traefik.http.routers.uptimekuma.tls=true'
 
     restart: unless-stopped
@@ -102,7 +65,7 @@ services:
 
       - 'traefik.http.routers.portainer.rule=Host(`lab.bwees.io`)'
       - 'traefik.http.routers.portainer.service=portainer'
-      - 'traefik.http.routers.portainer.entrypoints=websecure'
+      - 'traefik.http.routers.portainer.entrypoints=publicsecure'
       - 'traefik.http.routers.portainer.tls=true'
 
   beszel:
@@ -120,7 +83,7 @@ services:
 
       - 'traefik.http.routers.beszel.rule=Host(`beszel.bwees.lab`)'
       - 'traefik.http.routers.beszel.service=beszel'
-      - 'traefik.http.routers.beszel.entrypoints=websecure'
+      - 'traefik.http.routers.beszel.entrypoints=privatesecure'
       - 'traefik.http.routers.beszel.tls=true'
 
 networks:

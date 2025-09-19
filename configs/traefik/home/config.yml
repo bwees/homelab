@@ -1,0 +1,14 @@
+api:
+  dashboard: true
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: traefik_backend
+  file:
+    directory: /dynamic
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"

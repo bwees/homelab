@@ -3,27 +3,11 @@ name: home
 services:
   traefik:
     image: traefik:v3.5.2
-    command:
-      - '--api=true'
-      - '--api.dashboard=true'
-
-      - '--metrics'
-      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
-
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.network=traefik_backend'
-
-      - '--providers.file=true'
-      - '--providers.file.directory=/dynamic'
-      - '--providers.file.watch=true'
-
-      - '--entrypoints.web.address=:80'
-
     ports:
       - 80:80
       - 443:443
-
+    command:
+      - '--configFile=/etc/traefik/config.yml'
     labels:
       # Dashboard
       - 'traefik.enable=true'
@@ -34,10 +18,10 @@ services:
       - 'traefik.http.routers.traefik.entrypoints=web'
       - 'traefik.http.routers.traefik.middlewares=authtraefik'
       - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/deploy/traefik:/dynamic
+      - /home/bwees/deploy/traefik/dynamic:/dynamic
+      - /home/bwees/deploy/traefik/config.yml:/etc/traefik/config.yml:ro
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -49,15 +33,6 @@ services:
       - '53:53/tcp'
     volumes:
       - /home/bwees/deploy/bind:/etc/bind
-    restart: unless-stopped
-
-  cloudflared:
-    image: cloudflare/cloudflared:2025.9.0
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
-    networks:
-      - traefik_backend
     restart: unless-stopped
 
   jellyfin:

@@ -8,13 +8,17 @@ _cleanup_secrets:
     @rm -f ansible/secrets.resolved.yml
 
 [working-directory: 'ansible']
-deploy HOST="linode,home,nas,lab,stepien":
+deploy HOST="all:!homelab-router":
     @just _resolve_secrets
 
     ansible-playbook playbooks/deploy.yml --limit {{ HOST }}
     
     @just _cleanup_secrets
 
+[working-directory: 'ansible']
+config HOST="all:!homelab-router":
+    ansible-playbook playbooks/config.yml --limit {{ HOST }}
+    
 [working-directory: 'ansible']
 tailscale-update HOST:
     ansible-playbook playbooks/tailscale-update.yml --limit {{ HOST }}

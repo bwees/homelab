@@ -1,0 +1,13 @@
+http:
+  routers:
+    homeassistant:
+      rule: "Host(`hass.bwees.io`)"
+      service: homeassistant-service
+      entryPoints:
+        - web
+
+  services:
+    homeassistant-service:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.2:8123"

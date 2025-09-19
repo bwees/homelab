@@ -1,0 +1,73 @@
+
+http:
+  serversTransports:
+    insecureTransport:
+      insecureSkipVerify: true
+
+  routers:
+    immich:
+      rule: "Host(`immich.bwees.io`)"
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
+    n8n:
+      rule: "Host(`n8n.bwees.io`)"
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
+    jellyfin:
+      rule: "Host(`jellyfin.bwees.io`)"
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
+    git:
+      rule: "Host(`git.bwees.io`)"
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
+    imretro:
+      rule: "Host(`imretro.bwees.io`)"
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
+    hass:
+      rule: "Host(`hass.bwees.io`)"
+      service: homelab-home
+      entryPoints:
+        - public
+        - publicsecure
+
+    stepien-immich:
+      rule: "Host(`stepien-immich.bwees.io`)"
+      service: stepien-server
+      entryPoints:
+        - public
+        - publicsecure
+
+
+  services:
+    homelab-bwees:
+      loadBalancer:
+        servers:
+          - url: "https://100.65.90.4"
+        serversTransport: insecureTransport
+
+    homelab-home:
+      loadBalancer:
+        servers:
+          - url: "http://100.78.133.134"
+
+    stepien-server:
+      loadBalancer:
+        servers:
+          - url: "http://100.71.92.123"

@@ -17,17 +17,18 @@
       loop_control:
         label: "{{ item.path | basename }}"
 
-    - name: Copy configs if they exist
-      copy:
-        src: "{{ item.item.path }}/{{ deploy_source }}/"
-        dest: "{{ deploy_dir }}/{{ item.item.path | basename }}/"
-        mode: "0644"
-      when: item.stat.exists
+    - name: Sync config files to host
+      ansible.posix.synchronize:
+        src: "{{ item.item.path }}/{{ deploy_source }}/"        # local folder of configs
+        dest: "{{ deploy_dir }}/{{ item.item.path | basename }}/"      # destination on host
+        delete: true           # remove files not in src
+        recursive: true
       loop: "{{ service_config.results }}"
+      when: item.stat.exists
       loop_control:
         label: "{{ item.item.path | basename }}"
       register: config_copy
-    
+
     - name: Restart bind if dns config changed
       community.docker.docker_container:
         name: '{{ deploy_source }}-bind9-1'
@@ -35,7 +36,19 @@
       when: >
         config_copy.results
         | selectattr('changed')
-        | selectattr('dest', 'defined')
-        | selectattr('dest', 'search', 'dns')
+        | selectattr('invocation.module_args.src', 'defined')
+        | selectattr('invocation.module_args.src', 'search', 'dns')
+        | list
+        | length > 0
+
+    - name: Restart traefik if config changed
+      community.docker.docker_container:
+        name: '{{ deploy_source }}-traefik-1'
+        restart: true
+      when: >
+        config_copy.results
+        | selectattr('changed')
+        | selectattr('invocation.module_args.src', 'defined')
+        | selectattr('invocation.module_args.src', 'search', 'traefik/config.yml')
         | list
         | length > 0

@@ -18,33 +18,12 @@ volumes:
 services:
   traefik:
     image: traefik:v3.5.2
-    command:
-      - '--api=true'
-      - '--api.dashboard=true'
-
-      - '--metrics'
-      - '--metrics.prometheus.buckets=0.1,0.3,1.2,5.0'
-
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.network=traefik_backend'
-
-      - '--providers.file=true'
-      - '--providers.file.directory=/dynamic'
-      - '--providers.file.watch=true'
-
-      - '--entrypoints.web.address=:80'
-      - '--entryPoints.websecure.address=:443'
-      - '--entrypoints.websecure.http.tls=true'
-
     ports:
       - 80:80
       - 443:443
-
+    command:
+      - '--configFile=/etc/traefik/config.yml'
     labels:
-      - 'traefik.http.middlewares.redirecthttps.redirectScheme.scheme=https'
-      - 'traefik.http.middlewares.redirecthttps.redirectScheme.permanent=true'
-
       # Dashboard
       - 'traefik.enable=true'
       - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
@@ -52,16 +31,16 @@ services:
       - 'traefik.http.routers.traefik.rule=Host(`traefik.bwees.lab`)'
       - 'traefik.http.routers.traefik.service=api@internal'
       - 'traefik.http.routers.traefik.entrypoints=web,websecure'
-      - 'traefik.http.routers.traefik.middlewares=authtraefik,redirecthttps'
+      - 'traefik.http.routers.traefik.middlewares=authtraefik'
       - 'traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_DASHBOARD_AUTH}'
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/deploy/traefik:/dynamic
+      - /home/bwees/deploy/traefik/dynamic:/dynamic
+      - /home/bwees/deploy/traefik/config.yml:/etc/traefik/config.yml:ro
       - /storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend
-
     restart: unless-stopped
 
   changedetection:
@@ -77,9 +56,6 @@ services:
       - 'traefik.http.routers.changedetection.rule=Host(`changedetection.bwees.lab`)'
       - 'traefik.http.routers.changedetection.service=changedetection'
       - 'traefik.http.routers.changedetection.entrypoints=web,websecure'
-
-      - 'traefik.http.routers.changedetection.middlewares=redirecthttps'
-
     environment:
       PLAYWRIGHT_DRIVER_URL: 'ws://sockpuppetbrowser:3000'
     restart: unless-stopped
@@ -111,9 +87,6 @@ services:
       - 'traefik.http.routers.git.rule=Host(`git.bwees.io`)'
       - 'traefik.http.routers.git.service=git'
       - 'traefik.http.routers.git.entrypoints=web,websecure'
-
-      - 'traefik.http.routers.git.middlewares=redirecthttps'
-
     restart: unless-stopped
 
   cah:
@@ -122,15 +95,6 @@ services:
       - /storage/cah:/etc/app/cards
     environment:
       - TOKEN=${CAH_TOKEN}
-    networks:
-      - traefik_backend
-    restart: unless-stopped
-
-  cloudflared:
-    image: cloudflare/cloudflared:2025.9.0
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -158,8 +122,6 @@ services:
       - 'traefik.http.routers.nodered.rule=Host(`nodered.bwees.lab`)'
       - 'traefik.http.routers.nodered.service=nodered'
       - 'traefik.http.routers.nodered.entrypoints=web,websecure'
-
-      - 'traefik.http.routers.nodered.middlewares=redirecthttps'
     restart: unless-stopped
   #    entrypoint: "npm start -- --userDir /data --safe"
 

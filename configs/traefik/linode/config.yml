@@ -1,0 +1,44 @@
+providers:
+  docker:
+    exposedByDefault: false
+    network: traefik_backend
+  file:
+    directory: /dynamic
+    watch: true
+
+entryPoints:
+  private:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: privatesecure
+          scheme: https
+          permanent: true
+
+  privatesecure:
+    address: ":443"
+    http:
+      tls: {}
+
+  public:
+    address: ":81"
+    http:
+      redirections:
+        entryPoint:
+          to: publicsecure
+          scheme: https
+          permanent: true
+
+  publicsecure:
+    address: ":444"
+    http:
+      tls: {}
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: brandonwees@gmail.com
+      storage: /etc/traefik/acme.json
+      httpChallenge:
+        entryPoint: public

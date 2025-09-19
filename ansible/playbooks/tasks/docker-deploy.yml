@@ -2,7 +2,7 @@
   block:
     - name: Create deploy directory
       file:
-        path: '{{ deploy_dir }}'
+        path: '{{ deploy_dir }}/compose'
         state: directory
         mode: '0755'
         force: true
@@ -11,27 +11,28 @@
       include_tasks: secret-gen.yml
       vars:
         secret_file: '../secrets.resolved.yml'
-        env_destination: '{{ deploy_dir }}/secret.env'
+        env_destination: '{{ deploy_dir }}/compose/secret.env'
       register: secret_result
 
-    - name: Transfer docker-compose files to host
-      copy:
-        src: '{{ item }}'
-        dest: '{{ deploy_dir }}/'
-        mode: '0600'
-      with_fileglob:
-        - '{{ compose_dir }}/*.yml'
+    - name: Synchronize Docker Compose files to host
+      ansible.posix.synchronize:
+        src: '{{ compose_dir }}/'        # local folder of configs
+        dest: '{{ deploy_dir }}/compose/'      # destination on host
+        delete: true           # remove files not in src
+        recursive: true
+        rsync_opts:
+          - "--exclude=secret.env"
       register: compose_result
 
     - name: Deploy config files
-      include_tasks: deploy-config.yml
+      include_tasks: config-deploy.yml
 
     - name: Deploy docker-compose files
       community.docker.docker_compose_v2:
-        project_src: '{{ deploy_dir }}'
+        project_src: '{{ deploy_dir }}/compose'
         state: present
         # Set the environment file
-        env_files: '{{ deploy_dir }}/secret.env'
+        env_files: '{{ deploy_dir }}/compose/secret.env'
         files: '{{ item | basename }}'
         remove_orphans: true
       when: secret_result.changed or compose_result.changed
