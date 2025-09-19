@@ -25,11 +25,7 @@ I have 2 domains that are routed over Tailscale (using custom split DNS servers)
 - `*.bwees.lab` - Personal Services
 - `*.bwees.home` - Family Services
 
-These internal domains' DNS are served by 2 Bind DNS servers. One on `homelab-linode`, and one on `homelab-home`. They are configured in `configs/dns/<host>` and dynamically updated with `just dns`
-
-## Cloudflare Tunnels
-
-Cloudflare tunnels is used to route any services that need to be publicly accessible on my domain. This simplifies a lot of firewall configuration and is rarely used since most traffic is routed through Tailscale.
+My personal domain is routed to my linode VPS which then uses Traefik and Tailscale to forward the connection to the correct server.
 
 ## Ansible
 
