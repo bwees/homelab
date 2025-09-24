@@ -31,7 +31,7 @@ services:
       - /mnt/main/homelab/media/tdarr-cache:/temp
 
   syncthing:
-    image: syncthing/syncthing:2.0.9
+    image: syncthing/syncthing:2.0.10
     environment:
       - PUID=3000
       - PGID=3000
