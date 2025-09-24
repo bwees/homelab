@@ -101,10 +101,10 @@ services:
       - 'traefik.http.routers.sonarr.service=sonarr'
       - 'traefik.http.routers.sonarr.entrypoints=web,websecure'
 
-      - 'traefik.http.services.jackett.loadbalancer.server.port=9117'
-      - 'traefik.http.routers.jackett.rule=Host(`jackett.bwees.lab`)'
-      - 'traefik.http.routers.jackett.service=jackett'
-      - 'traefik.http.routers.jackett.entrypoints=web,websecure'
+      - 'traefik.http.services.prowlarr.loadbalancer.server.port=9696'
+      - 'traefik.http.routers.prowlarr.rule=Host(`prowlarr.bwees.lab`)'
+      - 'traefik.http.routers.prowlarr.service=prowlarr'
+      - 'traefik.http.routers.prowlarr.entrypoints=web,websecure'
 
   qbittorrent:
     image: linuxserver/qbittorrent:5.1.2
@@ -188,14 +188,14 @@ services:
     restart: unless-stopped
     # Traefik config defined at exitnode
 
-  jackett:
-    image: ghcr.io/linuxserver/jackett:0.23.45
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:2.0.5
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /storage/media/jackett/config:/config
+      - /storage/media/prowlarr:/config
     network_mode: service:exitnode
     depends_on:
       - exitnode
