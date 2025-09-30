@@ -10,7 +10,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.143.1
+    image: registry.zackpollard.pro/immich-server:2.0.0
     volumes:
       - /storage/immich-retro/data:/data
       - /etc/localtime:/etc/localtime:ro
