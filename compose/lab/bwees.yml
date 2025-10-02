@@ -164,7 +164,7 @@ services:
     restart: unless-stopped
 
   actual-server:
-    image: actualbudget/actual-server:25.9.0
+    image: actualbudget/actual-server:25.10.0
     volumes:
       - /storage/actual:/data
     networks:
