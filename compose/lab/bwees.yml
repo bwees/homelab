@@ -126,7 +126,7 @@ services:
   #    entrypoint: "npm start -- --userDir /data --safe"
 
   youtube-dl:
-    image: alexta69/metube:2025-03-07
+    image: ghcr.io/alexta69/metube:2025.09.28
     volumes:
       - type: volume
         source: nas-media
