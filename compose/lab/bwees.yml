@@ -123,28 +123,6 @@ services:
       - 'traefik.http.routers.nodered.service=nodered'
       - 'traefik.http.routers.nodered.entrypoints=web,websecure'
     restart: unless-stopped
-  #    entrypoint: "npm start -- --userDir /data --safe"
-
-  youtube-dl:
-    image: ghcr.io/alexta69/metube:2025.09.28
-    volumes:
-      - type: volume
-        source: nas-media
-        target: /downloads
-        volume:
-          subpath: ytdl
-    environment:
-      TEMP_DIR: '/tmp'
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.ytdl.loadbalancer.server.port=8081'
-
-      - 'traefik.http.routers.ytdl.rule=Host(`ytdl.bwees.lab`)'
-      - 'traefik.http.routers.ytdl.service=ytdl'
-      - 'traefik.http.routers.ytdl.entrypoints=web,websecure'
-    networks:
-      - traefik_backend
-    restart: unless-stopped
 
   spoolman:
     image: ghcr.io/donkie/spoolman:0.22.1
