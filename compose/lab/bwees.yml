@@ -163,21 +163,6 @@ services:
       - 'traefik.http.routers.spoolman.entrypoints=web,websecure'
     restart: unless-stopped
 
-  actual-server:
-    image: actualbudget/actual-server:25.10.0
-    volumes:
-      - /storage/actual:/data
-    networks:
-      - traefik_backend
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.actual.loadbalancer.server.port=5006'
-
-      - 'traefik.http.routers.actual.rule=Host(`finance.bwees.lab`)'
-      - 'traefik.http.routers.actual.service=actual'
-      - 'traefik.http.routers.actual.entrypoints=web,websecure'
-    restart: unless-stopped
-
   glance:
     image: glanceapp/glance
     restart: unless-stopped
