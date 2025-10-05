@@ -124,23 +124,6 @@ services:
       - 'traefik.http.routers.nodered.entrypoints=web,websecure'
     restart: unless-stopped
 
-  glance:
-    image: glanceapp/glance
-    restart: unless-stopped
-    volumes:
-      - /storage/glance/config:/app/config
-      - /storage/glance/assets:/app/assets
-    networks:
-      - traefik_backend
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.glance.loadbalancer.server.port=8080'
-
-      - 'traefik.http.routers.glance.rule=Host(`glance.bwees.lab`)'
-      - 'traefik.http.routers.glance.service=glance'
-      - 'traefik.http.routers.glance.entrypoints=websecure'
-      - 'traefik.http.routers.glance.tls=true'
-
   n8n:
     image: n8nio/n8n:1.114.2
     restart: unless-stopped
