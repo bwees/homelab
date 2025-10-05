@@ -124,23 +124,6 @@ services:
       - 'traefik.http.routers.nodered.entrypoints=web,websecure'
     restart: unless-stopped
 
-  spoolman:
-    image: ghcr.io/donkie/spoolman:0.22.1
-    volumes:
-      - /storage/spoolman:/home/app/.local/share/spoolman
-    environment:
-      - TZ=America/Chicago
-    networks:
-      - traefik_backend
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.spoolman.loadbalancer.server.port=8000'
-
-      - 'traefik.http.routers.spoolman.rule=Host(`spoolman.bwees.lab`)'
-      - 'traefik.http.routers.spoolman.service=spoolman'
-      - 'traefik.http.routers.spoolman.entrypoints=web,websecure'
-    restart: unless-stopped
-
   glance:
     image: glanceapp/glance
     restart: unless-stopped
