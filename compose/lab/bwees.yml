@@ -104,7 +104,7 @@ services:
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
-      - /storage/n8n-runner:/mnt/runner
+      - /storage/n8n/runner:/mnt/runner
     networks:
       - traefik_backend
     environment:
@@ -134,4 +134,4 @@ services:
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
       - N8N_RUNNERS_TASK_TIMEOUT=3600
     volumes:
-      - /storage/n8n-runner:/mnt/runner
+      - /storage/n8n/runner:/mnt/runner
