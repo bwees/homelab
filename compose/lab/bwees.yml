@@ -129,11 +129,18 @@ services:
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
+      - /storage/n8n-runner:/mnt/runner
     networks:
       - traefik_backend
     environment:
       - TZ=America/Chicago
       - WEBHOOK_URL=https://n8n.bwees.io
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
+      - N8N_RUNNERS_AUTH_TOKEN=testsecret
+      - N8N_NATIVE_PYTHON_RUNNER=true
+      - N8N_RUNNERS_TASK_TIMEOUT=3600
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.n8n.loadbalancer.server.port=5678'
@@ -141,3 +148,15 @@ services:
       - 'traefik.http.routers.n8n.service=n8n'
       - 'traefik.http.routers.n8n.entrypoints=web,websecure'
       - 'traefik.http.routers.n8n.tls=true'
+
+  n8n-runner:
+    image: ghcr.io/bwees/n8n-runner:latest
+    restart: unless-stopped
+    networks:
+      - traefik_backend
+    environment:
+      - N8N_RUNNERS_AUTH_TOKEN=testsecret
+      - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
+      - N8N_RUNNERS_TASK_TIMEOUT=3600
+    volumes:
+      - /storage/n8n-runner:/mnt/runner

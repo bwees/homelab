@@ -1,0 +1,22 @@
+FROM n8nio/runners:1.114.2
+
+USER root
+
+# System dependencies
+RUN apk update && apk add --no-cache \
+    ffmpeg 
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh
+
+# Python dependencies
+RUN cd /opt/runners/task-runner-python && uv pip install rfeed yt-dlp boto3
+
+# fix security issue with python packages
+# https://github.com/n8n-io/n8n/blob/master/docker/images/runners/n8n-task-runners.json
+RUN sed -i 's/"N8N_RUNNERS_EXTERNAL_ALLOW": *""/"N8N_RUNNERS_EXTERNAL_ALLOW": "\*"/' /etc/n8n-task-runners.json
+RUN sed -i 's/"N8N_RUNNERS_STDLIB_ALLOW": *""/"N8N_RUNNERS_STDLIB_ALLOW": "\*"/' /etc/n8n-task-runners.json
+
+
+USER runner
+
+
+LABEL org.opencontainers.image.source=https://github.com/bwees/homelab
