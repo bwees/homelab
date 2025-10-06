@@ -99,31 +99,6 @@ services:
       - traefik_backend
     restart: unless-stopped
 
-  node-red:
-    image: ghcr.io/bwees/nodered-ffmpeg:latest
-    environment:
-      - TZ=America/Chicago
-    networks:
-      - traefik_backend
-    volumes:
-      - /storage/nodered:/data
-      - /storage/podcasts:/static/podcasts
-      - type: volume
-        source: nas-media
-        target: /ytdl
-        volume:
-          subpath: ytdl
-    healthcheck:
-      disable: true
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.nodered.loadbalancer.server.port=1880'
-
-      - 'traefik.http.routers.nodered.rule=Host(`nodered.bwees.lab`)'
-      - 'traefik.http.routers.nodered.service=nodered'
-      - 'traefik.http.routers.nodered.entrypoints=web,websecure'
-    restart: unless-stopped
-
   n8n:
     image: n8nio/n8n:1.114.2
     restart: unless-stopped
