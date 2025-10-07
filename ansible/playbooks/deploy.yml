@@ -1,18 +1,9 @@
 - name: Deploy Docker Hosts
-  hosts: all:!nas
+  hosts: all
   gather_facts: false
   tasks:
     - name: Deploy Docker-Compose files to Docker hosts
       include_tasks: tasks/docker-deploy.yml
       vars:
-        deploy_dir: '/home/{{ ansible_user }}/deploy'
-        compose_dir: '../../compose/{{ deploy_source }}'
-
-- name: Deploy NAS
-  hosts: nas
-  gather_facts: false
-  tasks:
-    - name: Deploy Docker-Compose files to TrueNAS
-      include_tasks: tasks/truenas-deploy.yml
-      vars:
+        deploy_dir: "{{ deploy_dest | default('/home/' + ansible_user + '/deploy') }}"
         compose_dir: '../../compose/{{ deploy_source }}'

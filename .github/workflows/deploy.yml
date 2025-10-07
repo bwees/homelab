@@ -22,10 +22,6 @@ jobs:
 
       - uses: jdx/mise-action@v3
 
-      - name: Install Ansible & Python Dependencies
-        run: |
-          pip install --user -r ansible/scripts/requirements.txt
-
       - name: Install 1Password CLI
         uses: 1password/install-cli-action@v2
 
