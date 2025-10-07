@@ -1,9 +1,0 @@
-- name: Deploy Configs
-  hosts: all:!nas
-  gather_facts: false
-  tasks:
-    - name: Deploy Traefik Configs to Docker hosts
-      include_tasks: tasks/config-deploy.yml
-      vars:
-        config_dir: '../../configs/traefik/{{ deploy_source }}'
-        deploy_dir: '/home/{{ ansible_user }}/deploy'
