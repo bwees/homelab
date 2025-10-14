@@ -11,8 +11,48 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.changes.outputs.images }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            images:
+              - 'images/**'
+
+  build-custom-images:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: detect-changes
+    if: needs.detect-changes.outputs.images == 'true'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - uses: jdx/mise-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build custom images
+        run: just build-custom-images
+
   deploy:
     runs-on: ubuntu-latest
+    needs: build-custom-images
+    if: always()
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

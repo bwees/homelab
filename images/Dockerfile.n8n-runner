@@ -15,8 +15,5 @@ RUN cd /opt/runners/task-runner-python && uv pip install rfeed yt-dlp boto3
 RUN sed -i 's/"N8N_RUNNERS_EXTERNAL_ALLOW": *""/"N8N_RUNNERS_EXTERNAL_ALLOW": "\*"/' /etc/n8n-task-runners.json
 RUN sed -i 's/"N8N_RUNNERS_STDLIB_ALLOW": *""/"N8N_RUNNERS_STDLIB_ALLOW": "\*"/' /etc/n8n-task-runners.json
 
-
 USER runner
-
-
 LABEL org.opencontainers.image.source=https://github.com/bwees/homelab
