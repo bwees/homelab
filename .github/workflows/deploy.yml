@@ -11,8 +11,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build-custom-images:
+    if: >
+      contains(join(github.event.head_commit.modified, ' '), 'images/') ||
+      contains(join(github.event.head_commit.added, ' '), 'images/')
+    runs-on: ubuntu-latest
+    outputs:
+      built: true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - uses: jdx/mise-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build custom images
+        run: just build-custom-images
+
+
   deploy:
     runs-on: ubuntu-latest
+    needs: build-custom-images
+    if: always()
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

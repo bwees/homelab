@@ -35,6 +35,7 @@
         env_files: '{{ deploy_dir }}/compose/secret.env'
         files: '{{ item | basename }}'
         remove_orphans: true
+        pull: true
       when: secret_result.changed or compose_result.changed
       with_fileglob:
         - '{{ compose_dir }}/*.yml'

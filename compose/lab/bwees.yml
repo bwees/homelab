@@ -125,7 +125,7 @@ services:
       - 'traefik.http.routers.n8n.tls=true'
 
   n8n-runner:
-    image: ghcr.io/bwees/n8n-runner:latest
+    image: ghcr.io/bwees/homelab/n8n-runner:latest
     restart: unless-stopped
     networks:
       - traefik_backend

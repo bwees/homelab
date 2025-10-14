@@ -14,3 +14,7 @@ deploy HOST="all:!homelab-router":
     ansible-playbook playbooks/deploy.yml --limit {{ HOST }}
     
     @just _cleanup_secrets
+
+[working-directory: 'images']
+build-custom-images:
+    @docker buildx build --push --platform linux/amd64 -f Dockerfile.n8n-runner -t ghcr.io/bwees/homelab/n8n-runner:latest -t ghcr.io/bwees/homelab/n8n-runner:{{ git rev-parse --short HEAD }} .
