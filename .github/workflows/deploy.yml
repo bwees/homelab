@@ -26,7 +26,7 @@ jobs:
         uses: 1password/install-cli-action@v2
 
       - name: Tailscale Setup
-        uses: tailscale/github-action@v3
+        uses: tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.TS_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_CLIENT_SECRET }}
