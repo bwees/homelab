@@ -11,7 +11,7 @@ networks:
 
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v2.0.1
+    image: ghcr.io/immich-app/immich-server:v2.1.0
     volumes:
       - /home/bwees/nas-media:/nas-media
       - /home/bwees/storage/immich/library:/data
