@@ -81,14 +81,6 @@
       "groupName": "beszel"
     },
     {
-      "matchPackageNames": [
-        "ghcr.io/linuxserver/jackett"
-      ],
-      "schedule": [
-        "* * * * 6"
-      ]
-    },
-    {
       "matchDatasources": [
         "docker",
         "dockerfile"
