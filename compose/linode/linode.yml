@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   uptimekuma:
-    image: louislam/uptime-kuma:1.23.16
+    image: louislam/uptime-kuma:1.23.17
     volumes:
       - /storage/uptimekuma:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
