@@ -81,7 +81,7 @@
                     },
                 ],
             },
-            "9": null,
+            "9": null, // Disable Dallas DERP Relay in favor of 901
         },
     },
     "autoApprovers": {
