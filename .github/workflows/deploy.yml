@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.changes.outputs.images }}
+      tailscale-acl: ${{ steps.changes.outputs.tailscale-acl }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
@@ -25,6 +26,8 @@ jobs:
           filters: |
             images:
               - 'images/**'
+            tailscale-acl:
+              - 'configs/tailscale-acl.hujson'
 
   build-custom-images:
     runs-on: ubuntu-latest
@@ -82,3 +85,19 @@ jobs:
         run: just deploy
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
+
+  tailscale-acls:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.tailscale-acl == 'true'
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Deploy ACL
+        uses: tailscale/gitops-acl-action@v1
+        with:
+          oauth-client-id: ${{ secrets.TS_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_CLIENT_SECRET}}
+          tailnet: ${{ secrets.TS_TAILNET }}
+          policy-file: ./configs/tailscale-acl.hujson
+          action: apply

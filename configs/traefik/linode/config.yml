@@ -29,6 +29,7 @@ entryPoints:
           to: publicsecure
           scheme: https
           permanent: true
+          priority: 100000
 
   publicsecure:
     address: ":444"
