@@ -65,25 +65,25 @@
             ],
         },
     ],
-    "derpMap": {
-        "OmitDefaultRegions": false,
-        "Regions": {
-            "901": {
-                "RegionID": 901,
-                "RegionCode": "homelab-linode-derp",
-                "regionName": "homelab-linode",
-                "Nodes": [
-                    {
-                        "Name": "1",
-                        "RegionID": 901,
-                        "HostName": "derp.bwees.io",
-                        "IPv4": "96.126.113.207",
-                    },
-                ],
-            },
-            "9": null, // Disable Dallas DERP Relay in favor of 901
-        },
-    },
+    // "derpMap": {
+    //     "OmitDefaultRegions": false,
+    //     "Regions": {
+    //         "901": {
+    //             "RegionID": 901,
+    //             "RegionCode": "homelab-linode-derp",
+    //             "regionName": "homelab-linode",
+    //             "Nodes": [
+    //                 {
+    //                     "Name": "1",
+    //                     "RegionID": 901,
+    //                     "HostName": "derp.bwees.io",
+    //                     "IPv4": "96.126.113.207",
+    //                 },
+    //             ],
+    //         },
+    //         "9": null, // Disable Dallas DERP Relay in favor of 901
+    //     },
+    // },
     "autoApprovers": {
         "exitNode": [
             "brandonwees@gmail.com"
