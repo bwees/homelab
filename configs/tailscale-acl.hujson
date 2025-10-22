@@ -1,0 +1,95 @@
+{
+    "tagOwners": {
+        "tag:ci": [
+            "brandonwees@gmail.com"
+        ]
+    },
+    "acls": [
+        {
+            "action": "accept",
+            "src": [
+                "*"
+            ],
+            "dst": [
+                "*:*"
+            ],
+        },
+    ],
+    "nodeAttrs": [
+        {
+            "target": [
+                "100.85.233.125"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+        {
+            "target": [
+                "100.74.226.107"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+        {
+            "target": [
+                "100.114.192.80"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+        {
+            "target": [
+                "100.107.103.20"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+        {
+            "target": [
+                "100.64.153.110"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+        {
+            "target": [
+                "100.89.139.58"
+            ],
+            "attr": [
+                "mullvad"
+            ],
+        },
+    ],
+    "derpMap": {
+        "OmitDefaultRegions": false,
+        "Regions": {
+            "901": {
+                "RegionID": 901,
+                "RegionCode": "homelab-linode-derp",
+                "regionName": "homelab-linode",
+                "Nodes": [
+                    {
+                        "Name": "1",
+                        "RegionID": 901,
+                        "HostName": "derp.bwees.io",
+                        "IPv4": "96.126.113.207",
+                        "STUNPort": 3478,
+                        "DERPPort": 6443,
+                    },
+                ],
+            },
+            // Disable Dallas DERP Relay in favor of 901
+            "9": null,
+        },
+    },
+    "autoApprovers": {
+        "exitNode": [
+            "brandonwees@gmail.com"
+        ]
+    },
+}
