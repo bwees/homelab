@@ -94,6 +94,7 @@ services:
       DERP_VERIFY_CLIENTS: "true"
     volumes:
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
+      - /app/certs:/storage/derp
     networks:
       - traefik_backend
     labels:
