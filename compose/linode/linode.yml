@@ -87,7 +87,7 @@ services:
       - 'traefik.http.routers.beszel.tls=true'
 
   derp:
-    image: fredliang/derper
+    image: ghcr.io/fredliang44/derper:v1.88.3
     restart: unless-stopped
     environment:
       DERP_DOMAIN: derp.bwees.io
