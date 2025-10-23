@@ -26,6 +26,8 @@ services:
     networks:
       - backend
       - home_traefik_backend
+    ports:
+      - '2283:2283'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.immich.loadbalancer.server.port=2283'
