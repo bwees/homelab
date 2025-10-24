@@ -89,6 +89,33 @@ services:
       - 'traefik.http.routers.git.entrypoints=web,websecure'
     restart: unless-stopped
 
+  gitea-mirror:
+    image: ghcr.io/raylabshq/gitea-mirror:latest
+    restart: unless-stopped
+    user: "1000:1000"
+    volumes:
+      - /storage/gitea-mirror:/app/data
+    networks:
+      - traefik_backend
+    environment:
+      - BETTER_AUTH_SECRET=${GITEA_MIRROR_AUTH_SECRET}
+      - BETTER_AUTH_URL=https://gitea-mirror.bwees.lab
+      - BETTER_AUTH_TRUSTED_ORIGINS=https://gitea-mirror.bwees.lab
+      - NODE_ENV=production
+      - DATABASE_URL=file:data/gitea-mirror.db
+      - HOST=0.0.0.0
+      - PORT=4321
+      - PUBLIC_BETTER_AUTH_URL=https://gitea-mirror.bwees.lab
+      - MIRROR_ISSUE_CONCURRENCY=1
+      - MIRROR_PULL_REQUEST_CONCURRENCY=1
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.gitea-mirror.loadbalancer.server.port=4321'
+
+      - 'traefik.http.routers.gitea-mirror.rule=Host(`gitea-mirror.bwees.lab`)'
+      - 'traefik.http.routers.gitea-mirror.service=gitea-mirror'
+      - 'traefik.http.routers.gitea-mirror.entrypoints=web,websecure'
+
   cah:
     image: ghcr.io/bwees/cah-discord:latest
     volumes:
