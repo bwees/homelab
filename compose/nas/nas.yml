@@ -23,7 +23,7 @@ services:
       - serverPort=8266
       - inContainer=true
       - ffmpegVersion=7
-    image: haveagitgat/tdarr_node:2.50.02
+    image: haveagitgat/tdarr_node:2.51.01
     restart: unless-stopped
     volumes:
       - /mnt/main/homelab/media/tv:/tv
