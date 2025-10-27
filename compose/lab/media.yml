@@ -124,7 +124,7 @@ services:
     # Traefik config defined at exitnode
 
   jellyfin:
-    image: linuxserver/jellyfin:10.11.0
+    image: linuxserver/jellyfin:10.11.1
     volumes:
       - /storage/media/jellyfin:/config
       - <<: *nas-media-tv
