@@ -221,7 +221,7 @@ services:
       - 'traefik.http.routers.jellyseer.entrypoints=web,websecure'
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.51.02
+    image: ghcr.io/haveagitgat/tdarr:2.51.03
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
