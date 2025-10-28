@@ -1,0 +1,18 @@
+http:
+  serversTransports:
+    insecureTransport:
+      insecureSkipVerify: true
+
+  routers:
+    sfcam:
+      rule: 'Host(`sfcam.bwees.lab`)'
+      service: sfcam
+      entryPoints:
+        - private
+        - privatesecure
+
+  services:
+    sfcam:
+      loadBalancer:
+        servers:
+          - url: 'http://100.125.29.116:5000'

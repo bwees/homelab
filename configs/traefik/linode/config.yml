@@ -8,31 +8,31 @@ providers:
 
 entryPoints:
   private:
-    address: ":80"
+    address: ':80'
     http:
       redirections:
         entryPoint:
-          to: ":443"
+          to: ':443'
           scheme: https
           permanent: true
 
   privatesecure:
-    address: ":443"
+    address: ':443'
     http:
       tls: {}
 
   public:
-    address: ":81"
+    address: ':81'
     http:
       redirections:
         entryPoint:
-          to: ":443"
+          to: ':443'
           scheme: https
           permanent: true
           priority: 100000
 
   publicsecure:
-    address: ":444"
+    address: ':444'
     http:
       tls: {}
 
