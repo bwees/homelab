@@ -84,7 +84,7 @@ services:
       - 'traefik.enable=true'
       - 'traefik.http.services.git.loadbalancer.server.port=3000'
 
-      - 'traefik.http.routers.git.rule=Host(`git.bwees.io`)'
+      - 'traefik.http.routers.git.rule=Host(`git.bwees.lab`)'
       - 'traefik.http.routers.git.service=git'
       - 'traefik.http.routers.git.entrypoints=web,websecure'
     restart: unless-stopped
@@ -92,7 +92,7 @@ services:
   gitea-mirror:
     image: ghcr.io/raylabshq/gitea-mirror:v3.8.10
     restart: unless-stopped
-    user: "1000:1000"
+    user: '1000:1000'
     volumes:
       - /storage/gitea-mirror:/app/data
     networks:

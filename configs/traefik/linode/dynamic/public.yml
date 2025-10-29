@@ -25,13 +25,6 @@ http:
         - public
         - publicsecure
 
-    git:
-      rule: 'Host(`git.bwees.io`)'
-      service: homelab-bwees
-      entryPoints:
-        - public
-        - publicsecure
-
     imretro:
       rule: 'Host(`imretro.bwees.io`)'
       service: homelab-bwees
