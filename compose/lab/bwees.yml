@@ -8,12 +8,12 @@ networks:
         - subnet: 172.40.0.0/24
 
 volumes:
-  nas-media:
+  nas-gitea:
     driver: local
     driver_opts:
       type: 'nfs'
       o: 'addr=nas.bwees.lab,nolock,soft,rw'
-      device: ':/mnt/main/homelab/media'
+      device: ':/mnt/main/homelab/gitea'
 
 services:
   traefik:
@@ -77,7 +77,7 @@ services:
     networks:
       - traefik_backend
     volumes:
-      - /storage/gitea:/data
+      - nas-gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
