@@ -11,8 +11,40 @@ http:
         - private
         - privatesecure
 
+    immich-ml-pool:
+      rule: 'Host(`immich-ml-pool.bwees.lab`)'
+      service: immich-ml-pool
+      entryPoints:
+        - private
+      priority: 110000
+
   services:
     sfcam:
       loadBalancer:
         servers:
           - url: 'http://100.125.29.116:5000'
+
+    immich-ml-pool:
+      weighted:
+        services:
+          - name: immich-ml-lab
+            weight: 25
+          - name: immich-ml-home
+            weight: 25
+          - name: immich-ml-stepien
+            weight: 50
+
+    immich-ml-lab:
+      loadBalancer:
+        servers:
+          - url: 'http://100.65.90.4:3003'
+
+    immich-ml-home:
+      loadBalancer:
+        servers:
+          - url: 'http://100.78.133.134:3003'
+
+    immich-ml-stepien:
+      loadBalancer:
+        servers:
+          - url: 'http://100.71.92.123:3003'

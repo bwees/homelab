@@ -65,6 +65,8 @@ services:
       - /dev/dri:/dev/dri
     networks:
       - backend
+    ports:
+      - 3003:3003
     volumes:
       - model-cache:/cache
       - /dev/bus/usb:/dev/bus/usb

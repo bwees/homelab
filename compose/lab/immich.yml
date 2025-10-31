@@ -44,6 +44,8 @@ services:
       - model-cache:/cache
     networks:
       - backend
+    ports:
+      - 3003:3003
     restart: unless-stopped
     healthcheck:
       disable: false

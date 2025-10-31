@@ -15,6 +15,7 @@ entryPoints:
           to: ':443'
           scheme: https
           permanent: true
+          priority: 100000
 
   privatesecure:
     address: ':443'

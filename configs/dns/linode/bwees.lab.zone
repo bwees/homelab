@@ -13,6 +13,7 @@ kuma IN A    100.109.20.66 ; linode
 beszel IN A  100.109.20.66 ; linode
 linode IN A  100.109.20.66 ; linode
 sfcam IN A  100.109.20.66 ; linode
+immich-ml-pool IN A  100.109.20.66 ; linode
 
 unifi IN A   100.85.70.91 ; homelab-router
 
