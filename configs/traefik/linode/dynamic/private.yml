@@ -28,9 +28,9 @@ http:
       weighted:
         services:
           - name: immich-ml-lab
-            weight: 25
+            weight: 5
           - name: immich-ml-home
-            weight: 25
+            weight: 45
           - name: immich-ml-stepien
             weight: 50
 
