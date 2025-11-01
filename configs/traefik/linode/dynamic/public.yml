@@ -46,6 +46,13 @@ http:
         - public
         - publicsecure
 
+    starforge-cam:
+      rule: 'Host(`cam.starforgefoundry.com`)'
+      service: starforge-docker
+      entryPoints:
+        - public
+        - publicsecure
+
   services:
     homelab-bwees:
       loadBalancer:
@@ -62,3 +69,9 @@ http:
       loadBalancer:
         servers:
           - url: 'http://100.71.92.123'
+
+    starforge-docker:
+      loadBalancer:
+        servers:
+          - url: 'https://100.125.29.116'
+        serversTransport: insecureTransport
