@@ -26,7 +26,7 @@ services:
     environment:
       KEY: ${BESZEL_KEY}
       LISTEN: 45876
-    image: henrygd/beszel-agent:0.15.2
+    image: henrygd/beszel-agent:0.15.3
     ports:
       - 45876:45876
     restart: unless-stopped
