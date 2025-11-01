@@ -53,6 +53,13 @@ http:
         - public
         - publicsecure
 
+    starforge-hass:
+      rule: 'Host(`hass.starforgefoundry.com`)'
+      service: starforge-hass
+      entryPoints:
+        - public
+        - publicsecure
+
   services:
     homelab-bwees:
       loadBalancer:
@@ -75,3 +82,8 @@ http:
         servers:
           - url: 'https://100.125.29.116'
         serversTransport: insecureTransport
+
+    starforge-hass:
+      loadBalancer:
+        servers:
+          - url: 'http://10.0.10.173:8123' # Uses TS Subnet router
