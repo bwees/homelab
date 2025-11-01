@@ -163,3 +163,14 @@ services:
       - N8N_RUNNERS_TASK_TIMEOUT=3600
     volumes:
       - /storage/n8n/runner:/mnt/runner
+
+  beszel-agent:
+    environment:
+      KEY: ${BESZEL_KEY}
+      LISTEN: 45876
+    image: henrygd/beszel-agent:0.15.2
+    ports:
+      - 45876:45876
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

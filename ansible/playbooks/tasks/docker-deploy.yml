@@ -16,12 +16,12 @@
 
     - name: Synchronize Docker Compose files to host
       ansible.posix.synchronize:
-        src: '{{ compose_dir }}/'        # local folder of configs
-        dest: '{{ deploy_dir }}/compose/'      # destination on host
-        delete: true           # remove files not in src
+        src: '{{ compose_dir }}/' # local folder of configs
+        dest: '{{ deploy_dir }}/compose/' # destination on host
+        delete: true # remove files not in src
         recursive: true
         rsync_opts:
-          - "--exclude=secret.env"
+          - '--exclude=secret.env'
       register: compose_result
 
     - name: Deploy config files
@@ -35,7 +35,7 @@
         env_files: '{{ deploy_dir }}/compose/secret.env'
         files: '{{ item | basename }}'
         remove_orphans: true
-      when: secret_result.changed or compose_result.changed
+      # when: secret_result.changed or compose_result.changed
       with_fileglob:
         - '{{ compose_dir }}/*.yml'
 

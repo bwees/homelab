@@ -116,6 +116,17 @@ services:
   #   ports:
   #     - "96.126.113.207:3478:3478/udp"
 
+  beszel-agent:
+    environment:
+      KEY: ${BESZEL_KEY}
+      LISTEN: 45876
+    image: henrygd/beszel-agent:0.15.2
+    ports:
+      - 45876:45876
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
 networks:
   traefik_backend:
     driver: bridge

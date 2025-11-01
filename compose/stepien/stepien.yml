@@ -14,10 +14,21 @@ services:
       - '--configFile=/etc/traefik/config.yml'
     ports:
       - 80:80
-      - 443:443      
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/bwees/deploy/traefik/config.yml:/etc/traefik/config.yml:ro
     networks:
       - traefik_backend
     restart: unless-stopped
+
+  beszel-agent:
+    environment:
+      KEY: ${BESZEL_KEY}
+      LISTEN: 45876
+    image: henrygd/beszel-agent:0.15.2
+    ports:
+      - 45876:45876
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
