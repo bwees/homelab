@@ -21,3 +21,12 @@ build-custom-images:
         -f Dockerfile.n8n-runner \
         -t ghcr.io/bwees/homelab/n8n-runner:latest \
         -t ghcr.io/bwees/homelab/n8n-runner:`git rev-parse --short HEAD` .
+
+[working-directory: 'nixos']
+switch HOST USER="bwees":
+    nixos-rebuild switch \
+    --flake .#{{ HOST }} \
+    --target-host {{ USER }}@{{ HOST }} \
+    --build-host {{ USER }}@{{ HOST }} \
+    --use-remote-sudo \
+    --fast
