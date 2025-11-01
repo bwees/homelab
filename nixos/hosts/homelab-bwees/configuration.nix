@@ -13,6 +13,7 @@
     ../../lib/sanoid.nix
     ../../lib/tailscale.nix
     ../../lib/zfs_backup.nix
+    ../../lib/root_ca.nix
   ];
 
   system.stateVersion = "25.05";
