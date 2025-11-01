@@ -58,7 +58,7 @@ services:
   # used for getting container traffic to linode exit node
   # cursed fact: you must subnet route on the host at least one time for this to work
   exitnode:
-    image: tailscale/tailscale:v1.90.5
+    image: tailscale/tailscale:v1.90.6
     hostname: media_stack
     restart: unless-stopped
     healthcheck:
