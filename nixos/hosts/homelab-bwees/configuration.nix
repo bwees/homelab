@@ -14,6 +14,7 @@
     ../../lib/tailscale.nix
     ../../lib/zfs_backup.nix
     ../../lib/root_ca.nix
+    ../../lib/garbage_collect.nix
   ];
 
   system.stateVersion = "25.05";
