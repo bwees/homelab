@@ -22,6 +22,7 @@
   networking.hostName = "homelab-linode";
   services.tailscale.ip = "100.109.20.66";
   time.timeZone = "America/Chicago";
+
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 }

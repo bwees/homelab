@@ -24,11 +24,13 @@
   networking.hostName = "homelab-bwees";
   services.tailscale.ip = "100.65.90.4";
   networking.networkmanager.enable = true;
-  networking.hostId = "a183a60c"; # needed for zfs
   time.timeZone = "America/Chicago";
+
   services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
 
   # ZFS
+  networking.hostId = "a183a60c"; # needed for zfs
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
 
