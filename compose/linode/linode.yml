@@ -6,8 +6,8 @@ services:
     ports:
       - 100.109.20.66:80:80
       - 100.109.20.66:443:443
-      - 96.126.113.207:80:81
-      - 96.126.113.207:443:444
+      - 45.79.9.235:80:81
+      - 45.79.9.235:443:444
     command:
       - '--configFile=/etc/traefik/config.yml'
     volumes:
@@ -25,7 +25,7 @@ services:
     volumes:
       - /storage/uptimekuma:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/share/ca-certificates:/certs:ro
+      - /storage/traefik/certs:/certs:ro
     environment:
       - NODE_EXTRA_CA_CERTS=/certs/bwees-ca.crt
     entrypoint: 'node server/server.js'
@@ -114,7 +114,7 @@ services:
   #     - 'traefik.http.routers.derp.priority=110000'
 
   #   ports:
-  #     - "96.126.113.207:3478:3478/udp"
+  #     - "45.79.9.235:3478:3478/udp"
 
   beszel-agent:
     environment:

@@ -10,19 +10,15 @@
     ./hardware-configuration.nix
     ../../lib/base_packages.nix
     ../../lib/bwees.nix
+    ../../lib/docker.nix
+    ../../lib/garbage_collect.nix
+    ../../lib/root_ca.nix
     ../../lib/sanoid.nix
     ../../lib/tailscale.nix
     ../../lib/zfs_backup.nix
-    ../../lib/root_ca.nix
-    ../../lib/garbage_collect.nix
   ];
 
   system.stateVersion = "25.05";
-
-  # Boot Options
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  systemd.enableEmergencyMode = false;
 
   # Networking/Clock
   networking.hostName = "homelab-bwees";
@@ -44,7 +40,4 @@
   services.sanoid.datasets = {
     storage.useTemplate = [ "default" ];
   };
-
-  # Docker
-  virtualisation.docker.enable = true;
 }

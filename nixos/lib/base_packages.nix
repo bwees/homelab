@@ -11,4 +11,9 @@
     htop
     python314
   ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }

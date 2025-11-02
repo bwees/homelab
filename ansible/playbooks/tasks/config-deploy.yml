@@ -2,7 +2,7 @@
   block:
     - name: Find all service directories under configs/
       find:
-        paths: "../../configs"
+        paths: '../../configs'
         file_type: directory
         depth: 1
       delegate_to: localhost
@@ -10,45 +10,21 @@
 
     - name: Check if each service has host-specific config
       stat:
-        path: "{{ item.path }}/{{ deploy_source }}"
+        path: '{{ item.path }}/{{ deploy_source }}'
       delegate_to: localhost
       register: service_config
-      loop: "{{ service_dirs.files }}"
+      loop: '{{ service_dirs.files }}'
       loop_control:
-        label: "{{ item.path | basename }}"
+        label: '{{ item.path | basename }}'
 
     - name: Sync config files to host
       ansible.posix.synchronize:
-        src: "{{ item.item.path }}/{{ deploy_source }}/"        # local folder of configs
-        dest: "{{ deploy_dir }}/{{ item.item.path | basename }}/"      # destination on host
-        delete: true           # remove files not in src
+        src: '{{ item.item.path }}/{{ deploy_source }}/' # local folder of configs
+        dest: '{{ deploy_dir }}/{{ item.item.path | basename }}/' # destination on host
+        delete: true # remove files not in src
         recursive: true
-      loop: "{{ service_config.results }}"
+      loop: '{{ service_config.results }}'
       when: item.stat.exists
       loop_control:
-        label: "{{ item.item.path | basename }}"
+        label: '{{ item.item.path | basename }}'
       register: config_copy
-
-    - name: Restart bind if dns config changed
-      community.docker.docker_container:
-        name: '{{ deploy_source }}-bind9-1'
-        restart: true
-      when: >
-        config_copy.results
-        | selectattr('changed')
-        | selectattr('invocation.module_args.src', 'defined')
-        | selectattr('invocation.module_args.src', 'search', 'dns')
-        | list
-        | length > 0
-
-    - name: Restart traefik if config changed
-      community.docker.docker_container:
-        name: '{{ deploy_source }}-traefik-1'
-        restart: true
-      when: >
-        config_copy.results
-        | selectattr('changed')
-        | selectattr('invocation.module_args.src', 'defined')
-        | selectattr('invocation.module_args.src', 'search', 'traefik/config.yml')
-        | list
-        | length > 0
