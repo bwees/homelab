@@ -22,6 +22,7 @@
 
   # Networking/Clock
   networking.hostName = "homelab-bwees";
+  services.tailscale.ip = "100.65.90.4";
   networking.networkmanager.enable = true;
   networking.hostId = "a183a60c"; # needed for zfs
   time.timeZone = "America/Chicago";
