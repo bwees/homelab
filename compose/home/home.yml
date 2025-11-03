@@ -40,7 +40,6 @@ services:
     volumes:
       - /home/bwees/storage/jellyfin:/config
       - /home/bwees/nas-media:/media-library:ro
-      - /home/bwees/storage/transmission/downloads/jellyfin:/transmission:ro
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
     networks:
