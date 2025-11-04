@@ -1,0 +1,107 @@
+endpoints:
+  - name: homelab-bwees
+    group: lab
+    url: 'icmp://100.65.90.4'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: bwees-nas
+    group: lab
+    url: 'icmp://100.80.89.123'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: homelab-router
+    group: lab
+    url: 'icmp://100.85.70.91'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  # Services
+  - name: changedetection
+    group: lab
+    url: 'https://changedetection.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: git
+    group: lab
+    url: 'https://git.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: traefik
+    group: lab
+    url: 'https://lab.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 404'
+
+  - name: immich
+    group: lab
+    url: 'https://immich.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  # Media
+  - name: jellyfin
+    group: lab-media
+    url: 'https://jellyfin.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: jellyseer
+    group: lab-media
+    url: 'https://jellyseer.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: prowlarr
+    group: lab-media
+    url: 'https://prowlarr.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: bittorrent
+    group: lab-media
+    url: 'https://bittorrent.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: radarr
+    group: lab-media
+    url: 'https://radarr.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: sonarr
+    group: lab-media
+    url: 'https://sonarr.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: tdarr
+    group: lab-media
+    url: 'https://tdarr.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: exit-node
+    group: lab-media
+    url: 'icmp://100.107.103.20'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'

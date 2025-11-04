@@ -1,0 +1,14 @@
+endpoints:
+  - name: auth
+    group: maroonrides
+    url: 'https://auth.maroonrides.app/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: website
+    group: maroonrides
+    url: 'https://maroonrides.app/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'

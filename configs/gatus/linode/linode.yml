@@ -14,7 +14,8 @@ endpoints:
       - '[STATUS] == 200'
 
   - name: dns
-    url: '8.8.8.8' # Address of the DNS server to use
+    group: linode
+    url: '100.109.20.66' # Address of the DNS server to use
     dns:
       query-name: 'test.bwees.lab'
       query-type: 'A'

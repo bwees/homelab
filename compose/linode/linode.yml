@@ -45,7 +45,7 @@ services:
     image: ghcr.io/twin/gatus:v5.30.0
     volumes:
       - /home/bwees/deploy/gatus:/config
-      - /storage/gatus:/data
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     environment:
       - GATUS_CONFIG_PATH=/config
     networks:
