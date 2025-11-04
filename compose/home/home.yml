@@ -32,7 +32,7 @@ services:
       - '53:53/udp'
       - '53:53/tcp'
     volumes:
-      - /home/bwees/deploy/bind:/etc/bind
+      - /home/bwees/deploy/dns:/etc/bind
     restart: unless-stopped
 
   jellyfin:
