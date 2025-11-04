@@ -1,6 +1,6 @@
 alerting:
   discord:
-    webhook-url: ${GATUS_DISCORD_WEBHOOK}
+    webhook-url: $GATUS_DISCORD_WEBHOOK
     default-alert:
       description: 'Health Check Failed for [ENDPOINT_NAME]'
       send-on-resolved: true

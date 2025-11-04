@@ -1,0 +1,21 @@
+endpoints:
+  - name: immich
+    group: stepien
+    url: 'https://stepien-immich.bwees.io/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: nas
+    group: stepien
+    url: 'icmp://100.107.247.123'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: stepien-server
+    group: stepien
+    url: 'icmp://100.71.92.123'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'

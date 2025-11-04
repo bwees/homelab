@@ -1,2 +1,5 @@
 ui:
   default-sort-by: group
+
+client:
+  insecure: true

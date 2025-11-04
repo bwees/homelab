@@ -1,0 +1,37 @@
+endpoints:
+  - name: homelab-linode
+    group: linode
+    url: 'icmp://100.109.20.66'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: beszel
+    group: linode
+    url: 'https://beszel.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: dns
+    url: '8.8.8.8' # Address of the DNS server to use
+    dns:
+      query-name: 'test.bwees.lab'
+      query-type: 'A'
+    conditions:
+      - '[BODY] == 100.65.90.4'
+      - '[DNS_RCODE] == NOERROR'
+
+  - name: traefik
+    group: linode
+    url: 'https://linode.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 404'
+
+  - name: portainer
+    group: linode
+    url: 'https://lab.bwees.io/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
