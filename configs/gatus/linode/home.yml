@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: immich
     group: home
@@ -12,6 +14,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: abkk-drive
     group: home
@@ -19,6 +23,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: jellyfin
     group: home
@@ -26,6 +32,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: homeassistant
     group: home
@@ -33,6 +41,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: photoframe
     group: home
@@ -40,3 +50,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord

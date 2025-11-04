@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: website
     group: maroonrides
@@ -12,3 +14,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord

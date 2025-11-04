@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: nas
     group: stepien
@@ -12,6 +14,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: stepien-server
     group: stepien
@@ -19,3 +23,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord

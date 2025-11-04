@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: homeassistant
     group: starforge
@@ -12,6 +14,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: starforge-docker
     group: starforge
@@ -19,6 +23,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: starforge-pc
     group: starforge
@@ -26,3 +32,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord

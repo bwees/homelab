@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: bwees-nas
     group: lab
@@ -12,6 +14,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: homelab-router
     group: lab
@@ -19,6 +23,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   # Services
   - name: changedetection
@@ -27,6 +33,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: git
     group: lab
@@ -34,6 +42,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: traefik
     group: lab
@@ -41,6 +51,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 404'
+    alerts:
+      - type: discord
 
   - name: immich
     group: lab
@@ -48,6 +60,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   # Media
   - name: jellyfin
@@ -56,6 +70,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: jellyseer
     group: lab-media
@@ -63,6 +79,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: prowlarr
     group: lab-media
@@ -70,6 +88,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: bittorrent
     group: lab-media
@@ -77,6 +97,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: radarr
     group: lab-media
@@ -84,6 +106,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: sonarr
     group: lab-media
@@ -91,6 +115,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: tdarr
     group: lab-media
@@ -98,6 +124,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: exit-node
     group: lab-media
@@ -105,3 +133,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord

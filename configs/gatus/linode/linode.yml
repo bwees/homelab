@@ -5,6 +5,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
+    alerts:
+      - type: discord
 
   - name: beszel
     group: linode
@@ -12,6 +14,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
 
   - name: dns
     group: linode
@@ -22,6 +26,8 @@ endpoints:
     conditions:
       - '[BODY] == 100.65.90.4'
       - '[DNS_RCODE] == NOERROR'
+    alerts:
+      - type: discord
 
   - name: traefik
     group: linode
@@ -29,6 +35,8 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 404'
+    alerts:
+      - type: discord
 
   - name: portainer
     group: linode
@@ -36,3 +44,5 @@ endpoints:
     interval: 1m
     conditions:
       - '[STATUS] == 200'
+    alerts:
+      - type: discord
