@@ -1,0 +1,28 @@
+endpoints:
+  - name: nvr
+    group: starforge
+    url: 'https://cam.starforgefoundry.com/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: homeassistant
+    group: starforge
+    url: 'https://hass.starforgefoundry.com/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: starforge-docker
+    group: starforge
+    url: 'icmp://100.125.29.116'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: starforge-pc
+    group: starforge
+    url: 'icmp://100.107.152.48'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'

@@ -1,0 +1,42 @@
+endpoints:
+  - name: homelab-home
+    group: home
+    url: 'icmp://100.78.133.134'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: immich
+    group: home
+    url: 'http://immich.bwees.home'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: abkk-drive
+    group: home
+    url: 'icmp://100.125.237.53'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+
+  - name: jellyfin
+    group: home
+    url: 'http://jellyfin.bwees.home'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: homeassistant
+    group: home
+    url: 'https://hass.bwees.io'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+
+  - name: photoframe
+    group: home
+    url: 'http://frame.bwees.home'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'

@@ -38,9 +38,25 @@ services:
       - 'traefik.http.routers.uptimekuma.rule=Host(`kuma.bwees.lab`)'
       - 'traefik.http.routers.uptimekuma.service=uptimekuma'
       - 'traefik.http.routers.uptimekuma.entrypoints=privatesecure'
-      - 'traefik.http.routers.uptimekuma.tls=true'
 
     restart: unless-stopped
+
+  gatus:
+    image: ghcr.io/twin/gatus:v5.30.0
+    volumes:
+      - /home/bwees/deploy/gatus:/config
+      - /storage/gatus:/data
+    environment:
+      - GATUS_CONFIG_PATH=/config
+    networks:
+      - traefik_backend
+    restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.gatus.loadbalancer.server.port=8080'
+      - 'traefik.http.routers.gatus.rule=Host(`gatus.bwees.lab`)'
+      - 'traefik.http.routers.gatus.service=gatus'
+      - 'traefik.http.routers.gatus.entrypoints=privatesecure'
 
   bind9:
     image: ubuntu/bind9:9.18-24.04_beta
@@ -66,7 +82,6 @@ services:
       - 'traefik.http.routers.portainer.rule=Host(`lab.bwees.io`)'
       - 'traefik.http.routers.portainer.service=portainer'
       - 'traefik.http.routers.portainer.entrypoints=publicsecure'
-      - 'traefik.http.routers.portainer.tls=true'
 
   beszel:
     image: henrygd/beszel:0.15.3
@@ -84,7 +99,6 @@ services:
       - 'traefik.http.routers.beszel.rule=Host(`beszel.bwees.lab`)'
       - 'traefik.http.routers.beszel.service=beszel'
       - 'traefik.http.routers.beszel.entrypoints=privatesecure'
-      - 'traefik.http.routers.beszel.tls=true'
 
   # derp:
   #   image: ghcr.io/fredliang44/derper:v1.88.3
