@@ -173,7 +173,7 @@ services:
     # Traefik config defined at exitnode
 
   sonarr:
-    image: ghcr.io/linuxserver/sonarr:4.0.15
+    image: ghcr.io/linuxserver/sonarr:4.0.16
     environment:
       - PUID=1000
       - PGID=1000
