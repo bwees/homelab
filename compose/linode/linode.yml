@@ -84,7 +84,7 @@ services:
       - 'traefik.http.routers.portainer.entrypoints=publicsecure'
 
   beszel:
-    image: henrygd/beszel:0.15.4
+    image: henrygd/beszel:0.16.0
     restart: unless-stopped
     volumes:
       - /storage/beszel:/beszel_data
