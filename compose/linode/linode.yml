@@ -20,27 +20,6 @@ services:
       - traefik_backend
     restart: unless-stopped
 
-  uptimekuma:
-    image: louislam/uptime-kuma:2.0.2
-    volumes:
-      - /storage/uptimekuma:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /storage/traefik/certs:/certs:ro
-    environment:
-      - NODE_EXTRA_CA_CERTS=/certs/bwees-ca.crt
-    entrypoint: 'node server/server.js'
-    networks:
-      - traefik_backend
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.uptimekuma.loadbalancer.server.port=3001'
-
-      - 'traefik.http.routers.uptimekuma.rule=Host(`kuma.bwees.lab`)'
-      - 'traefik.http.routers.uptimekuma.service=uptimekuma'
-      - 'traefik.http.routers.uptimekuma.entrypoints=privatesecure'
-
-    restart: unless-stopped
-
   gatus:
     image: ghcr.io/twin/gatus:v5.31.0
     volumes:
