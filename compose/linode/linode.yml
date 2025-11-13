@@ -45,16 +45,18 @@ services:
     image: ghcr.io/twin/gatus:v5.31.0
     volumes:
       - /home/bwees/deploy/gatus:/config
+      - /storage/gatus:/data
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     environment:
       - GATUS_CONFIG_PATH=/config
+      - GATUS_DISCORD_WEBHOOK=${GATUS_DISCORD_WEBHOOK}
     networks:
       - traefik_backend
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.gatus.loadbalancer.server.port=8080'
-      - 'traefik.http.routers.gatus.rule=Host(`gatus.bwees.lab`)'
+      - 'traefik.http.routers.gatus.rule=Host(`monitor.bwees.lab`)'
       - 'traefik.http.routers.gatus.service=gatus'
       - 'traefik.http.routers.gatus.entrypoints=privatesecure'
 

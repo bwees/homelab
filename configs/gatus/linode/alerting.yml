@@ -1,9 +1,9 @@
 alerting:
   discord:
-    webhook-url: $GATUS_DISCORD_WEBHOOK
+    webhook-url: '${GATUS_DISCORD_WEBHOOK}'
     default-alert:
       enable: true
-      description: 'Health Check Failed for [ENDPOINT_NAME]'
+      title: 'Monitoring Alert: {{ trigger.event.data.event_data.endpoint }}'
       send-on-resolved: true
-      failure-threshold: 5
-      success-threshold: 5
+      failure-threshold: 3
+      success-threshold: 2
