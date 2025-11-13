@@ -81,36 +81,6 @@ services:
       - 'traefik.http.routers.beszel.service=beszel'
       - 'traefik.http.routers.beszel.entrypoints=privatesecure'
 
-  # derp:
-  #   image: ghcr.io/fredliang44/derper:v1.88.3
-  #   restart: unless-stopped
-  #   environment:
-  #     DERP_DOMAIN: derp.bwees.io
-  #     DERP_VERIFY_CLIENTS: "true"
-  #   volumes:
-  #     - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
-  #     - /app/certs:/storage/derp
-  #   networks:
-  #     - traefik_backend
-  #   labels:
-  #     - 'traefik.enable=true'
-  #     - 'traefik.tcp.services.derp-tls.loadbalancer.server.port=443'
-
-  #     - 'traefik.tcp.routers.derp-tls.rule=HostSNI(`derp.bwees.io`)'
-  #     - 'traefik.tcp.routers.derp-tls.service=derp-tls'
-  #     - 'traefik.tcp.routers.derp-tls.entrypoints=publicsecure'
-  #     - 'traefik.tcp.routers.derp-tls.tls.passthrough=true'
-
-  #     - 'traefik.http.services.derp-http.loadbalancer.server.port=80'
-
-  #     - 'traefik.http.routers.derp.rule=Host(`derp.bwees.io`)'
-  #     - 'traefik.http.routers.derp.service=derp-http'
-  #     - 'traefik.http.routers.derp.entrypoints=public'
-  #     - 'traefik.http.routers.derp.priority=110000'
-
-  #   ports:
-  #     - "45.79.9.235:3478:3478/udp"
-
   beszel-agent:
     environment:
       KEY: ${BESZEL_KEY}
