@@ -1,0 +1,36 @@
+networks:
+  linode_traefik_backend:
+    external: true
+  backend:
+
+services:
+  bugsink:
+    image: bugsink/bugsink
+    environment:
+      - BASE_URL=https://bugsink.maroonrides.app
+      - BEHIND_HTTPS_PROXY=True
+      - SECRET_KEY=${BUGSINK_SECRET_KEY}
+      - DATABASE_URL=postgresql://bugsink:${BUGSINK_PG_PASSWORD}@postgres:5432/bugsink
+    networks:
+      - linode_traefik_backend
+      - backend
+    restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.bugsink.loadbalancer.server.port=8000'
+      - 'traefik.http.routers.bugsink.rule=Host(`bugsink.maroonrides.app`)'
+      - 'traefik.http.routers.bugsink.service=bugsink'
+      - 'traefik.http.routers.bugsink.entrypoints=publicsecure'
+      - 'traefik.docker.network=linode_traefik_backend'
+
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bugsink
+      POSTGRES_PASSWORD: ${BUGSINK_PG_PASSWORD}
+      POSTGRES_DB: bugsink
+    networks:
+      - backend
+    volumes:
+      - /storage/maroonrides/postgres:/var/lib/postgresql
