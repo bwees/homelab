@@ -17,6 +17,15 @@
   },
   "packageRules": [
     {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+
+    // Ignore rules
+    {
       "description": "Linuxserver ignore qBittorrent old ubuntu versions. Originally tagged based on the ubuntu image they based on which triggers renovatebot.",
       "matchPackageNames": [
         "linuxserver/qbittorrent"
@@ -35,21 +44,18 @@
         "docker"
       ],
       "matchPackageNames": [
-        "docker.io/redis",
-        "docker.io/tensorchord/pgvecto-rs"
+        "docker.io/valkey/valkey",
+        "ghcr.io/immich-app/postgres"
       ],
       "matchFileNames": [
-        "compose/lab/immich.yml"
+        "compose/lab/immich.yml",
+        "compose/home/immich.yml",
+        "compose/stepien/immich.yml"
       ],
       "enabled": false
     },
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true
-    },
+
+    // Groups
     {
       "matchDatasources": [
         "docker"
