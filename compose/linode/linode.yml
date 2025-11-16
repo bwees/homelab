@@ -35,7 +35,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.gatus.loadbalancer.server.port=8080'
-      - 'traefik.http.routers.gatus.rule=Host(`monitor.bwees.lab`)'
+      - 'traefik.http.routers.gatus.rule=Host(`status.bwees.lab`)'
       - 'traefik.http.routers.gatus.service=gatus'
       - 'traefik.http.routers.gatus.entrypoints=privatesecure'
 
