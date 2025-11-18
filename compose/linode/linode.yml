@@ -14,8 +14,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /storage/traefik/certs:/etc/traefik/certs:ro
       - /storage/traefik/acme.json:/etc/traefik/acme.json
-      - /home/bwees/deploy/traefik/dynamic:/dynamic
-      - /home/bwees/deploy/traefik/config.yml:/etc/traefik/config.yml:ro
+      - /home/bwees/deploy/config/traefik/dynamic:/dynamic
+      - /home/bwees/deploy/config/traefik/config.yml:/etc/traefik/config.yml:ro
     networks:
       - traefik_backend
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
   gatus:
     image: ghcr.io/twin/gatus:v5.32.0
     volumes:
-      - /home/bwees/deploy/gatus:/config
+      - /home/bwees/deploy/config/gatus:/config
       - /storage/gatus:/data
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     environment:
@@ -45,7 +45,7 @@ services:
       - 100.109.20.66:53:53/udp
       - 100.109.20.66:53:53/tcp
     volumes:
-      - /home/bwees/deploy/dns:/etc/bind
+      - /home/bwees/deploy/config/dns:/etc/bind
     restart: unless-stopped
 
   portainer:
