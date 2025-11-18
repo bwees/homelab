@@ -1,4 +1,4 @@
 collections:
   - name: https://github.com/bwees/deploy.git
     type: git
-    version: main
+    version: v1.0.0
