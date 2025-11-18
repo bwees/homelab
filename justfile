@@ -28,3 +28,6 @@ switch HOST USER="bwees":
     --build-host {{ USER }}@{{ HOST }} \
     --use-remote-sudo \
     --fast
+
+collection:
+  ansible-galaxy collection install -r ansible/requirements.yml
