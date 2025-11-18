@@ -2,4 +2,4 @@ collections:
   - name: bwees.deploy
     type: git
     source: https://github.com/bwees/deploy.git
-    version: v1.0.0
+    version: 1.0.1
