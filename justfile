@@ -11,7 +11,7 @@ _cleanup_secrets:
 deploy HOST="all:!homelab-router":
     @just _resolve_secrets
 
-    ansible-playbook playbooks/deploy.yml --limit {{ HOST }}
+    ansible-playbook deploy.yml --limit {{ HOST }} -vvvvv
     
     @just _cleanup_secrets
 
