@@ -81,6 +81,9 @@ jobs:
           op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key?ssh-format=openssh" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+
       - name: Deploy playbook
         run: just deploy
         env:

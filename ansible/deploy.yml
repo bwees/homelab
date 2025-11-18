@@ -4,7 +4,7 @@
   roles:
     - role: bwees.deploy.deploy_host
       vars:
-        deploy_dest: '{{ deployment_location | default("/home/" + ansible_ssh_user + "/deploy2-electric_boogaloo") }}'
+        deploy_dest: '{{ deployment_location | default("/home/" + ansible_ssh_user + "/deploy") }}'
         compose_src: '../compose/{{ deploy_source }}'
         config_src: '../configs/'
         secret_src: './secrets.resolved.yml'
