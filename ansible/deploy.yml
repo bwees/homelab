@@ -7,7 +7,7 @@
         deploy_dest: '{{ deployment_location | default("/home/" + ansible_ssh_user + "/deploy") }}'
         compose_src: '../compose/{{ deploy_source }}'
         config_src: '../configs/'
-        secret_src: './secrets.resolved.yml'
+        secret_src: '../secrets.resolved.yml'
         config_mode: 'multi_host'
         host_folder: '{{ deploy_source }}'
         secret_groups:
