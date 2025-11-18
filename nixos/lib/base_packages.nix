@@ -10,6 +10,7 @@
     wget
     htop
     python314
+    git
   ];
 
   nix.settings.experimental-features = [

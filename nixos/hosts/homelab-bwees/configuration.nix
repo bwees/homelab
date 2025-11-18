@@ -43,4 +43,12 @@
   services.sanoid.datasets = {
     storage.useTemplate = [ "default" ];
   };
+
+  # nix-ld for vscode server
+  programs.nix-ld.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    gcc14
+    gnumake
+  ];
 }
