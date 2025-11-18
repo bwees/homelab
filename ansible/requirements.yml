@@ -1,4 +1,5 @@
 collections:
-  - name: https://github.com/bwees/deploy.git
+  - name: bwees.deploy
     type: git
+    source: https://github.com/bwees/deploy.git
     version: v1.0.0
