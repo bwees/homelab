@@ -18,7 +18,7 @@ jobs:
       tailscale-acl: ${{ steps.changes.outputs.tailscale-acl }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: dorny/paths-filter@v3
         id: changes
@@ -38,7 +38,7 @@ jobs:
     if: needs.detect-changes.outputs.images == 'true'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: jdx/mise-action@v3
 
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: jdx/mise-action@v3
 
@@ -94,7 +94,7 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.tailscale-acl == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Deploy ACL
         uses: tailscale/gitops-acl-action@v1
