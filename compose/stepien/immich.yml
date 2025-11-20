@@ -28,7 +28,7 @@ x-nas-library: &nas-library
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v2.3.0
+    image: ghcr.io/immich-app/immich-server:v2.3.1
     devices:
       - /dev/dri:/dev/dri
     volumes:
@@ -58,7 +58,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:v2.3.0
+    image: ghcr.io/immich-app/immich-machine-learning:v2.3.1
     device_cgroup_rules:
       - 'c 189:* rmw'
     devices:
