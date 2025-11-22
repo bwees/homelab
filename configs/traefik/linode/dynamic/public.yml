@@ -25,9 +25,9 @@ http:
         - public
         - publicsecure
 
-    imretro:
-      rule: 'Host(`imretro.bwees.io`)'
-      service: homelab-bwees
+    album:
+      rule: 'Host(`album.bwees.io`)'
+      service: homelab-home
       entryPoints:
         - public
         - publicsecure

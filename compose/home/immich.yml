@@ -30,7 +30,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.immich.loadbalancer.server.port=2283'
-      - 'traefik.http.routers.immich.rule=Host(`immich.bwees.home`)'
+      - 'traefik.http.routers.immich.rule=Host(`immich.bwees.home`) || Host(`album.bwees.io`)'
       - 'traefik.http.routers.immich.service=immich'
       - 'traefik.http.routers.immich.entrypoints=web'
       - 'traefik.docker.network=home_traefik_backend'
