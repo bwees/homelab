@@ -14,6 +14,7 @@
     ../../lib/garbage_collect.nix
     ../../lib/root_ca.nix
     ../../lib/tailscale.nix
+    ../../lib/build_receiver.nix
   ];
 
   system.stateVersion = "25.05"; # Did you read the comment?

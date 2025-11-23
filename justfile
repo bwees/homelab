@@ -8,10 +8,9 @@ _cleanup_secrets:
     @rm -f secrets.resolved.yml
 
 [working-directory: 'ansible']
-deploy HOST="all:!homelab-router":
-    @just _resolve_secrets
+deploy HOST="all:!homelab-router": _resolve_secrets &&  _cleanup_secrets
+    exit 1
     ansible-playbook deploy.yml --limit {{ HOST }}
-    @just _cleanup_secrets
 
 [working-directory: 'images']
 build-custom-images:
@@ -22,12 +21,16 @@ build-custom-images:
 
 [working-directory: 'nixos']
 switch HOST USER="bwees":
+    #!/bin/bash
+    build_target=`jq -r '."homelab-linode"' build-hosts.json`
+    echo "Using build host: ${build_target}"
     nixos-rebuild switch \
-    --flake .#{{ HOST }} \
-    --target-host {{ USER }}@{{ HOST }} \
-    --build-host {{ USER }}@{{ HOST }} \
-    --use-remote-sudo \
-    --fast
+        --flake .#"{{HOST}}" \
+        --target-host "{{USER}}@{{HOST}}" \
+        --build-host "{{USER}}@${build_target:-{{HOST}}}" \
+        --use-remote-sudo \
+        --fast
+
 
 collection:
   ansible-galaxy collection install -r ansible/requirements.yml
