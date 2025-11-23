@@ -29,3 +29,20 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+
+  tailscale:
+    image: ghcr.io/tailscale/tailscale:v1.90.8
+    network_mode: host
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /mnt/main/homelab/nas-tailscale:/var/lib/tailscale
+    environment:
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_ACCEPT_DNS: 'false'
+      TS_HOSTNAME: bwees-nas
+    restart: unless-stopped
