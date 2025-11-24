@@ -143,6 +143,9 @@ services:
       - N8N_RUNNERS_AUTH_TOKEN=testsecret
       - N8N_NATIVE_PYTHON_RUNNER=true
       - N8N_RUNNERS_TASK_TIMEOUT=3600
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=24
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=none
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.n8n.loadbalancer.server.port=5678'
