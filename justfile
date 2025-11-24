@@ -9,7 +9,6 @@ _cleanup_secrets:
 
 [working-directory: 'ansible']
 deploy HOST="all:!homelab-router": _resolve_secrets &&  _cleanup_secrets
-    exit 1
     ansible-playbook deploy.yml --limit {{ HOST }}
 
 [working-directory: 'images']
