@@ -22,12 +22,12 @@ build-custom-images:
 [working-directory: 'nixos']
 switch HOST USER="bwees":
     #!/bin/bash
-    build_target=`jq -r '."homelab-linode"' build-hosts.json`
+    build_target=`jq -r '."{{HOST}}" // "{{HOST}}"' build-hosts.json`
     echo "Using build host: ${build_target}"
     nixos-rebuild switch \
         --flake .#"{{HOST}}" \
         --target-host "{{USER}}@{{HOST}}" \
-        --build-host "{{USER}}@${build_target:-{{HOST}}}" \
+        --build-host "{{USER}}@${build_target}" \
         --use-remote-sudo \
         --fast
 
