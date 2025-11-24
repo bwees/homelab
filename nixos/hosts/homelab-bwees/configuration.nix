@@ -16,6 +16,7 @@
     ../../lib/sanoid.nix
     ../../lib/tailscale.nix
     ../../lib/zfs_backup.nix
+    ../../lib/build_sender.nix
   ];
 
   system.stateVersion = "25.05";
@@ -50,13 +51,5 @@
   environment.systemPackages = with pkgs; [
     gcc14
     gnumake
-  ];
-
-  # used for logging in to transfer builds
-  services.openssh.hostKeys = [
-    {
-      path = "/root/.ssh/build_ed25519_key";
-      type = "ed25519";
-    }
   ];
 }
