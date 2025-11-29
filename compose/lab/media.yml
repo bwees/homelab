@@ -259,7 +259,7 @@ services:
       - /dev/dri:/dev/dri
 
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:v3.4.5
+    image: ghcr.io/flaresolverr/flaresolverr:v3.4.6
     restart: unless-stopped
     network_mode: service:exitnode
     depends_on:
