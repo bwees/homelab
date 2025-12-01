@@ -92,6 +92,23 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  github-readme-stats-docker:
+    image: crusaders/github-readme-stats-docker:latest
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      - GITHUB_USER=bwees
+      - GITHUB_TOKEN=${GITHUB_STATS_TOKEN}
+    networks:
+      - traefik_backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.readmestats.loadbalancer.server.port=80'
+
+      - 'traefik.http.routers.readmestats.rule=Host(`stats.bwees.io`)'
+      - 'traefik.http.routers.readmestats.service=readmestats'
+      - 'traefik.http.routers.readmestats.entrypoints=publicsecure'
+
 networks:
   traefik_backend:
     driver: bridge
