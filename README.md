@@ -38,4 +38,8 @@ This year I decided to try and automate some of the tasks in my lab with Ansible
 
 ### Secret Management
 
-Secrets are stored in 1Password, with their 1Password URIs configured in `ansible/secrets.yml`. Secrets are injected into the YAML with 1Password CLI, loaded into Ansible as a resource, and rendered out to individual env files for each host.
+Secrets are stored in 1Password, with their 1Password URIs configured in `ansible/secrets.yml`. Secrets are injected into the YAML with 1Password CLI, loaded into Ansible as a resource, and rendered out to individual env files for each host. This will likely change to dynamically generated from structured JSON from 1Password CLI in the future.
+
+```
+op item get "22ob5hftm6f5xo3miwyem6ucpe" --format json
+```
