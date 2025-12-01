@@ -46,3 +46,11 @@ services:
       TS_ACCEPT_DNS: 'false'
       TS_HOSTNAME: bwees-nas
     restart: unless-stopped
+
+  locplace-scanner:
+    image: ghcr.io/locplace/scanner:main
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      - COORDINATOR_URL=https://loc.place
+      - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}
