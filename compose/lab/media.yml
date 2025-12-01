@@ -275,3 +275,4 @@ services:
     environment:
       - COORDINATOR_URL=https://loc.place
       - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN_1}
+      - WORKER_COUNT=50

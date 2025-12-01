@@ -39,4 +39,5 @@ services:
     restart: unless-stopped
     environment:
       - COORDINATOR_URL=https://loc.place
+      - WORKER_COUNT=50
       - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}
