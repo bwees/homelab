@@ -34,7 +34,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   locplace-scanner:
-    image: ghcr.io/locplace/scanner:main
+    image: ghcr.io/locplace/scanner:0.1.0
     pull_policy: always
     restart: unless-stopped
     environment:
