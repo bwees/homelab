@@ -32,3 +32,11 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  locplace-scanner:
+    image: ghcr.io/locplace/scanner:main
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      - COORDINATOR_URL=https://loc.place
+      - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}

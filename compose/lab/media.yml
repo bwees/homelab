@@ -264,3 +264,14 @@ services:
     network_mode: service:exitnode
     depends_on:
       - exitnode
+
+  locplace-scanner:
+    image: ghcr.io/locplace/scanner:main
+    pull_policy: always
+    restart: unless-stopped
+    network_mode: service:exitnode
+    depends_on:
+      - exitnode
+    environment:
+      - COORDINATOR_URL=https://loc.place
+      - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}

@@ -109,6 +109,14 @@ services:
       - 'traefik.http.routers.readmestats.service=readmestats'
       - 'traefik.http.routers.readmestats.entrypoints=publicsecure'
 
+  locplace-scanner:
+    image: ghcr.io/locplace/scanner:main
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      - COORDINATOR_URL=https://loc.place
+      - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}
+
 networks:
   traefik_backend:
     driver: bridge
