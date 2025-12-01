@@ -110,7 +110,7 @@ services:
       - 'traefik.http.routers.readmestats.entrypoints=publicsecure'
 
   locplace-scanner:
-    image: ghcr.io/locplace/scanner:0.2.0
+    image: ghcr.io/locplace/scanner:0.2.1
     pull_policy: always
     restart: unless-stopped
     environment:
