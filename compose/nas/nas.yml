@@ -11,7 +11,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   syncthing:
-    image: syncthing/syncthing:2.0.11
+    image: syncthing/syncthing:2.0.12
     environment:
       - PUID=3000
       - PGID=3000
