@@ -93,12 +93,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   locplace-scanner:
-    image: ghcr.io/locplace/scanner:0.2.2
+    image: ghcr.io/locplace/scanner:0.3.1
     pull_policy: always
     restart: unless-stopped
     environment:
       - COORDINATOR_URL=https://loc.place
-      - WORKER_COUNT=250
+      - WORKER_COUNT=50
       - SCANNER_TOKEN=${LOCPLACE_SCANNER_TOKEN}
 
 networks:
