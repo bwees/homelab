@@ -34,3 +34,23 @@ endpoints:
       - '[CONNECTED] == true'
     alerts:
       - type: discord
+
+  - name: website
+    group: starforge
+    url: 'https://starforgefoundry.com/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
+  - name: api
+    group: starforge
+    url: 'https://api.starforgefoundry.com/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 404'
+      - '[BODY].status == 404'
+      - '[BODY].error == Not Found'
+    alerts:
+      - type: discord
