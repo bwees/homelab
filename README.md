@@ -1,6 +1,6 @@
 # Homelab
 
-This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All compute machines (excluding appliance devices like NAS and Homelab Router) run on Ubuntu 24.04 and use Docker for application deployment.
+This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All compute machines (excluding appliance devices like NAS and Homelab Router) run on a mix of NixOS/Ubuntu 24.04 and use Docker for application deployment.
 
 ## Hosts
 
@@ -9,10 +9,9 @@ This repository houses the infrastructure configuration files (docker-compose) f
 - Home (homelab-home)
   - This machine stays at my parent's house and provides Home Assistant, Jellyfin, and a few other services.
 - Linode (homelab-linode)
-  - This is a Linode VPS (1 CPU, 1GB RAM) that provides a Tailscale Exit Node for the media stack and hosts some mission critical services.
+  - This is a Linode VPS (1 CPU, 1GB RAM) that provides mission critical services as well as being the entrypoint for all public traffic. Once public traffic hits homelab-linode, it is routed via Traefik to the destination host over Tailscale. This is similar to Cloudflare Tunnels and Pangolin based approaches.
 - NAS (bwees-nas)
-  - This is my main TrueNAS SCALE server. This repo manages the docker containers that run via SCALE's app system.
-  - Credentials are handled via Jinja2 templating instead of env variables since SCALE does not support docker-compose deployment.
+  - This is my main TrueNAS SCALE server. I use docker directly on the host rather than the Apps interface in TrueNAS. This is for consistency reasons so the deployment is the same as other hosts.
 - Homelab Router (homelab-router)
   - This is a Unifi Express 7. Under the hood it runs debian and thus can be controlled quite easily with Ansible.
 
@@ -38,8 +37,5 @@ This year I decided to try and automate some of the tasks in my lab with Ansible
 
 ### Secret Management
 
-Secrets are stored in 1Password, with their 1Password URIs configured in `ansible/secrets.yml`. Secrets are injected into the YAML with 1Password CLI, loaded into Ansible as a resource, and rendered out to individual env files for each host. This will likely change to dynamically generated from structured JSON from 1Password CLI in the future.
+Secrets are stored in 1Password for security and CI/CD. Secrets are dumped via `op item get` as JSON, parsed, and rendered out to individual env files for each host.
 
-```
-op item get "22ob5hftm6f5xo3miwyem6ucpe" --format json
-```
