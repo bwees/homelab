@@ -8,7 +8,8 @@
         deploy_dest: '{{ deployment_location | default("/home/" + ansible_ssh_user + "/deploy") }}'
         compose_src: '../compose/{{ deploy_source }}'
         config_src: '../configs/'
-        secret_src: '../secrets.resolved.yml'
+        op_secret_uuid: '22ob5hftm6f5xo3miwyem6ucpe'
+        op_secret_vault: 'pkijqyttxmpkde5kw53lursdva'
         config_mode: 'multi_host'
         secret_groups:
           - '{{ deploy_source }}'

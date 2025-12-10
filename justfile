@@ -1,14 +1,7 @@
 
-[private]
-_resolve_secrets:
-    @op inject -i "secrets.yml" -o "secrets.resolved.yml" -f
-
-[private]
-_cleanup_secrets:
-    @rm -f secrets.resolved.yml
 
 [working-directory: 'ansible']
-deploy HOST="all:!homelab-router": _resolve_secrets &&  _cleanup_secrets
+deploy HOST="all:!homelab-router":
     ansible-playbook deploy.yml --limit {{ HOST }}
 
 [working-directory: 'images']
@@ -29,7 +22,6 @@ switch HOST USER="bwees":
         --build-host "{{USER}}@${build_target}" \
         --use-remote-sudo \
         --fast
-
 
 collection:
   ansible-galaxy collection install -r ansible/requirements.yml
