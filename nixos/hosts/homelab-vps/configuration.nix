@@ -21,11 +21,16 @@
 
   # Networking/Clock
   networking.hostName = "homelab-vps";
-  services.tailscale.ip = "100.105.77.106";
   time.timeZone = "America/Chicago";
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
+
+  services.tailscale.ip = "100.105.77.106";
+  services.tailscale.extraUpFlags = [
+    "--advertise-exit-node"
+    "--accept-routes"
+  ];
 
   networking.firewall.interfaces."enp6s16".allowedTCPPorts = [
     80
