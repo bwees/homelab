@@ -26,4 +26,9 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
+
+  networking.firewall.interfaces."enp6s16".allowedTCPPorts = [
+    80
+    443
+  ];
 }

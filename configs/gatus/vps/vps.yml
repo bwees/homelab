@@ -1,7 +1,7 @@
 endpoints:
-  - name: homelab-linode
-    group: linode
-    url: 'icmp://100.109.20.66'
+  - name: homelab-vps
+    group: vps
+    url: 'icmp://100.105.77.106'
     interval: 1m
     conditions:
       - '[CONNECTED] == true'
@@ -9,7 +9,7 @@ endpoints:
       - type: discord
 
   - name: beszel
-    group: linode
+    group: vps
     url: 'https://beszel.bwees.lab/'
     interval: 1m
     conditions:
@@ -18,8 +18,8 @@ endpoints:
       - type: discord
 
   - name: dns
-    group: linode
-    url: '100.109.20.66' # Address of the DNS server to use
+    group: vps
+    url: '100.105.77.106' # Address of the DNS server to use
     dns:
       query-name: 'test.bwees.lab'
       query-type: 'A'
@@ -30,8 +30,8 @@ endpoints:
       - type: discord
 
   - name: traefik
-    group: linode
-    url: 'https://linode.bwees.lab/'
+    group: vps
+    url: 'https://vps.bwees.lab/'
     interval: 1m
     conditions:
       - '[STATUS] == 404'
@@ -39,7 +39,7 @@ endpoints:
       - type: discord
 
   - name: portainer
-    group: linode
+    group: vps
     url: 'https://lab.bwees.io/'
     interval: 1m
     conditions:

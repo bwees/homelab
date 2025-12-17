@@ -6,12 +6,12 @@ providers:
     exposedByDefault: false
     network: traefik_backend
   file:
-    directory: /dynamic
+    directory: /etc/traefik/config/dynamic
     watch: true
 
 entryPoints:
   web:
-    address: ":80"
+    address: ':80'
     http:
       redirections:
         entryPoint:
@@ -20,6 +20,6 @@ entryPoints:
           permanent: true
 
   websecure:
-    address: ":443"
+    address: ':443'
     http:
       tls: {}

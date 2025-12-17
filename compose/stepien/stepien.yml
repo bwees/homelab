@@ -11,13 +11,13 @@ services:
   traefik:
     image: traefik:v3.6.5
     command:
-      - '--configFile=/etc/traefik/config.yml'
+      - '--configFile=/etc/traefik/config/config.yml'
     ports:
       - 80:80
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/deploy/config/traefik/config.yml:/etc/traefik/config.yml:ro
+      - /home/bwees/deploy/config/traefik:/etc/traefik/config
     networks:
       - traefik_backend
     restart: unless-stopped

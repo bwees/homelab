@@ -14,12 +14,12 @@ all:
       vars:
         deploy_source: home
 
-    linode:
+    vps:
       hosts:
-        homelab-linode:
+        homelab-vps:
           ansible_ssh_user: bwees
       vars:
-        deploy_source: linode
+        deploy_source: vps
 
     router:
       hosts:

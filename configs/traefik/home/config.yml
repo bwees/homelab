@@ -6,9 +6,9 @@ providers:
     exposedByDefault: false
     network: traefik_backend
   file:
-    directory: /dynamic
+    directory: /etc/traefik/config/dynamic
     watch: true
 
 entryPoints:
   web:
-    address: ":80"
+    address: ':80'

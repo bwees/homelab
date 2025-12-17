@@ -22,7 +22,7 @@ services:
       - 80:80
       - 443:443
     command:
-      - '--configFile=/etc/traefik/config.yml'
+      - '--configFile=/etc/traefik/config/config.yml'
     labels:
       # Dashboard
       - 'traefik.enable=true'
@@ -36,8 +36,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/bwees/deploy/config/traefik/dynamic:/dynamic
-      - /home/bwees/deploy/config/traefik/config.yml:/etc/traefik/config.yml:ro
+      - /home/bwees/deploy/config/traefik:/etc/traefik/config
       - /storage/traefik/certs:/etc/traefik/certs:ro
     networks:
       - traefik_backend

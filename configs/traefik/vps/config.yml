@@ -3,7 +3,7 @@ providers:
     exposedByDefault: false
     network: traefik_backend
   file:
-    directory: /dynamic
+    directory: /etc/traefik/config/dynamic
     watch: true
 
 entryPoints:
@@ -36,11 +36,3 @@ entryPoints:
     address: ':444'
     http:
       tls: {}
-
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: brandonwees@gmail.com
-      storage: /etc/traefik/acme.json
-      httpChallenge:
-        entryPoint: public

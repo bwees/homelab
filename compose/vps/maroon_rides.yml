@@ -1,5 +1,5 @@
 networks:
-  linode_traefik_backend:
+  vps_traefik_backend:
     external: true
   backend:
 
@@ -12,7 +12,7 @@ services:
       - SECRET_KEY=${BUGSINK_SECRET_KEY}
       - DATABASE_URL=postgresql://bugsink:${BUGSINK_PG_PASSWORD}@postgres:5432/bugsink
     networks:
-      - linode_traefik_backend
+      - vps_traefik_backend
       - backend
     restart: unless-stopped
     labels:
@@ -21,7 +21,7 @@ services:
       - 'traefik.http.routers.bugsink.rule=Host(`bugsink.maroonrides.app`)'
       - 'traefik.http.routers.bugsink.service=bugsink'
       - 'traefik.http.routers.bugsink.entrypoints=publicsecure'
-      - 'traefik.docker.network=linode_traefik_backend'
+      - 'traefik.docker.network=vps_traefik_backend'
 
   postgres:
     image: postgres:18
