@@ -31,9 +31,4 @@
     "--advertise-exit-node"
     "--accept-routes"
   ];
-
-  networking.firewall.interfaces."enp6s16".allowedTCPPorts = [
-    80
-    443
-  ];
 }
