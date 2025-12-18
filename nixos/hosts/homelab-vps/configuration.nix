@@ -31,4 +31,11 @@
     "--advertise-exit-node"
     "--accept-routes"
   ];
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 4 * 1024; # 16 GB
+    }
+  ];
 }
