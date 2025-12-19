@@ -8,7 +8,7 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: bwees-nas
+  - name: homelab-nas
     group: lab
     url: 'icmp://100.80.89.123'
     interval: 1m

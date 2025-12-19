@@ -46,5 +46,5 @@ services:
     environment:
       TS_STATE_DIR: /var/lib/tailscale
       TS_ACCEPT_DNS: 'false'
-      TS_HOSTNAME: bwees-nas
+      TS_HOSTNAME: homelab-nas
     restart: unless-stopped

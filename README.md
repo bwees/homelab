@@ -10,7 +10,7 @@ This repository houses the infrastructure configuration files (docker-compose) f
   - This machine stays at my parent's house and provides Home Assistant, Jellyfin, and a few other services.
 - Linode (homelab-linode)
   - This is a Linode VPS (1 CPU, 1GB RAM) that provides mission critical services as well as being the entrypoint for all public traffic. Once public traffic hits homelab-linode, it is routed via Traefik to the destination host over Tailscale. This is similar to Cloudflare Tunnels and Pangolin based approaches.
-- NAS (bwees-nas)
+- NAS (homelab-nas)
   - This is my main TrueNAS SCALE server. I use docker directly on the host rather than the Apps interface in TrueNAS. This is for consistency reasons so the deployment is the same as other hosts.
 - Homelab Router (homelab-router)
   - This is a Unifi Express 7. Under the hood it runs debian and thus can be controlled quite easily with Ansible.
@@ -38,4 +38,3 @@ This year I decided to try and automate some of the tasks in my lab with Ansible
 ### Secret Management
 
 Secrets are stored in 1Password for security and CI/CD. Secrets are dumped via `op item get` as JSON, parsed, and rendered out to individual env files for each host.
-
