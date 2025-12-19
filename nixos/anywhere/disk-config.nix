@@ -1,5 +1,13 @@
 { lib, ... }:
 {
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 4 * 1024; # 4 GB
+    }
+  ];
+
   disko.devices = {
     disk.disk1 = {
       device = lib.mkDefault "/dev/sda";

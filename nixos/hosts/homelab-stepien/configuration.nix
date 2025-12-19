@@ -20,7 +20,7 @@
   system.stateVersion = "25.05";
 
   # Networking/Clock
-  networking.hostName = "homelab-vps";
+  networking.hostName = "homelab-stepien";
   time.timeZone = "America/New_York";
 
   services.openssh.enable = true;
