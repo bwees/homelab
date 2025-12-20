@@ -96,6 +96,6 @@ services:
       # Uncomment the DB_STORAGE_TYPE: 'HDD' var if your database isn't stored on SSDs
       # DB_STORAGE_TYPE: 'HDD'
     volumes:
-      - /home/bwees/immich/postgres:/var/lib/postgresql/data
+      - /storage/immich/postgres:/var/lib/postgresql/data
     shm_size: 128mb
     restart: unless-stopped
