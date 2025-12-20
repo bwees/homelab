@@ -19,7 +19,7 @@ endpoints:
 
   - name: stepien-server
     group: stepien
-    url: 'icmp://100.71.92.123'
+    url: 'icmp://100.81.233.29'
     interval: 1m
     conditions:
       - '[CONNECTED] == true'

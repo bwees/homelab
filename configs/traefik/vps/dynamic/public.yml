@@ -75,7 +75,7 @@ http:
     stepien-server:
       loadBalancer:
         servers:
-          - url: 'http://100.71.92.123'
+          - url: 'http://100.81.233.29'
 
     starforge-docker:
       loadBalancer:
