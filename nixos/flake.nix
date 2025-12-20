@@ -33,5 +33,12 @@
           ./hosts/homelab-vps/configuration.nix
         ];
       };
+      nixosConfigurations.stepien-server = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/stepien-server/configuration.nix
+        ];
+      };
     };
 }
