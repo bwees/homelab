@@ -18,10 +18,10 @@ Based on https://github.com/edouardparis/nixos-ovh-vps-example
 
 4. Copy the generated hardware config to `nixos/anywhere/hardware-configuration.nix`
 
-5. Verify the disk device names in `nixos/anywhere/disk-config.nix` are correct
+5. Verify the disk device names in `nixos/anywhere/disk-config.nix` are correct using `lsblk` on the target machine.
 
 6. `nix run github:nix-community/nixos-anywhere -- --flake .#machine root@<machine-ip>`
 
-7. Modify the justfile to point to the machine IP instead of `HOST`
+7. When creating the initial nixos config, use the local IP address of the machine as its name.
 
-8. `just switch <machine> root`
+8. `just switch <machine-ip> root`
