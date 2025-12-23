@@ -5,6 +5,6 @@
              2419200   ; expiry time
              604800)   ; maximum caching time in case of failed lookups
    IN NS     . 
-   IN A      100.78.133.134
+   IN A      100.101.55.71
 
-*  IN A      100.78.133.134 ; home
+*  IN A      100.101.55.71 ; home

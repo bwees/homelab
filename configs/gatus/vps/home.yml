@@ -1,7 +1,7 @@
 endpoints:
   - name: homelab-home
     group: home
-    url: 'icmp://100.78.133.134'
+    url: 'icmp://100.101.55.71'
     interval: 1m
     conditions:
       - '[CONNECTED] == true'

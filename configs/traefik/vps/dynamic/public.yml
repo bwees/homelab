@@ -70,7 +70,7 @@ http:
     homelab-home:
       loadBalancer:
         servers:
-          - url: 'http://100.78.133.134'
+          - url: 'http://100.101.55.71'
 
     stepien-server:
       loadBalancer:

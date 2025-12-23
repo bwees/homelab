@@ -1,5 +1,13 @@
 name: home
 
+volumes:
+  nas-media:
+    driver: local
+    driver_opts:
+      type: 'nfs'
+      o: 'addr=10.0.1.4,nolock,soft,rw'
+      device: ':/volume1/Media'
+
 services:
   traefik:
     image: traefik:v3.6.5
@@ -37,8 +45,8 @@ services:
   jellyfin:
     image: linuxserver/jellyfin:10.11.5
     volumes:
-      - /home/bwees/storage/jellyfin:/config
-      - /home/bwees/nas-media:/media-library:ro
+      - /storage/jellyfin:/config
+      - nas-media:/media-library:ro
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
     networks:
@@ -57,7 +65,7 @@ services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     volumes:
-      - /home/bwees/storage/hass:/config
+      - /storage/hass:/config
     network_mode: host
     environment:
       TZ: America/New_York
@@ -66,7 +74,7 @@ services:
   photoframe:
     image: ghcr.io/bwees/photoframe:latest
     volumes:
-      - /home/bwees/storage/photoframe:/app/static/images
+      - /storage/photoframe:/app/static/images
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
