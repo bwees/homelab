@@ -29,7 +29,7 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   services.tailscale.ip = "100.65.90.4";
-  services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
+  services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
 
   # ZFS
   networking.hostId = "a183a60c"; # needed for zfs

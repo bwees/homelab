@@ -30,7 +30,7 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   services.tailscale.ip = "100.81.233.29";
-  services.tailscale.extraUpFlags = [
+  services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
   ];
 
