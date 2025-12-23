@@ -48,6 +48,8 @@ services:
       - /storage/jellyfin:/config
       - nas-media:/media-library:ro
     environment:
+      - PUID=1000
+      - PGID=1000
       - JELLYFIN_PublishedServerUrl=jellyfin.bwees.home
     networks:
       - traefik_backend
