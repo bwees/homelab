@@ -13,13 +13,16 @@ build-custom-images:
 
 [working-directory: 'nixos']
 switch HOST USER="bwees":
-    #!/bin/bash
-    nixos-rebuild switch \
-        --flake .#"{{HOST}}" \
-        --target-host "{{USER}}@{{HOST}}" \
-        --build-host "{{USER}}@{{HOST}}" \
-        --use-remote-sudo \
-        --fast
+  nixos-rebuild switch \
+    --flake .#"{{HOST}}" \
+    --target-host "{{USER}}@{{HOST}}" \
+    --build-host "{{USER}}@{{HOST}}" \
+    --use-remote-sudo \
+    --fast
+
+[working-directory: 'nixos']
+anywhere HOST IP USER="root":
+  nix run github:nix-community/nixos-anywhere -- --flake .#"{{HOST}}" "{{USER}}@{{IP}}"
 
 collection:
   ansible-galaxy collection install -r ansible/requirements.yml
