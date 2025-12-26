@@ -9,6 +9,7 @@
   imports = [
     ./hardware-configuration.nix
     ./disk-config.nix
+    ./backups.nix
     ../../lib/base_packages.nix
     ../../lib/bwees.nix
     ../../lib/docker.nix

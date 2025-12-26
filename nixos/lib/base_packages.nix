@@ -11,6 +11,7 @@
     htop
     python314
     git
+    restic
   ];
 
   nix.settings.experimental-features = [
