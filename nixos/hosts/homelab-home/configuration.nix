@@ -31,12 +31,4 @@
     "--advertise-exit-node"
     "--advertise-routes=10.0.1.0/24"
   ];
-
-  environment.systemPackages = with pkgs; [
-    screen
-  ];
-
-  systemd.tmpfiles.rules = [
-    "d /storage 0755 root root -"
-  ];
 }
