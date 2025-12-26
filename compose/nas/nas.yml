@@ -12,26 +12,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  syncthing:
-    image: syncthing/syncthing:2.0.12
-    environment:
-      - PUID=3000
-      - PGID=3000
-    volumes:
-      - /mnt/main/homelab/syncthing:/var/syncthing
-      - /mnt/main/personal/bwees:/nas/bwees/personal
-    ports:
-      - 8384:8384 # Web UI
-      - 22000:22000/tcp # TCP file transfers
-      - 22000:22000/udp # QUIC file transfers
-      - 21027:21027/udp # Receive local discovery broadcasts
-    restart: unless-stopped
-    healthcheck:
-      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 3
-
   tailscale:
     image: ghcr.io/tailscale/tailscale:v1.92.4
     network_mode: host
