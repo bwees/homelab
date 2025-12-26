@@ -28,3 +28,11 @@ services:
       TS_ACCEPT_DNS: 'false'
       TS_HOSTNAME: homelab-nas
     restart: unless-stopped
+
+  restic-server:
+    image: restic/rest-server:0.14.0
+    ports:
+      - 8000:8000
+    volumes:
+      - /mnt/main/restic:/data
+    restart: unless-stopped
