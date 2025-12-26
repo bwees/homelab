@@ -33,10 +33,6 @@
 
   # ZFS
   networking.hostId = "a183a60c"; # needed for zfs
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
-
-  boot.zfs.extraPools = [ "storage" ];
   fileSystems."/storage" = {
     device = "storage";
     fsType = "zfs";
