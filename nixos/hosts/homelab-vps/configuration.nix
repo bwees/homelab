@@ -32,4 +32,7 @@
     "--accept-routes"
   ];
 
+  systemd.tmpfiles.rules = [
+    "d /storage 0755 root root -"
+  ];
 }
