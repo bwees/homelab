@@ -1,0 +1,20 @@
+{
+  "files.associations": {
+    "*.hujson": "jsonc",
+    "*.env.op": "dotenv"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "*.hujson"
+      ],
+      "schema": {
+        "allowTrailingCommas": true
+      }
+    }
+  ],
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.env.op": "${capture}.env",
+  }
+}
