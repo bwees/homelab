@@ -14,6 +14,7 @@
     ../../lib/bwees.nix
     ../../lib/docker.nix
     ../../lib/garbage_collect.nix
+    ../../lib/restic_copies.nix
     ../../lib/root_ca.nix
     ../../lib/tailscale.nix
   ];
