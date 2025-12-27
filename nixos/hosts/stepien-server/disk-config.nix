@@ -1,5 +1,10 @@
 { lib, ... }:
 {
+  boot.loader.grub = {
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+  };
+
   swapDevices = [
     {
       device = "/var/lib/swapfile";
