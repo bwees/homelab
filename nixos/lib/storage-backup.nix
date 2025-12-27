@@ -6,6 +6,10 @@
 }:
 
 {
+  imports = [
+    ./restic_copies.nix
+  ];
+
   services.restic = {
     backups = {
       local = {

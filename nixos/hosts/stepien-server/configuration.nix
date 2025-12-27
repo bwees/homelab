@@ -14,6 +14,7 @@
     ../../lib/docker.nix
     ../../lib/garbage_collect.nix
     ../../lib/root_ca.nix
+    ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
   ];
 
