@@ -8,14 +8,14 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../lib/base_packages.nix
+    ../../lib/base-packages.nix
     ../../lib/bwees.nix
     ../../lib/docker.nix
-    ../../lib/garbage_collect.nix
-    ../../lib/root_ca.nix
+    ../../lib/garbage-collect.nix
+    ../../lib/root-ca.nix
     ../../lib/sanoid.nix
     ../../lib/tailscale.nix
-    ../../lib/zfs_backup.nix
+    ../../lib/zfs-backup.nix
   ];
 
   system.stateVersion = "25.05";

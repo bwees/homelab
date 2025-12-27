@@ -7,7 +7,7 @@
 
 {
   imports = [
-    ./restic_copies.nix
+    ./restic-copies.nix
   ];
 
   services.restic = {

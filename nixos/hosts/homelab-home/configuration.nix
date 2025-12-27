@@ -9,12 +9,12 @@
   imports = [
     ./hardware-configuration.nix
     ./disk-config.nix
-    ../../lib/base_packages.nix
+    ../../lib/base-packages.nix
     ../../lib/bwees.nix
     ../../lib/docker.nix
-    ../../lib/garbage_collect.nix
-    ../../lib/root_ca.nix
-    ../../lib/storage_backup.nix
+    ../../lib/garbage-collect.nix
+    ../../lib/root-ca.nix
+    ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
   ];
 
