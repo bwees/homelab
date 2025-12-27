@@ -7,11 +7,11 @@ volumes:
     driver: local
     driver_opts:
       type: 'nfs'
-      o: 'addr=100.102.56.35,nolock,soft,rw'
+      o: 'addr=10.0.0.80,nolock,soft,rw'
       device: ':/volume1/immich'
 
 networks:
-  vps_traefik_backend:
+  stepien_traefik_backend:
     external: true
   backend:
 
@@ -43,15 +43,15 @@ services:
       - redis
       - database
     networks:
-      - vps_traefik_backend
+      - stepien_traefik_backend
       - backend
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.immich.loadbalancer.server.port=2283'
       - 'traefik.http.routers.immich.rule=Host(`stepien-immich.bwees.io`)'
       - 'traefik.http.routers.immich.service=immich'
-      - 'traefik.http.routers.immich.entrypoints=publicsecure'
-      - 'traefik.docker.network=vps_traefik_backend'
+      - 'traefik.http.routers.immich.entrypoints=web'
+      - 'traefik.docker.network=stepien_traefik_backend'
     restart: unless-stopped
     healthcheck:
       disable: false
@@ -96,6 +96,6 @@ services:
       # Uncomment the DB_STORAGE_TYPE: 'HDD' var if your database isn't stored on SSDs
       # DB_STORAGE_TYPE: 'HDD'
     volumes:
-      - /storage/stepien-immich/postgres:/var/lib/postgresql/data
+      - /storage/immich/postgres:/var/lib/postgresql/data
     shm_size: 128mb
     restart: unless-stopped

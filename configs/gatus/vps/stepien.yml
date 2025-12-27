@@ -17,11 +17,11 @@ endpoints:
     alerts:
       - type: discord
 
-  # - name: stepien-server
-  #   group: stepien
-  #   url: 'icmp://100.81.233.29'
-  #   interval: 1m
-  #   conditions:
-  #     - '[CONNECTED] == true'
-  #   alerts:
-  #     - type: discord
+  - name: stepien-server
+    group: stepien
+    url: 'icmp://100.81.233.29'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord

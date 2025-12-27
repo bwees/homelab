@@ -1,0 +1,11 @@
+api:
+  dashboard: true
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: traefik_backend
+
+entryPoints:
+  web:
+    address: ":80"

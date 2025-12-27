@@ -33,8 +33,4 @@
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
   ];
-
-  systemd.tmpfiles.rules = [
-    "d /storage 0755 root root -"
-  ];
 }

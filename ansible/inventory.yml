@@ -35,9 +35,9 @@ all:
         deploy_source: nas
         deployment_location: /mnt/main/homelab/nas-deploy
 
-    # stepien:
-    #   hosts:
-    #     stepien-server:
-    #       ansible_ssh_user: bwees
-    #   vars:
-    #     deploy_source: stepien
+    stepien:
+      hosts:
+        stepien-server:
+          ansible_ssh_user: bwees
+      vars:
+        deploy_source: stepien
