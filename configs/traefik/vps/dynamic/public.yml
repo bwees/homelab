@@ -39,13 +39,6 @@ http:
         - public
         - publicsecure
 
-    stepien-immich:
-      rule: 'Host(`stepien-immich.bwees.io`)'
-      service: stepien-server
-      entryPoints:
-        - public
-        - publicsecure
-
     starforge-cam:
       rule: 'Host(`cam.starforgefoundry.com`)'
       service: starforge-docker
@@ -71,11 +64,6 @@ http:
       loadBalancer:
         servers:
           - url: 'http://100.101.55.71'
-
-    stepien-server:
-      loadBalancer:
-        servers:
-          - url: 'http://100.81.233.29'
 
     starforge-docker:
       loadBalancer:

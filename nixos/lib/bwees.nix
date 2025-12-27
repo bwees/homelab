@@ -20,6 +20,10 @@
     ];
   };
 
+  users.users.root.openssh.authorizedKeys.keys = lib.concatLists [
+    config.users.users.bwees.openssh.authorizedKeys.keys
+  ];
+
   # Used for receiving builds from homelab-bwees
   nix.settings.trusted-users = [ "bwees" ];
 
