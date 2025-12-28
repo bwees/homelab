@@ -16,3 +16,12 @@ endpoints:
       - '[STATUS] == 200'
     alerts:
       - type: discord
+
+  - name: bugsink
+    group: maroonrides
+    url: 'https://bugsink.maroonrides.app/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
