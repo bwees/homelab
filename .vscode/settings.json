@@ -16,5 +16,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.env.op": "${capture}.env",
-  }
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
 }
