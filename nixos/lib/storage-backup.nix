@@ -30,7 +30,10 @@
         ];
 
         timerConfig = {
-          OnCalendar = "*-*-* 00,12:00:00"; # Twice daily at midnight and noon
+          OnCalendar = [
+            "00:00"
+            "12:00"
+          ];
           Persistent = true;
         };
 
