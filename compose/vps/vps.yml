@@ -2,7 +2,7 @@ name: vps
 
 services:
   traefik:
-    image: traefik:v3.6.5
+    image: traefik:v3.6.6
     ports:
       - 100.105.77.106:80:80
       - 100.105.77.106:443:443
