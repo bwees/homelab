@@ -9,7 +9,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       nixpkgs-stable,
       disko,

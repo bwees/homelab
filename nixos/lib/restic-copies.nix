@@ -90,7 +90,7 @@ in
   options.services.restic.backups = mkOption {
     type = types.attrsOf (
       types.submodule (
-        { config, name, ... }:
+        { config, ... }:
         {
           options.copies = mkOption {
             type = types.attrsOf (
