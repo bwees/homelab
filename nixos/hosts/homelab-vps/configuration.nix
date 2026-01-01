@@ -11,6 +11,7 @@
     ../../lib/docker.nix
     ../../lib/garbage-collect.nix
     ../../lib/root-ca.nix
+    ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
   ];
 
@@ -27,9 +28,5 @@
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
     "--accept-routes"
-  ];
-
-  systemd.tmpfiles.rules = [
-    "d /storage 0755 root root -"
   ];
 }
