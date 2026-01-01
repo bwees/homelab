@@ -21,7 +21,7 @@
         ];
 
         pruneOpts = [
-          "--keep-daily 7"
+          "--keep-within 7d"
           "--keep-weekly 2"
           "--keep-monthly 2"
           "--keep-yearly 1"
