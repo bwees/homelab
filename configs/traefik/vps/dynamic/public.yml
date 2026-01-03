@@ -4,6 +4,13 @@ http:
       insecureSkipVerify: true
 
   routers:
+    orion:
+      rule: 'Host(`orion.bwees.io`)'
+      service: brandon-macbook-pro
+      entryPoints:
+        - public
+        - publicsecure
+
     immich:
       rule: 'Host(`immich.bwees.io`)'
       service: homelab-bwees
@@ -87,3 +94,8 @@ http:
       loadBalancer:
         servers:
           - url: 'http://10.0.10.173:8123' # Uses TS Subnet router
+
+    brandon-macbook-pro:
+      loadBalancer:
+        servers:
+          - url: 'http://100.89.139.58:5173' # Uses TS Subnet router
