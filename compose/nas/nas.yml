@@ -12,7 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   tailscale:
-    image: ghcr.io/tailscale/tailscale:v1.92.4
+    image: ghcr.io/tailscale/tailscale:v1.92.5
     network_mode: host
     privileged: true
     cap_add:
