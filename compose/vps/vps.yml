@@ -63,7 +63,7 @@ services:
       - 'traefik.http.routers.portainer.entrypoints=publicsecure'
 
   beszel:
-    image: henrygd/beszel:0.17.0
+    image: henrygd/beszel:0.18.1
     restart: unless-stopped
     volumes:
       - /storage/beszel:/beszel_data
@@ -83,7 +83,7 @@ services:
     environment:
       KEY: ${BESZEL_KEY}
       LISTEN: 45876
-    image: henrygd/beszel-agent:0.17.0
+    image: henrygd/beszel-agent:0.18.0
     network_mode: host
     restart: unless-stopped
     volumes:
