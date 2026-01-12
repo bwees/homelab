@@ -83,7 +83,7 @@ services:
     environment:
       KEY: ${BESZEL_KEY}
       LISTEN: 45876
-    image: henrygd/beszel-agent:0.18.0
+    image: henrygd/beszel-agent:0.18.1
     network_mode: host
     restart: unless-stopped
     volumes:
