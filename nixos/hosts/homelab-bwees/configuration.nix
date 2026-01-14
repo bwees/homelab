@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 
@@ -42,9 +43,4 @@
 
   # nix-ld for vscode server
   programs.nix-ld.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    gcc14
-    gnumake
-  ];
 }
