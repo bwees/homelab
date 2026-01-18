@@ -108,6 +108,32 @@ services:
       - 'traefik.http.routers.readmestats.service=readmestats'
       - 'traefik.http.routers.readmestats.entrypoints=publicsecure'
 
+  healthchecks:
+    image: healthchecks/healthchecks:latest
+    environment:
+      - DB=postgres
+      - DB_NAME=healthchecks
+      - DB_USER=healthchecks
+      - DB_PASSWORD=${HEALTHCHECKS_PG_PASSWORD}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DEBUG=False
+      - SECRET_KEY=${HEALTHCHECKS_AUTH_SECRET}
+      - SITE_ROOT=https://healthchecks.bwees.lab
+    networks:
+      - traefik_backend
+      - postgres
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.healthchecks.loadbalancer.server.port=8000'
+
+      - 'traefik.http.routers.healthchecks.rule=Host(`healthchecks.bwees.lab`) || Host(`hc.bwees.io`)'
+      - 'traefik.http.routers.healthchecks.service=healthchecks'
+      - 'traefik.http.routers.healthchecks.entrypoints=privatesecure,publicsecure'
+      - 'traefik.docker.network=vps_traefik_backend'
+
+    restart: unless-stopped
+
   postgres:
     image: postgres:18
     restart: unless-stopped

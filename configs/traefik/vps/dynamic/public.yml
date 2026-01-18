@@ -46,6 +46,13 @@ http:
         - public
         - publicsecure
 
+    healthchecks:
+      rule: 'Host(`hc.bwees.io`)'
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
     stepien-immich:
       rule: 'Host(`stepien-immich.bwees.io`)'
       service: stepien-server
