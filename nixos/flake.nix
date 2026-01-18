@@ -22,6 +22,7 @@
       nixosConfigurations.homelab-bwees = mkHost {
         system = "x86_64-linux";
         modules = [
+          disko.nixosModules.disko
           ./hosts/homelab-bwees/configuration.nix
         ];
       };
