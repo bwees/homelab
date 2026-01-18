@@ -2,5 +2,5 @@ ui:
   default-sort-by: group
 
 storage:
-  type: sqlite
-  path: /data/data.db
+  type: postgres
+  path: '${GATUS_PG_PATH}'

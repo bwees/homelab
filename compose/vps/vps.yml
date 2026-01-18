@@ -22,13 +22,14 @@ services:
     image: ghcr.io/twin/gatus:v5.34.0
     volumes:
       - /home/bwees/deploy/config/gatus:/config
-      - /storage/gatus:/data
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     environment:
       - GATUS_CONFIG_PATH=/config
       - GATUS_DISCORD_WEBHOOK=${GATUS_DISCORD_WEBHOOK}
+      - GATUS_PG_PATH='postgresql://gatus:${GATUS_PG_PASSWORD}@postgres:5432/gatus?sslmode=disable'
     networks:
       - traefik_backend
+      - postgres
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
@@ -36,6 +37,7 @@ services:
       - 'traefik.http.routers.gatus.rule=Host(`status.bwees.lab`)'
       - 'traefik.http.routers.gatus.service=gatus'
       - 'traefik.http.routers.gatus.entrypoints=privatesecure'
+      - 'traefik.docker.network=vps_traefik_backend'
 
   bind9:
     image: ubuntu/bind9:9.18-24.04_beta
@@ -89,7 +91,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  github-readme-stats-docker:
+  readme-stats:
     image: crusaders/github-readme-stats-docker:latest
     pull_policy: always
     restart: unless-stopped
@@ -106,9 +108,25 @@ services:
       - 'traefik.http.routers.readmestats.service=readmestats'
       - 'traefik.http.routers.readmestats.entrypoints=publicsecure'
 
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    networks:
+      - postgres
+    ports:
+      - 100.105.77.106:5432:5432
+    volumes:
+      - /storage/postgres:/var/lib/postgresql
+
 networks:
   traefik_backend:
     driver: bridge
     ipam:
       config:
         - subnet: 172.60.0.0/24
+
+  postgres:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.61.0.0/24

@@ -1,7 +1,10 @@
+name: maroonrides
+
 networks:
   vps_traefik_backend:
     external: true
-  backend:
+  vps_postgres:
+    external: true
 
 services:
   bugsink:
@@ -13,7 +16,7 @@ services:
       - DATABASE_URL=postgresql://bugsink:${BUGSINK_PG_PASSWORD}@postgres:5432/bugsink
     networks:
       - vps_traefik_backend
-      - backend
+      - vps_postgres
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
@@ -22,15 +25,3 @@ services:
       - 'traefik.http.routers.bugsink.service=bugsink'
       - 'traefik.http.routers.bugsink.entrypoints=publicsecure'
       - 'traefik.docker.network=vps_traefik_backend'
-
-  postgres:
-    image: postgres:18
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: bugsink
-      POSTGRES_PASSWORD: ${BUGSINK_PG_PASSWORD}
-      POSTGRES_DB: bugsink
-    networks:
-      - backend
-    volumes:
-      - /storage/maroonrides/postgres:/var/lib/postgresql
