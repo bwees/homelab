@@ -117,6 +117,10 @@ services:
       - DB_PASSWORD=${HEALTHCHECKS_PG_PASSWORD}
       - DB_HOST=postgres
       - DB_PORT=5432
+      - DEFAULT_FROM_EMAIL=healthchecks@mail.bwees.io
+      - EMAIL_HOST=smtp.mailgun.org
+      - EMAIL_HOST_PASSWORD=${HEALTHCHECKS_SMTP_PASSWORD}
+      - EMAIL_HOST_USER=healthchecks@mail.bwees.io
       - DEBUG=False
       - SECRET_KEY=${HEALTHCHECKS_AUTH_SECRET}
       - SITE_ROOT=https://healthchecks.bwees.lab
