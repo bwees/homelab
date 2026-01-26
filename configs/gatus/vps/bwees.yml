@@ -63,6 +63,15 @@ endpoints:
     alerts:
       - type: discord
 
+  - name: n8n
+    group: lab-media
+    url: 'https://n8n.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
   # Media
   - name: jellyfin
     group: lab-media
