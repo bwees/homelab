@@ -7,7 +7,7 @@ deploy HOST="all:!homelab-router":
 [working-directory: 'images']
 build-custom-images:
     @docker buildx build --push --platform linux/amd64 \
-        -f n8n-runner.Dockerfile \
+        -f n8n-runner/Dockerfile \
         -t ghcr.io/bwees/homelab/n8n-runner:latest \
         -t ghcr.io/bwees/homelab/n8n-runner:`git rev-parse --short HEAD` .
 

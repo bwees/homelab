@@ -14,7 +14,8 @@ RUN apk update && apk add --no-cache \
 RUN curl -fsSL https://deno.land/x/install/install.sh | sh
 
 # Python dependencies
-RUN cd /opt/runners/task-runner-python && uv pip install rfeed yt-dlp boto3
+COPY n8n-runner/requirements.txt /opt/runners/task-runner-python/custom.requirements.txt
+RUN cd /opt/runners/task-runner-python && uv pip install -r /opt/runners/task-runner-python/custom.requirements.txt
 
 # fix security issue with python packages
 # https://github.com/n8n-io/n8n/blob/master/docker/images/runners/n8n-task-runners.json
