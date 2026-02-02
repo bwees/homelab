@@ -1,4 +1,4 @@
-FROM n8nio/runners:2.6.2
+FROM n8nio/runners:2.7.0
 
 USER root
 
