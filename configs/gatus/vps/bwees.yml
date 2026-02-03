@@ -64,7 +64,7 @@ endpoints:
       - type: discord
 
   - name: n8n
-    group: lab-media
+    group: lab
     url: 'https://n8n.bwees.lab/'
     interval: 1m
     conditions:
