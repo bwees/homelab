@@ -11,23 +11,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  tailscale:
-    image: ghcr.io/tailscale/tailscale:v1.92.5
-    network_mode: host
-    privileged: true
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    volumes:
-      - /mnt/main/homelab/nas-tailscale:/var/lib/tailscale
-    environment:
-      TS_STATE_DIR: /var/lib/tailscale
-      TS_ACCEPT_DNS: 'false'
-      TS_HOSTNAME: homelab-nas
-    restart: unless-stopped
-
   restic-server:
     image: restic/rest-server:0.14.0
     ports:
