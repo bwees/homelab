@@ -1,10 +1,10 @@
 
 
-[working-directory: 'ansible']
+[working-directory: 'deploy/ansible']
 deploy HOST="all:!homelab-router":
     ansible-playbook deploy.yml --limit {{ HOST }}
 
-[working-directory: 'images']
+[working-directory: 'deploy/images']
 build-custom-images:
     @docker buildx build --push --platform linux/amd64 \
         -f n8n-runner/Dockerfile \
@@ -24,8 +24,9 @@ switch HOST USER="bwees":
 anywhere HOST IP USER="root":
   nix run github:nix-community/nixos-anywhere -- --flake .#"{{HOST}}" "{{USER}}@{{IP}}"
 
+[working-directory: 'deploy/ansible']
 collection:
-  ansible-galaxy collection install -r ansible/requirements.yml
+  ansible-galaxy collection install -r requirements.yml
 
 [working-directory: 'restic']
 restic REPO *ARGS:
