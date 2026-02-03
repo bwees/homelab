@@ -29,10 +29,9 @@ all:
     nas:
       hosts:
         homelab-nas:
-          ansible_ssh_user: root
+          ansible_ssh_user: bwees
       vars:
         deploy_source: nas
-        deployment_location: /mnt/main/homelab/nas-deploy
 
     stepien:
       hosts:
