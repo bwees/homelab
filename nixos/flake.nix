@@ -47,5 +47,12 @@
           ./hosts/homelab-home/configuration.nix
         ];
       };
+      nixosConfigurations.homelab-nas = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/homelab-nas/configuration.nix
+        ];
+      };
     };
 }

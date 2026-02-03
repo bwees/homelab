@@ -12,6 +12,9 @@
     ../../lib/garbage-collect.nix
     ../../lib/root-ca.nix
     ../../lib/tailscale.nix
+    ./storage.nix
+    ./shares.nix
+    ./backups.nix
   ];
 
   system.stateVersion = "25.05";
@@ -24,6 +27,16 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
-  services.tailscale.ip = "100.65.90.4";
-  services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
+  services.tailscale.ip = "100.80.89.123";
+  services.tailscale.extraSetFlags = [ ];
+
+  # for zfs
+  networking.hostId = "9806791d";
+
+  # Users
+  users.users.bwees.uid = 3000;
+  users.users.homelab = {
+    isNormalUser = true;
+    createHome = false;
+  };
 }
