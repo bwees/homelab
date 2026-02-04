@@ -17,8 +17,8 @@ switch HOST USER="bwees":
     --flake .#"{{HOST}}" \
     --target-host "{{USER}}@{{HOST}}" \
     --build-host "{{USER}}@{{HOST}}" \
-    --use-remote-sudo \
-    --fast
+    --sudo \
+    --no-reexec
 
 [working-directory: 'nixos']
 anywhere HOST IP USER="root":
