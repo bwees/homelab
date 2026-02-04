@@ -1,65 +1,47 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":dependencyDashboard"
-  ],
-  "baseBranchPatterns": [
-    "main"
-  ],
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "baseBranchPatterns": ["main"],
   "docker-compose": {
-    "managerFilePatterns": [
-      "/^compose/.*\\.ya?ml$/"
-    ],
+    "managerFilePatterns": ["/^deploy\\/compose\\/.*\\.ya?ml$/"],
     "digest": {
       "enabled": false
     }
   },
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
 
     // Ignore rules
     {
       "description": "Linuxserver ignore qBittorrent old ubuntu versions. Originally tagged based on the ubuntu image they based on which triggers renovatebot.",
-      "matchPackageNames": [
-        "linuxserver/qbittorrent"
-      ],
+      "matchPackageNames": ["linuxserver/qbittorrent"],
       "allowedVersions": "<12.0.0"
     },
     {
       "description": "Linuxserver ignore jellyfin old year based tags",
-      "matchPackageNames": [
-        "linuxserver/jellyfin"
-      ],
+      "matchPackageNames": ["linuxserver/jellyfin"],
       "allowedVersions": "<2020.0.0"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "docker.io/valkey/valkey",
         "ghcr.io/immich-app/postgres"
       ],
       "matchFileNames": [
-        "compose/lab/immich.yml",
-        "compose/home/immich.yml",
-        "compose/stepien/immich.yml"
+        "deploy/compose/lab/immich.yml",
+        "deploy/compose/home/immich.yml",
+        "deploy/compose/stepien/immich.yml"
       ],
       "enabled": false
     },
 
     // Groups
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/immich-app/immich-server",
         "ghcr.io/immich-app/immich-machine-learning"
@@ -67,9 +49,7 @@
       "groupName": "immich"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/haveagitgat/tdarr",
         "haveagitgat/tdarr_node"
@@ -77,24 +57,13 @@
       "groupName": "tdarr"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "henrygd/beszel",
-        "henrygd/beszel-agent"
-      ],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["henrygd/beszel", "henrygd/beszel-agent"],
       "groupName": "beszel"
     },
     {
-      "matchDatasources": [
-        "docker",
-        "dockerfile"
-      ],
-      "matchPackageNames": [
-        "n8nio/runners",
-        "n8nio/n8n"
-      ],
+      "matchDatasources": ["docker", "dockerfile"],
+      "matchPackageNames": ["n8nio/runners", "n8nio/n8n"],
       "groupName": "n8n"
     }
   ],
