@@ -2,6 +2,17 @@ FROM n8nio/runners:2.7.2
 
 USER root
 
+
+# Reinstall apk - n8n removes this
+RUN wget https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/apk-tools-static-3.0.3-r1.apk \
+    && tar -xzf apk-tools-static-3.0.3-r1.apk \
+    && mv sbin/apk.static /sbin/apk \
+    && rm -rf sbin apk-tools-static-3.0.3-r1.apk
+
+# Apk dependencies
+RUN apk update && apk add --no-cache \
+    ffmpeg 
+
 # Install Deno for youtube-dl
 RUN curl -fsSL https://deno.land/x/install/install.sh | sh
 
