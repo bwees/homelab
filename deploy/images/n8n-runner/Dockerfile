@@ -9,7 +9,7 @@ RUN wget https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/apk-too
     && mv sbin/apk.static /sbin/apk \
     && rm -rf sbin apk-tools-static-3.0.3-r1.apk
 
-# Apk dependencies
+# Other dependencies
 RUN apk update && apk add --no-cache \
     ffmpeg 
 

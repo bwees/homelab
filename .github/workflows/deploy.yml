@@ -25,7 +25,7 @@ jobs:
         with:
           filters: |
             images:
-              - 'images/**'
+              - 'deploy/images/**'
             tailscale:
               - 'tailscale/**'
 
