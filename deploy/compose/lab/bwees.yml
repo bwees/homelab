@@ -126,7 +126,7 @@ services:
     restart: unless-stopped
 
   n8n:
-    image: n8nio/n8n:2.8.1
+    image: n8nio/n8n:2.8.2
     restart: unless-stopped
     volumes:
       - /storage/n8n:/home/node/.n8n
