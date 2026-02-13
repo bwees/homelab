@@ -67,6 +67,13 @@ http:
         - public
         - publicsecure
 
+    starforge-bambu-connect:
+      rule: 'Host(`bambu-connect.starforgefoundry.com`)'
+      service: starforge-docker
+      entryPoints:
+        - public
+        - publicsecure
+
     starforge-hass:
       rule: 'Host(`hass.starforgefoundry.com`)'
       service: starforge-hass
