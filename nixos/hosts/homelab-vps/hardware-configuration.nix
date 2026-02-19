@@ -3,24 +3,23 @@
 # to /etc/nixos/configuration.nix instead.
 {
   lib,
+  modulesPath,
   ...
 }:
 
 {
-  imports = [ ];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
   boot.initrd.availableKernelModules = [
     "ahci"
-    "virtio_pci"
-    "virtio_scsi"
     "xhci_pci"
-    "sd_mod"
-    "sr_mod"
+    "virtio_scsi"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  virtualisation.hypervGuest.enable = true;
 }
