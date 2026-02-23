@@ -166,6 +166,24 @@ services:
     volumes:
       - /storage/n8n/runner:/home/runner/.n8n-files
 
+  wakapi:
+    image: ghcr.io/muety/wakapi:latest
+    restart: unless-stopped
+    init: true
+    environment:
+      - WAKAPI_PASSWORD_SALT=${WAKAPI_PASSWORD_SALT}
+    user: '1000:1000'
+    networks:
+      - traefik_backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.wakapi.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.wakapi.rule=Host(`wakapi.bwees.lab`) || Host(`wakapi.bwees.io`)'
+      - 'traefik.http.routers.wakapi.service=wakapi'
+      - 'traefik.http.routers.wakapi.entrypoints=web,websecure'
+    volumes:
+      - /storage/wakapi:/data
+
   beszel-agent:
     environment:
       KEY: ${BESZEL_KEY}
