@@ -22,7 +22,7 @@ echo "Obtained OAuth access token"
 auth_hdr=(-H "Authorization: Bearer $ACCESS_TOKEN")
 
 # Apply configurations
-curl -sf \
+curl -f \
   -o /dev/null \
   "${auth_hdr[@]}" \
   -H "Content-Type: application/json" \
@@ -32,7 +32,7 @@ curl -sf \
 
 echo "Tailscale ACLs applied successfully"
 
-curl -sf \
+curl -f \
   -o /dev/null \
   "${auth_hdr[@]}" \
   -H "Content-Type: application/json" \

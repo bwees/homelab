@@ -1,73 +1,51 @@
 {
-    "tagOwners": {
-        "tag:ci": [
-            "brandonwees@gmail.com"
-        ]
+  "tagOwners": {
+    "tag:ci": ["brandonwees@gmail.com"],
+    "tag:vps-relay-user": ["brandonwees@gmail.com"],
+  },
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["*"],
+      "dst": ["*:*"],
     },
-    "acls": [
-        {
-            "action": "accept",
-            "src": [
-                "*"
-            ],
-            "dst": [
-                "*:*"
-            ],
-        },
-    ],
-    "nodeAttrs": [
-        {
-            "target": [
-                "100.85.233.125"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-        {
-            "target": [
-                "100.74.226.107"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-        {
-            "target": [
-                "100.114.192.80"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-        {
-            "target": [
-                "100.107.103.20"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-        {
-            "target": [
-                "100.64.153.110"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-        {
-            "target": [
-                "100.89.139.58"
-            ],
-            "attr": [
-                "mullvad"
-            ],
-        },
-    ],
-    "autoApprovers": {
-        "exitNode": [
-            "brandonwees@gmail.com"
-        ]
+  ],
+  "nodeAttrs": [
+    {
+      "target": ["100.85.233.125"],
+      "attr": ["mullvad"],
     },
+    {
+      "target": ["100.74.226.107"],
+      "attr": ["mullvad"],
+    },
+    {
+      "target": ["100.114.192.80"],
+      "attr": ["mullvad"],
+    },
+    {
+      "target": ["100.107.103.20"],
+      "attr": ["mullvad"],
+    },
+    {
+      "target": ["100.64.153.110"],
+      "attr": ["mullvad"],
+    },
+    {
+      "target": ["100.89.139.58"],
+      "attr": ["mullvad"],
+    },
+  ],
+  "autoApprovers": {
+    "exitNode": ["brandonwees@gmail.com"],
+  },
+  "grants": [
+    {
+      "src": ["tag:vps-relay-user"], // Devices that can be accessed through the peer relay
+      "dst": ["100.105.77.106"], // homelab-vps
+      "app": {
+        "tailscale.com/cap/relay": [],
+      },
+    },
+  ],
 }
