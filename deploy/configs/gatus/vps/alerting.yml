@@ -5,5 +5,5 @@ alerting:
       enable: true
       title: 'Monitoring Alert: {{ trigger.event.data.event_data.endpoint }}'
       send-on-resolved: true
-      failure-threshold: 3
+      failure-threshold: 5
       success-threshold: 2
