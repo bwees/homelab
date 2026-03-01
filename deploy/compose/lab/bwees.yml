@@ -89,7 +89,7 @@ services:
     restart: unless-stopped
 
   gitea-mirror:
-    image: ghcr.io/raylabshq/gitea-mirror:v3.9.6
+    image: ghcr.io/raylabshq/gitea-mirror:v3.10.1
     restart: unless-stopped
     user: '1000:1000'
     volumes:
