@@ -196,6 +196,8 @@ services:
       - nas-psitransfer:/data
     environment:
       - PSITRANSFER_ADMIN_PASS=${PSITRANSFER_ADMIN_PASS}
+      - PSITRANSFER_UPLOAD_PASS=${PSITRANSFER_UPLOAD_PASS}
+    user: 1000:1000
     networks:
       - traefik_backend
     labels:

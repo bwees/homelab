@@ -57,7 +57,7 @@
     statdPort = 4000;
 
     exports = ''
-      /mnt/main/homelab   192.168.50.173(rw,sync,no_subtree_check,all_squash,anonuid=1000,anongid=1000,fsid=0)
+      /mnt/main/homelab   192.168.50.173(rw,sync,no_subtree_check,no_root_squash,fsid=0)
     '';
   };
 
