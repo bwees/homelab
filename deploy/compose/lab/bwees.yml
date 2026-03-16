@@ -14,6 +14,12 @@ volumes:
       type: 'nfs'
       o: 'addr=nas.bwees.lab,nolock,soft,rw'
       device: ':/mnt/main/homelab/gitea'
+  nas-psitransfer:
+    driver: local
+    driver_opts:
+      type: 'nfs'
+      o: 'addr=nas.bwees.lab,nolock,soft,rw'
+      device: ':/mnt/main/homelab/psitransfer'
 
 services:
   traefik:
@@ -178,11 +184,26 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.wakapi.loadbalancer.server.port=3000'
-      - 'traefik.http.routers.wakapi.rule=Host(`wakapi.bwees.lab`) || Host(`wakapi.bwees.io`)'
+      - 'traefik.http.routers.wakapi.rule=Host(`wakapi.bwees.lab`)'
       - 'traefik.http.routers.wakapi.service=wakapi'
       - 'traefik.http.routers.wakapi.entrypoints=web,websecure'
     volumes:
       - /storage/wakapi:/data
+
+  psitransfer:
+    image: psitrax/psitransfer
+    volumes:
+      - nas-psitransfer:/data
+    environment:
+      - PSITRANSFER_ADMIN_PASS=${PSITRANSFER_ADMIN_PASS}
+    networks:
+      - traefik_backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.transfer.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.transfer.rule=Host(`transfer.bwees.lab`) || Host(`transfer.bwees.io`)'
+      - 'traefik.http.routers.transfer.service=transfer'
+      - 'traefik.http.routers.transfer.entrypoints=web,websecure'
 
   beszel-agent:
     environment:

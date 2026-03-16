@@ -46,8 +46,8 @@ http:
         - public
         - publicsecure
 
-    healthchecks:
-      rule: 'Host(`hc.bwees.io`)'
+    transfer:
+      rule: 'Host(`transfer.bwees.io`)'
       service: homelab-bwees
       entryPoints:
         - public
