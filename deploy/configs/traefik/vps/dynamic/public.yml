@@ -112,4 +112,4 @@ http:
     brandon-macbook-pro:
       loadBalancer:
         servers:
-          - url: 'http://100.89.139.58:5173' # Uses TS Subnet router
+          - url: 'http://100.89.139.58:5173'
