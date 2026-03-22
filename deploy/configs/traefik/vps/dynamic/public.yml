@@ -62,21 +62,21 @@ http:
 
     starforge-cam:
       rule: 'Host(`cam.starforgefoundry.com`)'
-      service: starforge-docker
+      service: starforge-server
       entryPoints:
         - public
         - publicsecure
 
     starforge-bambu-connect:
       rule: 'Host(`bambu-connect.starforgefoundry.com`)'
-      service: starforge-docker
+      service: starforge-server
       entryPoints:
         - public
         - publicsecure
 
     starforge-hass:
       rule: 'Host(`hass.starforgefoundry.com`)'
-      service: starforge-hass
+      service: starforge-server
       entryPoints:
         - public
         - publicsecure
@@ -98,16 +98,11 @@ http:
         servers:
           - url: 'http://100.81.233.29'
 
-    starforge-docker:
+    starforge-server:
       loadBalancer:
         servers:
-          - url: 'https://100.125.29.116'
+          - url: 'https://100.93.153.81'
         serversTransport: insecureTransport
-
-    starforge-hass:
-      loadBalancer:
-        servers:
-          - url: 'http://10.0.10.173:8123' # Uses TS Subnet router
 
     brandon-macbook-pro:
       loadBalancer:
