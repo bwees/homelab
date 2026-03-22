@@ -12,14 +12,6 @@
   ],
   "nodeAttrs": [
     {
-      "target": ["100.85.233.125"],
-      "attr": ["mullvad"],
-    },
-    {
-      "target": ["100.74.226.107"],
-      "attr": ["mullvad"],
-    },
-    {
       "target": ["100.76.234.121"],
       "attr": ["mullvad"],
     },
