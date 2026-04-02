@@ -29,4 +29,6 @@
     "--advertise-exit-node"
     "--accept-routes"
   ];
+
+  services.fail2ban.enable = true;
 }
