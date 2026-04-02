@@ -28,6 +28,5 @@
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
     "--accept-routes"
-    "--relay-server-port=40000"
   ];
 }

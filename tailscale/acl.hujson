@@ -31,13 +31,4 @@
   "autoApprovers": {
     "exitNode": ["brandonwees@gmail.com"],
   },
-  "grants": [
-    {
-      "src": ["tag:vps-relay-user"], // Devices that can be accessed through the peer relay
-      "dst": ["100.105.77.106"], // homelab-vps
-      "app": {
-        "tailscale.com/cap/relay": [],
-      },
-    },
-  ],
 }
