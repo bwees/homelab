@@ -10,6 +10,7 @@
         config_src: '../configs/'
         op_secret_uuid: '22ob5hftm6f5xo3miwyem6ucpe'
         op_secret_vault: 'pkijqyttxmpkde5kw53lursdva'
+        op_secret_account: '3H53RM2EYJFQDHTMAI3PEWBRWU'
         config_mode: 'multi_host'
         secret_groups:
           - '{{ deploy_source }}'
