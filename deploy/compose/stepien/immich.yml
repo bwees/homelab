@@ -28,7 +28,7 @@ x-nas-library: &nas-library
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v2.7.3
+    image: ghcr.io/immich-app/immich-server:v2.7.4
     devices:
       - /dev/dri:/dev/dri
     volumes:
