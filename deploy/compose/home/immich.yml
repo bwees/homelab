@@ -50,7 +50,7 @@ services:
       - 'traefik.docker.network=home_traefik_backend'
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v2.7.3
+    image: ghcr.io/immich-app/immich-machine-learning:v2.7.4
     volumes:
       - model-cache:/cache
     networks:
