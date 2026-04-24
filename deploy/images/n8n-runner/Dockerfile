@@ -4,10 +4,11 @@ USER root
 
 
 # Reinstall apk - n8n removes this
-RUN wget https://dl-cdn.alpinelinux.org/alpine/v3.23/main/x86_64/apk-tools-static-3.0.5-r0.apk \
-    && tar -xzf apk-tools-static-3.0.5-r0.apk \
+RUN APKTOOLS_VERSION="$(wget -qO- https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/APKINDEX.tar.gz | tar -xzO | awk -F: '/^P:apk-tools-static$/ {found=1} found && /^V:/ {print $2; exit}')" \
+    && wget "https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/apk-tools-static-${APKTOOLS_VERSION}.apk" -O apk-tools-static.apk \
+    && tar -xzf apk-tools-static.apk \
     && mv sbin/apk.static /sbin/apk \
-    && rm -rf sbin apk-tools-static-3.0.5-r0.apk
+    && rm -rf sbin apk-tools-static.apk
 
 # Other dependencies
 RUN apk update && apk add --no-cache \
