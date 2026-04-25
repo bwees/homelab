@@ -32,6 +32,13 @@ http:
         - public
         - publicsecure
 
+    csce470:
+      rule: 'Host(`csce470.bwees.io`)'
+      service: homelab-bwees
+      entryPoints:
+        - public
+        - publicsecure
+
     album:
       rule: 'Host(`album.bwees.io`)'
       service: homelab-home
