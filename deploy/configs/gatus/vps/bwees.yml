@@ -136,6 +136,24 @@ endpoints:
     alerts:
       - type: discord
 
+  - name: audiobookshelf
+    group: lab-media
+    url: 'https://audiobookshelf.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
+  - name: shelfarr
+    group: lab-media
+    url: 'https://shelfarr.bwees.lab/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
   - name: exit-node
     group: lab-media
     url: 'icmp://100.107.103.20'

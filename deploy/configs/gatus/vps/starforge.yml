@@ -17,15 +17,6 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: starforge-server
-    group: starforge
-    url: 'icmp://100.93.153.81'
-    interval: 1m
-    conditions:
-      - '[CONNECTED] == true'
-    alerts:
-      - type: discord
-
   - name: website
     group: starforge
     url: 'https://starforgefoundry.com/'
