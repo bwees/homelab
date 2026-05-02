@@ -209,23 +209,23 @@ services:
     restart: unless-stopped
     # Traefik config defined at exitnode
 
-  jellyseerr:
-    image: fallenbagel/jellyseerr:2.7.3
+  seerr:
+    image: ghcr.io/seerr-team/seerr:v3.2.0
     environment:
       - TZ=America/Chicago
       - PORT=5055
     volumes:
-      - /storage/media/jellyseer:/app/config
+      - /storage/media/seerr:/app/config
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
     labels:
       - 'traefik.enable=true'
 
-      - 'traefik.http.services.jellyseer.loadbalancer.server.port=5055'
-      - 'traefik.http.routers.jellyseer.rule=Host(`jellyseer.bwees.lab`)'
-      - 'traefik.http.routers.jellyseer.service=jellyseer'
-      - 'traefik.http.routers.jellyseer.entrypoints=web,websecure'
+      - 'traefik.http.services.seerr.loadbalancer.server.port=5055'
+      - 'traefik.http.routers.seerr.rule=Host(`seerr.bwees.lab`)'
+      - 'traefik.http.routers.seerr.service=seerr'
+      - 'traefik.http.routers.seerr.entrypoints=web,websecure'
 
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:2.70.01

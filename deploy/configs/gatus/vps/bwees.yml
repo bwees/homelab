@@ -82,9 +82,9 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: jellyseer
+  - name: seerr
     group: lab-media
-    url: 'https://jellyseer.bwees.lab/'
+    url: 'https://seerr.bwees.lab/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
