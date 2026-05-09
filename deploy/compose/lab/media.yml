@@ -228,7 +228,7 @@ services:
       - 'traefik.http.routers.seerr.entrypoints=web,websecure'
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.71.01
+    image: ghcr.io/haveagitgat/tdarr:2.72.01
     restart: unless-stopped
     networks:
       - bwees_traefik_backend
