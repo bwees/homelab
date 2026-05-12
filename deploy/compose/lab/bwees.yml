@@ -216,16 +216,3 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  csce470:
-    image: ghcr.io/bwees/470inference:latest
-    pull_policy: always
-    restart: unless-stopped
-    networks:
-      - traefik_backend
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.services.csce470.loadbalancer.server.port=8000'
-      - 'traefik.http.routers.csce470.rule=Host(`csce470.bwees.io`)'
-      - 'traefik.http.routers.csce470.service=csce470'
-      - 'traefik.http.routers.csce470.entrypoints=web,websecure'
