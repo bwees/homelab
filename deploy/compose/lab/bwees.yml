@@ -216,3 +216,18 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  crosshatch:
+    image: ghcr.io/bwees/crosshatch:v0.1.2
+    ports:
+        - 8555:8555
+    networks:
+      - traefik_backend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.crosshatch.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.crosshatch.rule=Host(`crosshatch.bwees.lab`)'
+      - 'traefik.http.routers.crosshatch.service=crosshatch'
+      - 'traefik.http.routers.crosshatch.entrypoints=web,websecure'
+    volumes:
+        - /storage/crosshatch:/app/server/data
