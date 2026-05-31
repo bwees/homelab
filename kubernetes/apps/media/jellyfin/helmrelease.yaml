@@ -12,6 +12,21 @@ spec:
   values:
     controllers:
       main:
+        initContainers:
+          # hostPath volumes are unmanaged, so fsGroup does not chown the PV and
+          # DirectoryOrCreate makes /config root:root. Fix ownership to 568 (the
+          # UID jellyfin runs as) before the main container starts. Runs as root.
+          init-perms:
+            image:
+              repository: busybox
+              tag: "1.37"
+            command:
+              - sh
+              - -c
+              - chown -R 568:568 /config
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
         containers:
           main:
             image:

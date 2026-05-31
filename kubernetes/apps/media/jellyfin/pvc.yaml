@@ -15,13 +15,7 @@ spec:
   hostPath:
     path: /storage/media/jellyfin
     type: DirectoryOrCreate   # auto-create the dir on first mount; no manual mkdir
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values: ["k3d-k3s-default-server-0"]   # verify: `kubectl get nodes`
+ 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
