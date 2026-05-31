@@ -20,7 +20,7 @@ spec:
         - matchExpressions:
             - key: kubernetes.io/hostname
               operator: In
-              values: ["homelab-vps"]   # verify: `kubectl get nodes`
+              values: ["k3d-test-server-0"]   # verify: `kubectl get nodes`
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
