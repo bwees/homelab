@@ -6,8 +6,7 @@ metadata:
   namespace: media
 spec:
   accessModes: [ReadWriteOnce]
-  storageClassName: ""
-  volumeName: jellyfin-config   # bind directly to the PV above
+  storageClassName: local-hostpath   # dynamically provisioned by local-csi (democratic-csi)
   resources:
     requests:
       storage: 10Gi
