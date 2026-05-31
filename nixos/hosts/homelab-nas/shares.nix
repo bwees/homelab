@@ -58,7 +58,7 @@
 
     exports = ''
       /mnt/main/homelab   192.168.50.173(rw,sync,no_subtree_check,no_root_squash,fsid=0)
-      /mnt/main/homelab   100.64.0.0/10(rw,sync,no_subtree_check,no_root_squash,fsid=0)
+      /mnt/main/homelab   100.64.0.0/10(rw,sync,no_subtree_check,no_root_squash,fsid=0,insecure)
     '';
   };
 

@@ -8,14 +8,14 @@ spec:
     storage: 1Ti              # required by the API, ignored by NFS
   accessModes: [ReadWriteMany]
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""        # static binding
-  csi:
-    driver: nfs.csi.k8s.io
-    volumeHandle: nas-media-library   # any cluster-unique string
-    volumeAttributes:
-      server: 100.80.89.123
-      share: /mnt/main/homelab/media
-  mountOptions: [nfsvers=4, nolock, soft]
+  storageClassName: ""
+  mountOptions:
+    - nfsvers=4.1
+    - nolock
+    - soft
+  nfs:
+    server: 100.80.89.123
+    path: /media          # fsid=0 makes /mnt/main/homelab the NFSv4 pseudo-root, so the share is /media (not the full server path)
 
 
 ---
