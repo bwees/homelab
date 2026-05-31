@@ -2,5 +2,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 # Shared namespace for the media app group (jellyfin, storage, *arr, …).
-- ../../../apps/media
-- jellyfin
+- media
