@@ -81,6 +81,10 @@ spec:
         existingClaim: jellyfin-config
         globalMounts:
           - path: /config
+      media:
+        existingClaim: media-library
+        globalMounts:
+          - path: /media
       tmpfs:
         type: emptyDir
         advancedMounts:

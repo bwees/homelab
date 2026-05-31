@@ -20,7 +20,7 @@ spec:
     driver: nfs.csi.k8s.io
     volumeHandle: nas-media-library   # any cluster-unique string
     volumeAttributes:
-      server: nas.bwees.lab
+      server: 100.80.89.123
       share: /mnt/main/homelab/media
   mountOptions: [nfsvers=4, nolock, soft]
 ---
