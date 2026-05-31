@@ -1,0 +1,28 @@
+---
+# Single GatewayClass shared by both the external and internal Gateways. It
+# points at the EnvoyProxy below, so any data-plane tuning lives in one place.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: default
+    namespace: network
+---
+# Shared data-plane config for every Gateway using the `envoy` class.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: default
+  namespace: network
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      # Single-node cluster — one proxy replica per Gateway is plenty.
+      envoyDeployment:
+        replicas: 1

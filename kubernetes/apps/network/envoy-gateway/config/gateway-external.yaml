@@ -1,0 +1,53 @@
+---
+# External network — the public entrypoint. Listens on the standard web ports
+# (80 / 443) that you forward/expose to the internet. Apps opt in by pointing an
+# HTTPRoute's parentRef at this Gateway (name: envoy-external, namespace: network).
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-external
+  namespace: network
+spec:
+  gatewayClassName: envoy
+  # ── Shared LoadBalancer IP (left unassigned for now) ──────────────────────
+  # The external and internal Gateways are meant to live on ONE IP and differ
+  # only by port. On k3s ServiceLB (klipper) that is automatic: every
+  # LoadBalancer Service advertises the node IP and these Gateways already use
+  # distinct ports, so nothing is needed today.
+  #
+  # When you adopt an IPAM that hands out pool IPs (MetalLB / Cilium LB-IPAM),
+  # pin the IP with spec.addresses below AND add your provider's "shared IP"
+  # annotation (same value on BOTH Gateways) so the two Services may co-locate
+  # on the one address. Keep the value identical to gateway-internal.yaml.
+  #
+  # addresses:
+  #   - type: IPAddress
+  #     value: 10.0.0.10
+  # infrastructure:
+  #   annotations:
+  #     # MetalLB:
+  #     # metallb.universe.tf/loadBalancerIPs: 10.0.0.10
+  #     # metallb.universe.tf/allow-shared-ip: envoy-shared
+  #     # Cilium LB-IPAM:
+  #     # lbipam.cilium.io/ips: 10.0.0.10
+  #     # lbipam.cilium.io/sharing-key: envoy-shared
+  # ──────────────────────────────────────────────────────────────────────────
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    # HTTPS — enable once cert-manager is issuing a cert into this namespace.
+    # - name: https
+    #   protocol: HTTPS
+    #   port: 443
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - kind: Secret
+    #         name: wildcard-tls

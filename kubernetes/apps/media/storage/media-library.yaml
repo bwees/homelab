@@ -1,0 +1,38 @@
+---
+# Shared media library on the NAS, mounted ReadWriteMany into every app in the
+# `media` namespace (Jellyfin reads; *arr / qbittorrent write). Migration plan
+# §10a — static csi-driver-nfs PV over the existing NFS export.
+#
+# Prerequisites (see notes):
+#   - csi-driver-nfs (nfs.csi.k8s.io) installed in the cluster
+#   - NAS export widened to allow this node's Tailscale IP (shares.nix)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-media-library
+spec:
+  capacity:
+    storage: 1Ti               # required by the API, ignored by NFS
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""         # static binding
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: nas-media-library   # any cluster-unique string
+    volumeAttributes:
+      server: nas.bwees.lab
+      share: /mnt/main/homelab/media
+  mountOptions: [nfsvers=4, nolock, soft]
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-library
+  namespace: media
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ""
+  volumeName: nas-media-library
+  resources:
+    requests:
+      storage: 1Ti

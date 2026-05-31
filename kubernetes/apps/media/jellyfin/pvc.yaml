@@ -1,0 +1,36 @@
+---
+# Jellyfin config on the node's local disk (migration plan §10c — config dirs
+# and databases stay local, never NFS). Statically bound to the existing
+# /storage/media/jellyfin directory carried over from the compose stack.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-config
+spec:
+  capacity:
+    storage: 10Gi              # advisory only for `local` volumes
+  accessModes: [ReadWriteOnce]
+  persistentVolumeReclaimPolicy: Retain   # deleting the PVC must not wipe /storage
+  storageClassName: ""         # static binding, no dynamic provisioner
+  local:
+    path: /storage/media/jellyfin
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values: ["homelab-vps"]   # verify: `kubectl get nodes`
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-config
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: ""
+  volumeName: jellyfin-config   # bind directly to the PV above
+  resources:
+    requests:
+      storage: 10Gi
