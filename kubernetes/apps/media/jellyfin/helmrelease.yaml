@@ -2,6 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: jellyfin
+  namespace: media
 spec:
   interval: 1h
   chartRef:
@@ -37,6 +38,7 @@ spec:
                     path: /health
                     port: 8096
               readiness: *probes
+              
     defaultPodOptions:
       securityContext:
         fsGroup: 568
