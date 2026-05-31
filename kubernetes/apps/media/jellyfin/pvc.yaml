@@ -8,12 +8,13 @@ metadata:
   name: jellyfin-config
 spec:
   capacity:
-    storage: 10Gi              # advisory only for `local` volumes
+    storage: 10Gi              # advisory only for hostPath volumes
   accessModes: [ReadWriteOnce]
   persistentVolumeReclaimPolicy: Retain   # deleting the PVC must not wipe /storage
   storageClassName: ""         # static binding, no dynamic provisioner
-  local:
+  hostPath:
     path: /storage/media/jellyfin
+    type: DirectoryOrCreate   # auto-create the dir on first mount; no manual mkdir
   nodeAffinity:
     required:
       nodeSelectorTerms:
