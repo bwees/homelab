@@ -1,0 +1,15 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyfin
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/vps/media/jellyfin/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: storage
+  targetNamespace: media

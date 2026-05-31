@@ -1,0 +1,20 @@
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps
+  namespace: flux-system
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  wait: true
+  dependsOn:
+    - name: envoy-config
+    - name: local-csi
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+  path: ./kubernetes/apps/vps

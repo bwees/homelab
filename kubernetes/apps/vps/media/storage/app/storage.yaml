@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-media-library
+spec:
+  capacity:
+    storage: 1Ti              # required by the API, ignored by NFS
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""        # static binding
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: nas-media-library   # any cluster-unique string
+    volumeAttributes:
+      server: 100.80.89.123
+      share: /mnt/main/homelab/media
+  mountOptions: [nfsvers=4, nolock, soft]
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-library
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ""
+  volumeName: nas-media-library
+  resources:
+    requests:
+      storage: 1Ti
+

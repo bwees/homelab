@@ -1,0 +1,16 @@
+{
+  "Kustomization YAML": {
+    "scope": "yaml",
+    "prefix": "kustomization",
+    "body": [
+      "apiVersion: kustomize.config.k8s.io/v1beta1",
+      "kind: Kustomization",
+      "",
+      "resources:",
+      "  - ${1:deployment.yaml}",
+      "",
+      "$0"
+    ],
+    "description": "Kustomize kustomization.yaml template"
+  }
+}

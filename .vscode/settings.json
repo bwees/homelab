@@ -19,4 +19,7 @@
   },
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nixd",
+  "yaml.schemas": {
+    "kubernetes://schema/helm.toolkit.fluxcd.io/v2@helmrelease": "helmrelease.patch.yaml"
+  },
 }

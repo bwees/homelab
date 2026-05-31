@@ -2,11 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - flux-system
-- ../../components/repositories
-- ../../apps/network
-
-# apps/ks.yaml is the Flux Kustomization that reconciles everything under
-# clusters/vps/apps and gates it on envoy-gateway-config. The app manifests
-# themselves are pulled in by that Flux Kustomization (via spec.path), NOT
-# listed here — so we reference the ks.yaml file rather than the apps directory.
-- apps/ks.yaml
+- ks.yaml
+- ../../infrastructure/envoy-gateway/ks.yaml
+- ../../infrastructure/local-csi/ks.yaml
