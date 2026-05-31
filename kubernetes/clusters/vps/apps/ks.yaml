@@ -1,0 +1,32 @@
+---
+# Single Flux Kustomization that owns every app under clusters/vps/apps and
+# gates the whole group on envoy-gateway-config. Because it dependsOn
+# envoy-gateway-config (which itself dependsOn envoy-gateway), the Gateway API
+# CRDs and the parent Gateways are guaranteed to exist before any app here is
+# reconciled.
+#
+# This is what lets route-defining charts render correctly on a fresh cluster:
+# the bjw-s app-template chart chooses the HTTPRoute apiVersion at render time
+# by probing API discovery, defaulting to gateway.networking.k8s.io/v1alpha2 and
+# only upgrading to v1 once that version is registered. Without this ordering it
+# emits v1alpha2 (which the CRDs no longer serve) and the install fails.
+#
+# New apps added under clusters/vps/apps inherit this dependency automatically —
+# no per-app ks.yaml needed.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps
+  namespace: flux-system
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  wait: true
+  dependsOn:
+    - name: envoy-gateway-config
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/clusters/vps/apps
