@@ -210,7 +210,7 @@ services:
     # Traefik config defined at exitnode
 
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.2.0
+    image: ghcr.io/seerr-team/seerr:v3.3.0
     environment:
       - TZ=America/Chicago
       - PORT=5055
