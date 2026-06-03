@@ -74,12 +74,6 @@ spec:
           dirPermissionsMode: "0777"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
-        # volume_id == the on-disk dir name: <shareBasePath>/v/<volume_id>
-        # (the "/v" segment is hardcoded in the driver and can't be removed).
-        # Default volume_id is the PV name (pvc-<uuid>). This template prefixes
-        # the PVC name so dirs are recognizable, e.g. jellyfin-pvc-<uuid>, while
-        # {{ name }} (the PV name) keeps each volume unique.
-        # Requires --extra-create-metadata on the provisioner (chart default).
         _private:
           csi:
             volume:
