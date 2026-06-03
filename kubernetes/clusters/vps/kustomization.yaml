@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
 - flux-system
 - ks.yaml
+- ../../infrastructure/namespace.yaml
 - ../../infrastructure/ingress/ks.yaml
 - ../../infrastructure/persistent-storage/ks.yaml
