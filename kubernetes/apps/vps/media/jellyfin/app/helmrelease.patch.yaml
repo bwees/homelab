@@ -9,7 +9,7 @@ spec:
       main:
         parentRefs:
           - name: envoy
-            namespace: gateway
+            namespace: infrastructure
         hostnames:
           - jellyfin.test.lab
         rules:

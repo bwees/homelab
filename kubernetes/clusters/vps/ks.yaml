@@ -11,8 +11,10 @@ spec:
   prune: true
   wait: true
   dependsOn:
-    - name: envoy-config
-    - name: local-csi
+    - name: ingress
+      namespace: infrastructure
+    - name: persistent-storage
+      namespace: infrastructure
   sourceRef:
     kind: GitRepository
     name: flux-system

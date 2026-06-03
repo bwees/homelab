@@ -2,8 +2,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: envoy-gateway
-  namespace: flux-system
+  name: ingress-app
+  namespace: infrastructure
 spec:
   interval: 1h
   retryInterval: 2m
@@ -13,14 +13,15 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/infrastructure/envoy-gateway/app
+  path: ./kubernetes/infrastructure/ingress/app
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: envoy-config
-  namespace: flux-system
+  # this is tecnically the config stage but it is the top level stage to await
+  name: ingress 
+  namespace: infrastructure
 spec:
   interval: 1h
   retryInterval: 2m
@@ -28,8 +29,8 @@ spec:
   prune: true
   wait: true
   dependsOn:
-    - name: envoy-gateway
+    - name: ingress-app
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/infrastructure/envoy-gateway/config
+  path: ./kubernetes/infrastructure/ingress/config

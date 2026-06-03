@@ -11,7 +11,7 @@ spec:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
     name: default
-    namespace: gateway
+    namespace: infrastructure
 ---
 # Data-plane config for the `envoy` class. One replica by default; a multi-node
 # cluster can bump it with a `patches:` entry on that cluster's infra-configs
@@ -20,7 +20,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
   name: default
-  namespace: gateway
+  namespace: infrastructure
 spec:
   provider:
     type: Kubernetes
@@ -34,7 +34,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy
-  namespace: gateway
+  namespace: infrastructure
 spec:
   gatewayClassName: envoy
   listeners:

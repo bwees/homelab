@@ -3,7 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: envoy-gateway
-  namespace: gateway
+  namespace: infrastructure
 spec:
   interval: 1h
   url: oci://docker.io/envoyproxy/gateway-helm
@@ -15,13 +15,13 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: envoy-gateway
-  namespace: gateway
+  namespace: infrastructure
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
     name: envoy-gateway
-    namespace: gateway
+    namespace: infrastructure
   # The chart bundles the Gateway API + Envoy Gateway CRDs; let Flux manage them.
   install:
     crds: CreateReplace

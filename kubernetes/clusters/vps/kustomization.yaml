@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
 - flux-system
 - ks.yaml
-- ../../infrastructure/envoy-gateway/ks.yaml
-- ../../infrastructure/local-csi/ks.yaml
+- ../../infrastructure/ingress/ks.yaml
+- ../../infrastructure/persistent-storage/ks.yaml

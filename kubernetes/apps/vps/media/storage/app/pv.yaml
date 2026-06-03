@@ -1,4 +1,3 @@
----
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -16,18 +15,4 @@ spec:
   nfs:
     server: 100.80.89.123
     path: /media          # fsid=0 makes /mnt/main/homelab the NFSv4 pseudo-root, so the share is /media (not the full server path)
-
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: media-library
-spec:
-  accessModes: [ReadWriteMany]
-  storageClassName: ""
-  volumeName: nas-media-library
-  resources:
-    requests:
-      storage: 1Ti
 
