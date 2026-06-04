@@ -27,6 +27,10 @@ spec:
               # Route the proxied traffic out through the Mullvad exit node.
               TS_EXTRA_ARGS: "--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true --hostname=media-stack"
               TS_STATE_DIR: /var/lib/tailscale
+              # containerboot defaults TS_KUBE_SECRET to "tailscale" and tries to
+              # store state in a kube Secret (which needs the SA token mounted).
+              # We use the PVC at TS_STATE_DIR instead, so disable the kube store.
+              TS_KUBE_SECRET: ""
               TS_ACCEPT_DNS: "false"
               # TODO: provide an auth key (e.g. via a Secret) on first bring-up,
               # since the k8s state PVC starts empty unlike the old compose volume.
