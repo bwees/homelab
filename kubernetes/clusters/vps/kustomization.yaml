@@ -1,8 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- flux-system
-- ks.yaml
-- ../../infrastructure/namespace.yaml
-- ../../infrastructure/ingress/ks.yaml
-- ../../infrastructure/persistent-storage/ks.yaml

@@ -1,0 +1,52 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tailscale
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tailscale
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: tailscale/tailscale
+              tag: "v1.98.4"
+            env:
+              TZ: America/Chicago
+              # Userspace networking: no /dev/net/tun or NET_ADMIN needed, and it's
+              # what enables the SOCKS5 proxy. See
+              # https://tailscale.com/docs/features/containers/docker/docker-params
+              TS_USERSPACE: "true"
+              # Expose the SOCKS5 proxy on all interfaces so the other (standalone)
+              # media pods can reach it at tailscale.media.svc.cluster.local:1055.
+              TS_SOCKS5_SERVER: "0.0.0.0:1055"
+              # Route the proxied traffic out through the Mullvad exit node.
+              TS_EXTRA_ARGS: "--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true --hostname=media-stack"
+              TS_STATE_DIR: /var/lib/tailscale
+              TS_ACCEPT_DNS: "false"
+              # TODO: provide an auth key (e.g. via a Secret) on first bring-up,
+              # since the k8s state PVC starts empty unlike the old compose volume.
+              # TS_AUTHKEY: <tskey-...>
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    service:
+      main:
+        controller: main
+        ports:
+          socks5:
+            port: 1055
+
+    persistence:
+      state:
+        existingClaim: tailscale-state
+        globalMounts:
+          - path: /var/lib/tailscale

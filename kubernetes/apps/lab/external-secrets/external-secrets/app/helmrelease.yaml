@@ -1,0 +1,17 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-secrets
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: external-secrets
+  values:
+    # single-node lab sizing; the chart installs the CRDs by default
+    replicaCount: 1
+    webhook:
+      replicaCount: 1
+    certController:
+      replicaCount: 1

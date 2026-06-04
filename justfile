@@ -41,3 +41,8 @@ copy-restic-creds HOST USER="bwees":
   op inject --in-file restic.nas.env.op --out-file restic.nas.env -f
   op inject --in-file restic.local.env.op --out-file restic.local.env -f
   rsync -av --mkpath --rsync-path="sudo rsync" *.env "{{USER}}@{{HOST}}:/etc/restic/credentials/"
+
+
+# kubectl create secret generic onepassword-secret-token \
+#   --namespace external-secrets \
+#   --from-literal=token='ops_xxxxxxxx...'

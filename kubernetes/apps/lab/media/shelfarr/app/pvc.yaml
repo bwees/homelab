@@ -1,0 +1,12 @@
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shelfarr-config
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-hostpath   # dynamically provisioned by local-csi (democratic-csi)
+  resources:
+    requests:
+      storage: 10Gi

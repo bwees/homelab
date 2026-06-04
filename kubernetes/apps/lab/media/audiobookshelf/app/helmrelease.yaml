@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: audiobookshelf
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: audiobookshelf
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/advplyr/audiobookshelf
+              tag: latest
+            env:
+              TZ: America/Chicago
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 80
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - audiobookshelf.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 80
+
+    persistence:
+      config:
+        existingClaim: audiobookshelf-config
+        globalMounts:
+          - path: /config
+      metadata:
+        existingClaim: audiobookshelf-metadata
+        globalMounts:
+          - path: /metadata
+      media:
+        existingClaim: media-library
+        globalMounts:
+          - path: /audiobooks
+            subPath: audiobooks
