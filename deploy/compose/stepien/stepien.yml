@@ -9,7 +9,7 @@ networks:
 
 services:
   traefik:
-    image: traefik:v3.7.1
+    image: traefik:v3.7.3
     command:
       - '--configFile=/etc/traefik/config/config.yml'
     ports:
