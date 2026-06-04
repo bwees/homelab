@@ -2,12 +2,40 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudflare-tunnel
+  name: cloudflare-tunnel-secret
 spec:
   interval: 1h
-  path: ./kubernetes/apps/lab/network/cloudflare-tunnel/app
+  retryInterval: 2m
+  timeout: 5m
   prune: true
+  # wait so the ExternalSecret has synced cloudflare-tunnel-secret before the
+  # app Kustomization substitutes ${CLOUDFLARE_TUNNEL_ID} from it
+  wait: true
+  path: ./kubernetes/apps/lab/network/cloudflare-tunnel/secret
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudflare-tunnel
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  dependsOn:
+    - name: cloudflare-tunnel-secret
+  path: ./kubernetes/apps/lab/network/cloudflare-tunnel/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  # the tunnel UUID is extracted into cloudflare-tunnel-secret by the
+  # ExternalSecret; substitute it into the DNSEndpoint CNAME target at build time
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cloudflare-tunnel-secret
