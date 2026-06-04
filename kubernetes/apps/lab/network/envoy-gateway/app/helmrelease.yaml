@@ -27,3 +27,11 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+  values:
+    config:
+      envoyGateway:
+        provider:
+          type: Kubernetes
+          kubernetes:
+            deploy:
+              type: GatewayNamespace
