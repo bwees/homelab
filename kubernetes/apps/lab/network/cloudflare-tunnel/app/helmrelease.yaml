@@ -21,6 +21,7 @@ spec:
               tag: 2026.5.2
             env:
               NO_AUTOUPDATE: true
+              TUNNEL_METRICS: 0.0.0.0:8080
             envFrom:
               - secretRef:
                   name: "cloudflare-tunnel-secret"
