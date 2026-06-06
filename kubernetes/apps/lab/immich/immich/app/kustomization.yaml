@@ -14,6 +14,8 @@ patches:
       group: postgresql.cnpg.io
       kind: Cluster
     patch: |-
+      - op: remove
+        path: /spec/bootstrap/initdb
       - op: add
         path: /spec/postgresql/shared_preload_libraries/-
         value: vchord.so
@@ -23,10 +25,7 @@ patches:
           - name: vchord
             image:
               reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1
-            # Paths are relative to the image-volume mount (/extensions/vchord),
-            # so NO leading slash — a leading slash resolves to the running
-            # Postgres container's own dirs, which don't contain vchord.
             dynamic_library_path:
-              - usr/lib/postgresql/18/lib
+              - /usr/lib/postgresql/18/lib
             extension_control_path:
-              - usr/share/postgresql/18
+              - /usr/share/postgresql/18/
