@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ${APP}
+  name: ${APP}-db
 spec:
   instances: ${PG_INSTANCES:=1}
   imageName: ${PG_IMAGE:=ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie}

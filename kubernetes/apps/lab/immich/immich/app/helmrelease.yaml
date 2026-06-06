@@ -48,22 +48,22 @@ spec:
               DB_HOSTNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: immich-app
+                    name: immich-db-app
                     key: host
               DB_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: immich-app
+                    name: immich-db-app
                     key: username
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: immich-app
+                    name: immich-db-app
                     key: password
               DB_DATABASE_NAME:
                 valueFrom:
                   secretKeyRef:
-                    name: immich-app
+                    name: immich-db-app
                     key: dbname
               TZ: America/Chicago
             image:

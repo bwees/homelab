@@ -7,7 +7,7 @@ spec:
   name: immich
   owner: immich
   cluster:
-    name: immich
+    name: immich-db
   extensions:
     - name: vector
       ensure: present
