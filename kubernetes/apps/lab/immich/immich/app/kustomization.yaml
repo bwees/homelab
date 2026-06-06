@@ -14,8 +14,6 @@ patches:
       group: postgresql.cnpg.io
       kind: Cluster
     patch: |-
-      - op: remove
-        path: /spec/bootstrap/initdb
       - op: add
         path: /spec/postgresql/shared_preload_libraries/-
         value: vchord.so
