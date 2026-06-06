@@ -1,0 +1,26 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ${APP}
+spec:
+  instances: ${PG_INSTANCES:=1}
+  imageName: ${PG_IMAGE:=ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie}
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  storage:
+    size: ${PG_STORAGE:=10Gi}
+    storageClass: ${PG_STORAGECLASS:=local-hostpath}
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
+  postgresql:
+    shared_preload_libraries:
+      - pg_stat_statements
+  resources:
+    requests:
+      cpu: ${PG_CPU_REQ:=50m}
+      memory: ${PG_MEM_REQ:=256Mi}
+    limits:
+      memory: ${PG_MEM_LIMIT:=1Gi}

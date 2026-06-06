@@ -6,7 +6,7 @@ metadata:
   namespace: media
 spec:
   accessModes: [ReadWriteOnce]
-  storageClassName: local-hostpath   # dynamically provisioned by local-csi (democratic-csi)
+  storageClassName: local-hostpath 
   resources:
     requests:
       storage: 1Gi

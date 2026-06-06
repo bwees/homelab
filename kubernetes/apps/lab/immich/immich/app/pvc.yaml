@@ -1,24 +1,24 @@
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: audiobookshelf-config
-  namespace: media
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: local-hostpath 
-  resources:
-    requests:
-      storage: 10Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: audiobookshelf-metadata
-  namespace: media
+  name: immich-ml-cache
 spec:
   accessModes: [ReadWriteOnce]
   storageClassName: local-hostpath 
   resources:
     requests:
       storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ""
+  volumeName: immich-library
+  resources:
+    requests:
+      storage: 1Ti

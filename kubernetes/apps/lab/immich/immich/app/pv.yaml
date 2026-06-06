@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nas-media-library
+  name: immich-library
 spec:
   capacity:
     storage: 1Ti
@@ -14,5 +14,4 @@ spec:
     - soft
   nfs:
     server: 100.80.89.123
-    path: /media
-
+    path: /media/immich-lib
