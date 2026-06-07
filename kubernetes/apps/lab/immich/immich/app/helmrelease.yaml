@@ -62,7 +62,7 @@ spec:
                     key: password
               TZ: America/Chicago
             image:
-              # renovate: datasource=github-releases depName=immich-app/immich
+              repository: ghcr.io/immich-app/immich-server
               tag: "v2.7.5"
 
     server:
@@ -98,7 +98,7 @@ spec:
           containers:
             main:
               image:
-                # renovate: datasource=github-releases depName=immich-app/immich
+                repository: ghcr.io/immich-app/immich-machine-learning
                 tag: v2.7.5
               env:
                 GUNICORN_CMD_ARGS: "--no-control-socket"

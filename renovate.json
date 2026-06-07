@@ -11,26 +11,9 @@
   "flux": {
     "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"]
   },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Container image tags in Flux HelmRelease values (app-template image.repository/tag pairs)",
-      "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"],
-      "matchStrings": [
-        "image:\\s+repository:\\s+(?<depName>\\S+)\\s+tag:\\s+[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
-      ],
-      "datasourceTemplate": "docker"
-    },
-    {
-      "customType": "regex",
-      "description": "Tag-only image overrides annotated with a renovate comment (e.g. immich)",
-      "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s+tag:\\s+[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
-      ],
-      "datasourceTemplate": "docker"
-    }
-  ],
+  "helm-values": {
+    "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"]
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
