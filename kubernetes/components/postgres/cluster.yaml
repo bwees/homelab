@@ -4,13 +4,13 @@ kind: Cluster
 metadata:
   name: ${APP}-db
 spec:
-  instances: ${PG_INSTANCES:=1}
-  imageName: ${PG_IMAGE:=ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie}
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
-    size: ${PG_STORAGE:=10Gi}
-    storageClass: ${PG_STORAGECLASS:=local-hostpath}
+    size: 10Gi
+    storageClass: local-hostpath
   bootstrap:
     initdb:
       database: ${APP}
@@ -20,7 +20,7 @@ spec:
       - pg_stat_statements
   resources:
     requests:
-      cpu: ${PG_CPU_REQ:=50m}
-      memory: ${PG_MEM_REQ:=256Mi}
+      cpu: 50m
+      memory: 256Mi
     limits:
-      memory: ${PG_MEM_LIMIT:=1Gi}
+      memory: 1Gi

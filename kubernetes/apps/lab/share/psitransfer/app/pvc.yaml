@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: psitransfer-data
+  namespace: share
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ""
+  volumeName: nas-psitransfer
+  resources:
+    requests:
+      storage: 100Gi

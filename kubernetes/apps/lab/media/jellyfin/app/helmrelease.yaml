@@ -31,6 +31,7 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 2Gi
+                gpu.intel.com/i915: "1"
             probes:
               liveness: &probes
                 enabled: true
@@ -45,6 +46,9 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
 
     service:
       main:
@@ -85,6 +89,7 @@ spec:
         existingClaim: jellyfin-config
         globalMounts:
           - path: /config
+          
       media:
         existingClaim: media-library
         globalMounts:

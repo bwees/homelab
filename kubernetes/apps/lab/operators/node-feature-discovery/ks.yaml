@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: node-feature-discovery
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  prune: true
+  # wait so the NodeFeatureRule CRD + node labelling are ready before the Intel
+  # GPU plugin (which creates NodeFeatureRules and selects on its labels) reconciles.
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./kubernetes/apps/lab/operators/node-feature-discovery/app
+  targetNamespace: operators
