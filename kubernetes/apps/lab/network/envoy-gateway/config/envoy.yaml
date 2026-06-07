@@ -108,7 +108,7 @@ metadata:
   name: envoy-external
   namespace: network
   annotations:
-    external-dns.alpha.kubernetes.io/target: lab-tunnel.bwees.io
+    external-dns.alpha.kubernetes.io/target: lab.tun.bwees.io
 
 spec:
   gatewayClassName: envoy-external

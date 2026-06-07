@@ -70,7 +70,7 @@ spec:
                   http2Origin: true
                   keepAliveTimeout: 3600s
                   noTLSVerify: true
-                  originServerName: lab-tunnel.bwees.io
+                  originServerName: lab.tun.bwees.io
                   tcpKeepAlive: 7200s
                 service: https://envoy-external.network.svc.cluster.local:443
               - service: http_status:404
