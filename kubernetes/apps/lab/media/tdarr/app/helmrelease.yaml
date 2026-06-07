@@ -33,6 +33,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 4Gi
+                gpu.intel.com/i915: "1"
             probes:
               liveness: &probes
                 enabled: true
@@ -42,6 +43,9 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
 
     service:
       main:
