@@ -17,6 +17,7 @@ spec:
               tag: "5.2.1"
             env:
               TZ: America/Chicago
+              QBITTORRENT_DOWNLOAD_PATH: /downloads
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
