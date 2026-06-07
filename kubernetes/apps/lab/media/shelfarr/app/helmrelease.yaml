@@ -60,8 +60,6 @@ spec:
         existingClaim: shelfarr-config
         globalMounts:
           - path: /rails/storage
-      # audiobooks and downloads live on the NAS media share, each mounted by
-      # subPath to match the old compose layout.
       media:
         existingClaim: media-library
         globalMounts:
