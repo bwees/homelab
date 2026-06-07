@@ -8,7 +8,7 @@
     ./disk-config.nix
     ../../lib/base-packages.nix
     ../../lib/bwees.nix
-    ../../lib/docker.nix
+    ../../lib/k3s.nix
     ../../lib/garbage-collect.nix
     ../../lib/root-ca.nix
     ../../lib/storage-backup.nix
