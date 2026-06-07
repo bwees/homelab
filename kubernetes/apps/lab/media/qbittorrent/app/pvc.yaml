@@ -6,7 +6,19 @@ metadata:
   namespace: media
 spec:
   accessModes: [ReadWriteOnce]
-  storageClassName: local-hostpath 
+  storageClassName: local-hostpath
   resources:
     requests:
       storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-tailscale-state
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-hostpath
+  resources:
+    requests:
+      storage: 1Gi

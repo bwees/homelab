@@ -10,6 +10,31 @@ spec:
   values:
     controllers:
       main:
+        initContainers:
+          # Runs before the app + tailscale containers (shared pod netns) and adds
+          # explicit routes for the cluster pod/service CIDRs via the pod's normal
+          # gateway. The tailscale exit-node client installs an
+          # `ip rule ... suppress_prefixlength 0` that diverts only the *default*
+          # route into the tunnel, so these more specific routes keep cluster
+          # traffic (e.g. WebUI replies to envoy on another node, probes) on eth0
+          # while everything else egresses through the exit node.
+          route-setup:
+            image:
+              repository: busybox
+              tag: "1.37"
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                GW=$(ip route show default | awk '{print $3}' | head -n1)
+                echo "pod default gateway: $GW"
+                ip route add 10.42.0.0/16 via "$GW" 2>/dev/null || true
+                ip route add 10.43.0.0/16 via "$GW" 2>/dev/null || true
+                ip route show
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ["NET_ADMIN"]
         containers:
           main:
             image:
@@ -32,11 +57,50 @@ spec:
               liveness: &probes
                 enabled: true
               readiness: *probes
+          # Kernel-mode tailscale sidecar. Unlike the userspace SOCKS5 proxy it
+          # creates a real tun device, so it forwards UDP (and everything else) —
+          # qbittorrent's traffic egresses through the Mullvad exit node at L3.
+          # No TS_SOCKS5_SERVER: routing is via the shared pod netns, not a proxy.
+          tailscale:
+            image:
+              repository: tailscale/tailscale
+              tag: "v1.98.4"
+            env:
+              TZ: America/Chicago
+              TS_USERSPACE: "false"
+              TS_EXTRA_ARGS: "--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true --hostname=qbittorrent"
+              TS_STATE_DIR: /var/lib/tailscale
+              # State persists on a PVC (like the standalone tailscale node), so the
+              # node identity survives restarts. No auth key: authenticate once on
+              # first bring-up via the login URL printed in the container logs.
+              TS_KUBE_SECRET: ""
+              TS_ACCEPT_DNS: "false"
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ["NET_ADMIN", "NET_RAW"]
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
 
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      # qbittorrent's egress is forced through the exit node, so cluster DNS
+      # (a service IP reached via the default route) would be diverted into the
+      # tunnel. Use public resolvers instead — queries then resolve through the
+      # exit node, keeping tracker lookups off the local/ISP resolver.
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+          - 1.0.0.1
 
     service:
       main:
@@ -71,3 +135,20 @@ spec:
         globalMounts:
           - path: /downloads
             subPath: downloads
+      # Persistent tailscale state (node identity survives restarts).
+      tailscale-state:
+        existingClaim: qbittorrent-tailscale-state
+        advancedMounts:
+          main:
+            tailscale:
+              - path: /var/lib/tailscale
+      # Host tun device for kernel-mode networking. NET_ADMIN + this mount avoids
+      # a privileged container; on a cgroup-v2 node that denies the device a tun
+      # device plugin (e.g. squat/generic-device-plugin) or privileged is needed.
+      dev-net-tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        advancedMounts:
+          main:
+            tailscale:
+              - path: /dev/net/tun
