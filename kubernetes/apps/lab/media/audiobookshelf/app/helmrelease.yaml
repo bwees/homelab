@@ -17,8 +17,8 @@ spec:
               tag: latest
             env:
               TZ: America/Chicago
-              METADATA_PATH: ./config/metadata
-              BACKUP_PATH: ./config/metadata/backups
+              METADATA_PATH: /config/metadata
+              BACKUP_PATH: /config/metadata/backups
             resources:
               requests:
                 cpu: 50m
