@@ -14,4 +14,6 @@ spec:
     - name: democratic-csi
       namespace: storage
     - name: media-library
+    - name: intel-device-plugins
+      namespace: operators
   targetNamespace: media
