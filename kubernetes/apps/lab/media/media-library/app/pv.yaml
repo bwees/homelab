@@ -13,6 +13,6 @@ spec:
     - nolock
     - soft
   nfs:
-    server: 100.80.89.123
+    server: nas.bwees.lab
     path: /media
 

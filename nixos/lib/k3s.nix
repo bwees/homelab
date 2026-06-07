@@ -1,14 +1,15 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   services.k3s = {
     enable = true;
     role = "server";
     extraFlags = toString [
-      "--disable=traefik"          # we manage Traefik via Flux/Helm to control version + Gateway API
-      "--disable=local-storage"    # replaced by csi-driver-nfs + local-path-provisioner (managed)
+      "--disable=traefik"          
+      "--disable=local-storage"   
+      "--disable=metrics-server"
       "--write-kubeconfig-mode=0640"
-      "--write-kubeconfig-group=k3s"   # let members of the k3s group read the kubeconfig
+      "--write-kubeconfig-group=k3s"
       "--kube-apiserver-arg=feature-gates=ImageVolume=true"
       "--kubelet-arg=feature-gates=ImageVolume=true"
     ];
