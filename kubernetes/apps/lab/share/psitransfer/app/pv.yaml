@@ -1,5 +1,4 @@
-# psitransfer data lives on the NAS (compose: nas.bwees.lab:/mnt/main/homelab/psitransfer).
-# /mnt/main/homelab is the NFS export root, so the path here is /psitransfer.
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:

@@ -8,12 +8,8 @@ spec:
   retryInterval: 2m
   timeout: 10m
   prune: true
-  # wait so the operator CRDs (GpuDevicePlugin) + the i915 resource are advertised
-  # before any workload requests gpu.intel.com/i915.
   wait: true
   dependsOn:
-    # NFD must label the GPU node first; the GPU plugin nodeSelects on
-    # intel.feature.node.kubernetes.io/gpu and ships NodeFeatureRules.
     - name: node-feature-discovery
   sourceRef:
     kind: GitRepository

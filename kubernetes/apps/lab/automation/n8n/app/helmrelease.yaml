@@ -11,8 +11,6 @@ spec:
     controllers:
       main:
         containers:
-          # The n8n broker / web UI. Hosts the task broker on :5679 which the
-          # runner sidecar connects to over localhost.
           main:
             image:
               repository: n8nio/n8n
@@ -42,7 +40,6 @@ spec:
               liveness: &probes
                 enabled: true
               readiness: *probes
-          # External task runner (custom image with the native Python runner deps).
           runner:
             image:
               repository: ghcr.io/bwees/homelab/n8n-runner
@@ -52,7 +49,6 @@ spec:
               - secretRef:
                   name: n8n-secret
             env:
-              # Same pod as the broker, so reach it over localhost.
               N8N_RUNNERS_TASK_BROKER_URI: http://localhost:5679
               N8N_RUNNERS_TASK_TIMEOUT: "3600"
             probes:

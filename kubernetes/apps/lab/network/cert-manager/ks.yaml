@@ -8,7 +8,6 @@ spec:
   retryInterval: 2m
   timeout: 10m
   prune: true
-  # wait so the webhook + CRDs are healthy before the issuers/certs apply
   wait: true
   sourceRef:
     kind: GitRepository
@@ -16,6 +15,7 @@ spec:
     namespace: flux-system
   path: ./kubernetes/apps/lab/network/cert-manager/app
   targetNamespace: network
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -34,5 +34,3 @@ spec:
     name: flux-system
     namespace: flux-system
   path: ./kubernetes/apps/lab/network/cert-manager/issuers
-  # no targetNamespace: this path mixes a cluster-scoped ClusterIssuer with
-  # namespaced resources; namespaces are pinned per-manifest instead.

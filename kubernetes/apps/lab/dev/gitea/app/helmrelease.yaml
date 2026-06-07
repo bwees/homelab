@@ -16,7 +16,6 @@ spec:
               repository: gitea/gitea
               tag: "1.26"
             env:
-              # gitea starts as root and drops to this uid/gid for the git user.
               USER_UID: "1000"
               USER_GID: "1000"
               TZ: America/Chicago

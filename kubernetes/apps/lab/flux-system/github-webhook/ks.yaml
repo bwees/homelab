@@ -11,10 +11,8 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    # ExternalSecret pulls the HMAC token from 1Password
     - name: onepassword
       namespace: external-secrets
-    # HTTPRoute needs the Gateway API CRDs + envoy-external gateway
     - name: envoy-gateway
       namespace: network
   targetNamespace: flux-system

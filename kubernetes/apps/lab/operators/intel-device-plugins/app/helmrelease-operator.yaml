@@ -17,7 +17,6 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    # webhook certs are issued by cert-manager (already running cluster-wide).
     resources:
       requests:
         cpu: 25m

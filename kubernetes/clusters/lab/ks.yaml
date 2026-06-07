@@ -14,10 +14,6 @@ spec:
     name: flux-system
   path: ./kubernetes/apps/lab
   patches:
-    # Inject HelmRelease defaults into every child Kustomization so each app's
-    # HelmReleases manage their own CRDs and self-heal transient failures (e.g. an
-    # HTTPRoute applied before the Gateway API CRDs exist). This is why apps don't
-    # need a per-app dependsOn on the gateway. Mirrors onedr0p's cluster-apps patch.
     - target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization

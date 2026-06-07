@@ -34,8 +34,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  # the tunnel UUID is extracted into cloudflare-tunnel-secret by the
-  # ExternalSecret; substitute it into the DNSEndpoint CNAME target at build time
   postBuild:
     substituteFrom:
       - kind: Secret

@@ -9,7 +9,6 @@ spec:
   timeout: 5m
   prune: true
   wait: false
-  # needs the operator (and its CRDs) installed before the ClusterSecretStore applies
   dependsOn:
     - name: external-secrets
   sourceRef:
@@ -17,4 +16,3 @@ spec:
     name: flux-system
     namespace: flux-system
   path: ./kubernetes/apps/lab/external-secrets/onepassword/app
-  # no targetNamespace: ClusterSecretStore is cluster-scoped

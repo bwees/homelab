@@ -6,7 +6,6 @@ metadata:
 spec:
   interval: 1h
   dependsOn:
-    # needs the GpuDevicePlugin CRD from the operator before this CR applies.
     - name: intel-device-plugins-operator
   chart:
     spec:

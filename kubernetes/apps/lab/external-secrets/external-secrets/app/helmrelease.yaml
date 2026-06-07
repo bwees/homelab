@@ -9,7 +9,6 @@ spec:
     kind: OCIRepository
     name: external-secrets
   values:
-    # single-node lab sizing; the chart installs the CRDs by default
     replicaCount: 1
     webhook:
       replicaCount: 1

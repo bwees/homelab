@@ -22,7 +22,6 @@ spec:
     kind: OCIRepository
     name: envoy-gateway
     namespace: network
-  # The chart bundles the Gateway API + Envoy Gateway CRDs; let Flux manage them.
   install:
     crds: CreateReplace
   upgrade:

@@ -29,8 +29,6 @@ spec:
               readiness: *probes
 
     service:
-      # No external route; prowlarr reaches it in-cluster at
-      # http://flaresolverr.media.svc.cluster.local:8191
       main:
         controller: main
         ports:

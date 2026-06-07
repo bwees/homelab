@@ -8,8 +8,6 @@ spec:
   retryInterval: 2m
   timeout: 5m
   prune: true
-  # wait so the controller is up and the Gateway API + EnvoyProxy CRDs are
-  # installed before the GatewayClass/Gateway/HTTPRoute config applies
   wait: true
   sourceRef:
     kind: GitRepository
@@ -35,5 +33,3 @@ spec:
     name: flux-system
     namespace: flux-system
   path: ./kubernetes/apps/lab/network/envoy-gateway/config
-  # no targetNamespace: GatewayClass is cluster-scoped; the namespaced
-  # EnvoyProxy/Gateway/HTTPRoute resources pin namespace per-manifest.

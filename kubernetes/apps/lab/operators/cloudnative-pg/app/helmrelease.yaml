@@ -13,7 +13,6 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    # single-node lab sizing
     replicaCount: 1
     crds:
       create: true

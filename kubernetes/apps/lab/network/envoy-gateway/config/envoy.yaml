@@ -8,12 +8,11 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
-      # Use the real listener ports (80/443)
       useListenerPortAsContainerPort: true
       envoyService:
         type: ClusterIP
       envoyDeployment:
-        replicas: 1            # host-network: one replica per node
+        replicas: 1
         patch:
           type: StrategicMerge
           value:
@@ -21,14 +20,14 @@ spec:
               template:
                 spec:
                   hostNetwork: true
-                  dnsPolicy: ClusterFirstWithHostNet   # required so the host-network pod still uses cluster DNS
+                  dnsPolicy: ClusterFirstWithHostNet
                   containers:
                     - name: envoy
                       securityContext:
                         runAsNonRoot: false
                         runAsUser: 0
                         capabilities:
-                          add: ["NET_BIND_SERVICE"]    # now effective: lets envoy bind 80/443
+                          add: ["NET_BIND_SERVICE"]
 
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -80,7 +79,6 @@ metadata:
 spec:
   gatewayClassName: envoy-internal
   listeners:
-    # http is for the https-redirect route only (same namespace); apps attach to https.
     - name: http
       protocol: HTTP
       port: 80

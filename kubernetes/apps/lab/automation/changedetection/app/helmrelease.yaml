@@ -16,7 +16,6 @@ spec:
               repository: ghcr.io/dgtlmoon/changedetection.io
               tag: "0.55.7"
             env:
-              # The browser sidecar shares this pod's network namespace.
               PLAYWRIGHT_DRIVER_URL: ws://localhost:3000
             resources:
               requests:
@@ -28,7 +27,6 @@ spec:
               liveness: &probes
                 enabled: true
               readiness: *probes
-          # Headless Chromium driver used by changedetection for JS-rendered pages.
           sockpuppetbrowser:
             image:
               repository: dgtlmoon/sockpuppetbrowser

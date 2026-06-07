@@ -8,8 +8,6 @@ spec:
   retryInterval: 2m
   timeout: 10m
   prune: true
-  # wait so the operator + CRDs (Cluster, Database) are healthy before any app
-  # that depends on a CNPG Cluster reconciles.
   wait: true
   sourceRef:
     kind: GitRepository

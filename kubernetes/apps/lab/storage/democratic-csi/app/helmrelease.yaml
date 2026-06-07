@@ -21,10 +21,10 @@ spec:
 
     storageClasses:
       - name: local-hostpath
-        defaultClass: true                  # cluster default StorageClass
+        defaultClass: true     
         reclaimPolicy: Delete
         volumeBindingMode: WaitForFirstConsumer
-        allowVolumeExpansion: false         # local-hostpath can't enforce/expand quotas
+        allowVolumeExpansion: false 
         parameters: {}
         mountOptions: []
 
@@ -32,7 +32,7 @@ spec:
 
     controller:
       enabled: true
-      strategy: node                        # provisioner runs per-node (node-deployment mode)
+      strategy: node              
       externalProvisioner:
         extraArgs:
           - --leader-election=false
@@ -43,11 +43,11 @@ spec:
           - --enable-capacity=true
           - --capacity-ownerref-level=1
       externalAttacher:
-        enabled: false                      # attachRequired: false
+        enabled: false                   
       externalResizer:
         enabled: false
       externalSnapshotter:
-        enabled: false                      # k3d/k3s ships no VolumeSnapshot CRDs
+        enabled: false                     
 
     node:
       driver:
@@ -62,7 +62,7 @@ spec:
             type: DirectoryOrCreate
 
     driver:
-      config:                               # inlined from examples/local-hostpath.yaml
+      config:                          
         driver: local-hostpath
         instance_id:
         local-hostpath:

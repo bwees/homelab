@@ -25,7 +25,6 @@ spec:
               limits:
                 memory: 256Mi
 
-    # Discord bot — outbound websocket only, no service or route.
     persistence:
       cards:
         existingClaim: cah-cards

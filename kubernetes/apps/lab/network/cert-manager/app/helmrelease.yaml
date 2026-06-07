@@ -15,7 +15,6 @@ spec:
   values:
     crds:
       enabled: true
-    # single-node lab sizing
     replicaCount: 1
     cainjector:
       replicaCount: 1

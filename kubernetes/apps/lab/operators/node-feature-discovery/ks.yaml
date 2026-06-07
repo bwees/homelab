@@ -8,8 +8,6 @@ spec:
   retryInterval: 2m
   timeout: 10m
   prune: true
-  # wait so the NodeFeatureRule CRD + node labelling are ready before the Intel
-  # GPU plugin (which creates NodeFeatureRules and selects on its labels) reconciles.
   wait: true
   sourceRef:
     kind: GitRepository

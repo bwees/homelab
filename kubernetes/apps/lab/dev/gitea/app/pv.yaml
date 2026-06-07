@@ -1,6 +1,4 @@
-# Gitea data lives on the NAS (compose: nas.bwees.lab:/mnt/main/homelab/gitea).
-# The NAS exports /mnt/main/homelab as its root, so the path here is /gitea —
-# mirroring how media-library maps /mnt/main/homelab/media -> :/media.
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:

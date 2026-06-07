@@ -14,6 +14,4 @@ spec:
     - name: democratic-csi
       namespace: storage
     - name: media-library
-    # qbittorrent now runs its own kernel-mode tailscale sidecar instead of using
-    # the standalone SOCKS5 proxy, so it no longer depends on the tailscale app.
   targetNamespace: media

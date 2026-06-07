@@ -10,8 +10,6 @@ spec:
     requests:
       storage: 10Gi
 ---
-# Binary-data scratch dir shared between the n8n broker and the runner. Both run
-# in the same pod, so a single RWO claim mounted into both containers is fine.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
