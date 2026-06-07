@@ -9,15 +9,16 @@
       "--disable=local-storage"    # replaced by csi-driver-nfs + local-path-provisioner (managed)
       "--write-kubeconfig-mode=0640"
       "--write-kubeconfig-group=k3s"   # let members of the k3s group read the kubeconfig
-      "--tls-san=${config.services.tailscale.ip}"
-      "--node-ip=${config.services.tailscale.ip}"     # cluster traffic stays on Tailscale
-      "--flannel-iface=tailscale0"
-      "--kube-apiserver-arg=feature-gates=ImageVolume=true@server:*"
-      "--kubelet-arg=feature-gates=ImageVolume=true@server:*"
+      "--kube-apiserver-arg=feature-gates=ImageVolume=true"
+      "--kubelet-arg=feature-gates=ImageVolume=true"
     ];
   };
 
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 6443 ];
+  services.rpcbind.enable = true;
+  boot.supportedFilesystems = [ "nfs" ];
+
+  networking.firewall.allowedTCPPorts = [ 6443 ];
+  networking.firewall.allowedUDPPorts = [ 8472 ];
 
   users.groups.k3s = { };
   users.users.bwees.extraGroups = [ "k3s" ];
@@ -27,5 +28,6 @@
 
   environment.systemPackages = with pkgs; [
     fluxcd
+    k9s
   ];
 }
