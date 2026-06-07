@@ -17,6 +17,8 @@ spec:
               tag: latest
             env:
               TZ: America/Chicago
+              METADATA_PATH: ./config/metadata
+              BACKUP_PATH: ./config/metadata/backups
             resources:
               requests:
                 cpu: 50m
@@ -58,10 +60,6 @@ spec:
         existingClaim: audiobookshelf-config
         globalMounts:
           - path: /config
-      metadata:
-        existingClaim: audiobookshelf-metadata
-        globalMounts:
-          - path: /metadata
       media:
         existingClaim: media-library
         globalMounts:
