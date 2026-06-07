@@ -53,12 +53,12 @@ spec:
       driver:
         extraVolumeMounts:
           - name: local-storage
-            mountPath: /storage-csi
+            mountPath: /storage
             mountPropagation: Bidirectional
       extraVolumes:
         - name: local-storage
           hostPath:
-            path: /storage-csi
+            path: /storage
             type: DirectoryOrCreate
 
     driver:
@@ -66,8 +66,8 @@ spec:
         driver: local-hostpath
         instance_id:
         local-hostpath:
-          shareBasePath: "/storage-csi"
-          controllerBasePath: "/storage-csi"
+          shareBasePath: "/storage"
+          controllerBasePath: "/storage"
           dirPermissionsMode: "0777"
           dirPermissionsUser: 0
           dirPermissionsGroup: 0
