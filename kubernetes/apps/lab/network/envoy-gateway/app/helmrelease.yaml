@@ -8,7 +8,7 @@ spec:
   interval: 1h
   url: oci://docker.io/envoyproxy/gateway-helm
   ref:
-    tag: "v1.8.0"
+    tag: "1.8.1"
     
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
