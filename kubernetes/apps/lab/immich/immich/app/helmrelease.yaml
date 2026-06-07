@@ -34,6 +34,9 @@ spec:
         runAsNonRoot: true
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
 
     controllers:
       main:
@@ -76,6 +79,7 @@ spec:
                   memory: 1.5Gi
                 limits:
                   memory: 3Gi
+                  gpu.intel.com/i915: "1"
       route:
         main:
           parentRefs:
@@ -99,13 +103,16 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-machine-learning
-                tag: v2.7.5
+                tag: v2.7.5-openvino
               env:
                 GUNICORN_CMD_ARGS: "--no-control-socket"
               resources:
                 requests:
                   cpu: 100m
                   memory: 2Gi
+                limits:
+                  memory: 4Gi
+                  gpu.intel.com/i915: "1"
 
       persistence:
         cache:

@@ -18,8 +18,8 @@ spec:
       namespace: operators
     - name: democratic-csi
       namespace: storage
+    - name: intel-device-plugins
+      namespace: operators
   postBuild:
     substitute:
       APP: immich
-      PG_STORAGE: 4Gi
-
