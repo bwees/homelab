@@ -1,0 +1,77 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: democratic-csi
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: democratic-csi
+      version: "0.15.1"
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+        namespace: storage
+  values:
+    csiDriver:
+      name: org.democratic-csi.local-hostpath
+      attachRequired: false
+      storageCapacity: true
+      fsGroupPolicy: File
+
+    storageClasses:
+      - name: local-hostpath
+        defaultClass: true                  # cluster default StorageClass
+        reclaimPolicy: Delete
+        volumeBindingMode: WaitForFirstConsumer
+        allowVolumeExpansion: false         # local-hostpath can't enforce/expand quotas
+        parameters: {}
+        mountOptions: []
+
+    volumeSnapshotClasses: []
+
+    controller:
+      enabled: true
+      strategy: node                        # provisioner runs per-node (node-deployment mode)
+      externalProvisioner:
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+          - --node-deployment-immediate-binding=true
+          - --feature-gates=Topology=true
+          - --strict-topology=true
+          - --enable-capacity=true
+          - --capacity-ownerref-level=1
+      externalAttacher:
+        enabled: false                      # attachRequired: false
+      externalResizer:
+        enabled: false
+      externalSnapshotter:
+        enabled: false                      # k3d/k3s ships no VolumeSnapshot CRDs
+
+    node:
+      driver:
+        extraVolumeMounts:
+          - name: local-storage
+            mountPath: /storage
+            mountPropagation: Bidirectional
+      extraVolumes:
+        - name: local-storage
+          hostPath:
+            path: /storage
+            type: DirectoryOrCreate
+
+    driver:
+      config:                               # inlined from examples/local-hostpath.yaml
+        driver: local-hostpath
+        instance_id:
+        local-hostpath:
+          shareBasePath: "/storage"
+          controllerBasePath: "/storage"
+          dirPermissionsMode: "0777"
+          dirPermissionsUser: 0
+          dirPermissionsGroup: 0
+        _private:
+          csi:
+            volume:
+              idTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/name] }}-{{ name }}"

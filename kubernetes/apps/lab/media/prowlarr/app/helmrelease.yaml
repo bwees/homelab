@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prowlarr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: prowlarr
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-operations/prowlarr
+              tag: "2.4.0.5391"
+            env:
+              TZ: America/Chicago
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 9696
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 9696
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - prowlarr.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 9696
+
+    persistence:
+      config:
+        existingClaim: prowlarr-config
+        globalMounts:
+          - path: /config

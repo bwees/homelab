@@ -13,6 +13,7 @@
     ../../lib/root-ca.nix
     ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
+    ../../lib/k3s.nix
   ];
 
   system.stateVersion = "25.05";

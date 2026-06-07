@@ -1,0 +1,19 @@
+# psitransfer data lives on the NAS (compose: nas.bwees.lab:/mnt/main/homelab/psitransfer).
+# /mnt/main/homelab is the NFS export root, so the path here is /psitransfer.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nas-psitransfer
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - nfsvers=4.1
+    - nolock
+    - soft
+  nfs:
+    server: 100.80.89.123
+    path: /psitransfer

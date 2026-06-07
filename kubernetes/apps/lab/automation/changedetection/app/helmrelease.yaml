@@ -1,0 +1,88 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: changedetection
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: changedetection
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/dgtlmoon/changedetection.io
+              tag: "0.55.7"
+            env:
+              # The browser sidecar shares this pod's network namespace.
+              PLAYWRIGHT_DRIVER_URL: ws://localhost:3000
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+          # Headless Chromium driver used by changedetection for JS-rendered pages.
+          sockpuppetbrowser:
+            image:
+              repository: dgtlmoon/sockpuppetbrowser
+              tag: "0.0.3"
+            env:
+              DEFAULT_LAUNCH_ARGS: '["--window-size=1920,1080"]'
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 5000
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - changedetection.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 5000
+
+    persistence:
+      datastore:
+        existingClaim: changedetection-datastore
+        advancedMounts:
+          main:
+            main:
+              - path: /datastore
+      # sockpuppetbrowser needs a large /dev/shm (compose set shm_size: 2g) or
+      # Chromium crashes on bigger pages.
+      dshm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2Gi
+        advancedMounts:
+          main:
+            sockpuppetbrowser:
+              - path: /dev/shm

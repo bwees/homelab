@@ -1,0 +1,38 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flaresolverr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: flaresolverr
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: "v3.5.0"
+            env:
+              TZ: America/Chicago
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    service:
+      # No external route; prowlarr reaches it in-cluster at
+      # http://flaresolverr.media.svc.cluster.local:8191
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8191

@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crosshatch
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: crosshatch
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bwees/crosshatch
+              tag: "v0.1.2"
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 3000
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - crosshatch.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 3000
+
+    persistence:
+      data:
+        existingClaim: crosshatch-data
+        globalMounts:
+          - path: /app/server/data

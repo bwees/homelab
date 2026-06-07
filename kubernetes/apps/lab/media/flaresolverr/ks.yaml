@@ -1,0 +1,15 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flaresolverr
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/lab/media/flaresolverr/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: tailscale
+  targetNamespace: media

@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cah
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: cah
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bwees/cah-discord
+              tag: latest
+            envFrom:
+              - secretRef:
+                  name: cah-secret
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    # Discord bot — outbound websocket only, no service or route.
+    persistence:
+      cards:
+        existingClaim: cah-cards
+        globalMounts:
+          - path: /etc/app/cards

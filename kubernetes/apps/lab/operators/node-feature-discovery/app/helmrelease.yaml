@@ -1,0 +1,34 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: node-feature-discovery
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: node-feature-discovery
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    # NodeFeature API drives the NodeFeatureRules the Intel GPU plugin ships.
+    enableNodeFeatureApi: true
+    master:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 25m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+    worker:
+      # the worker DaemonSet inspects each node's PCI devices / loaded kernel
+      # modules (i915) so NFD can label the GPU node.
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 256Mi

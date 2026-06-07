@@ -1,0 +1,26 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: intel-device-plugins-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: intel-device-plugins-operator
+      version: 0.36.0
+      sourceRef:
+        kind: HelmRepository
+        name: intel
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    # webhook certs are issued by cert-manager (already running cluster-wide).
+    resources:
+      requests:
+        cpu: 25m
+        memory: 100Mi
+      limits:
+        memory: 256Mi

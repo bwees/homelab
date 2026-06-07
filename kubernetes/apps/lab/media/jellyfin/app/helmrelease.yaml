@@ -1,0 +1,102 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jellyfin
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: jellyfin
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/jellyfin/jellyfin
+              tag: "10.11.11"
+            env:
+              TZ: America/Chicago
+              # LSCR.io compatability mounts
+              JELLYFIN_CONFIG_DIR: /config
+              JELLYFIN_DATA_DIR: /config/data
+              JELLYFIN_LOG_DIR: /config/log
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+                gpu.intel.com/i915: "1"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8096
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+          - name: envoy-external
+            namespace: network
+        hostnames:
+          - jellyfin.bwees.lab
+          - jellyfin.bwees.io
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8096
+
+    persistence:
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /cache
+                subPath: cache
+              - path: /tmp
+                subPath: tmp
+              - path: /transcode
+                subPath: transcode
+      config:
+        existingClaim: jellyfin-config
+        globalMounts:
+          - path: /config
+          
+      media:
+        existingClaim: media-library
+        globalMounts:
+          - path: /tv
+            subPath: tv
+          - path: /movies
+            subPath: movies
+
+
+

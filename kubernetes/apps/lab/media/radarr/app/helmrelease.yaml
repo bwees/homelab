@@ -1,0 +1,76 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: radarr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: radarr
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-operations/radarr
+              tag: "6.2.1.10437"
+            env:
+              TZ: America/Chicago
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 7878
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 7878
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - radarr.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 7878
+
+    persistence:
+      config:
+        existingClaim: radarr-config
+        globalMounts:
+          - path: /config
+      media:
+        existingClaim: media-library
+        globalMounts:
+          - path: /movies
+            subPath: movies
+          - path: /downloads
+            subPath: downloads
