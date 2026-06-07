@@ -25,8 +25,10 @@ spec:
                   containers:
                     - name: envoy
                       securityContext:
+                        runAsNonRoot: false
+                        runAsUser: 0
                         capabilities:
-                          add: ["NET_BIND_SERVICE"]    # allow the non-root envoy to bind 80/443
+                          add: ["NET_BIND_SERVICE"]    # now effective: lets envoy bind 80/443
 
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
