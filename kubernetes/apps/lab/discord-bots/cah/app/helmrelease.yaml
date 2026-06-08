@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/cah-discord
-              tag: latest
+              tag: latest@sha256:7d210b4044ddc6d5ce94bcde2cf7ab5b77e318af6b5ebc136fa3a9d2c7ac4ed4
             envFrom:
               - secretRef:
                   name: cah-secret
