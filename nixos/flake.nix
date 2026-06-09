@@ -26,6 +26,13 @@
           ./hosts/hail-mary/grace/configuration.nix
         ];
       };
+      nixosConfigurations.astrophage = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/hail-mary/astrophage/configuration.nix
+        ];
+      };
       nixosConfigurations.homelab-vps = mkHost {
         system = "x86_64-linux";
         modules = [
@@ -45,13 +52,6 @@
         modules = [
           disko.nixosModules.disko
           ./hosts/homelab-home/configuration.nix
-        ];
-      };
-      nixosConfigurations.homelab-nas = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/homelab-nas/configuration.nix
         ];
       };
     };

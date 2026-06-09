@@ -1,5 +1,5 @@
 endpoints:
-  - name: homelab-bwees
+  - name: grace
     group: lab
     url: 'icmp://100.65.90.4'
     interval: 1m
@@ -8,7 +8,7 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: homelab-nas
+  - name: astrophage
     group: lab
     url: 'icmp://100.80.89.123'
     interval: 1m

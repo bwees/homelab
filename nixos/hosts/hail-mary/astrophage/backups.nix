@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ../../lib/storage-backup.nix
+    ../../../lib/storage-backup.nix
   ];
 
   # Sanoid for ZFS snapshot management

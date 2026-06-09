@@ -1,5 +1,4 @@
 {
-  config,
   pkgs-stable,
   ...
 }:
@@ -10,7 +9,6 @@
   virtualisation.docker.package = pkgs-stable.docker;
   virtualisation.docker.daemon.settings.hosts = [
     "unix:///var/run/docker.sock"
-    "tcp://${config.services.tailscale.ip}:2375"
   ];
 
   # Firewall configuration
@@ -19,7 +17,4 @@
     "docker0"
     "br-+"
   ];
-
-  # Allow Docker API access on Tailscale IP
-  networking.firewall.allowedTCPPorts = [ 2375 ];
 }
