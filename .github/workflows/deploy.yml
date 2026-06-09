@@ -18,7 +18,7 @@ jobs:
       tailscale: ${{ steps.changes.outputs.tailscale }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - uses: dorny/paths-filter@v4
         id: changes
@@ -38,7 +38,7 @@ jobs:
     if: needs.detect-changes.outputs.images == 'true'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - uses: jdx/mise-action@v4
 
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - uses: jdx/mise-action@v4
 
@@ -94,7 +94,7 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.tailscale == 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Apply Tailscale Configuration
         run: ./apply.sh
