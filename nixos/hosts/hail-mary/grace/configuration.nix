@@ -26,8 +26,7 @@
     "--advertise-tags=tag:hail-mary"
   ];
 
-  # Local-path PV for the Immich machine-learning model cache (kept off the
-  # /storage subvol; the root btrfs subvol persists across reboots/rebuilds).
+  # ml cache directory
   systemd.tmpfiles.rules = [
     "d /var/lib/immich-ml-cache 0770 1000 1000 -"
   ];
