@@ -23,7 +23,7 @@
 
   services.tailscale.extraUpFlags = [ 
     "--advertise-exit-node"
-    "--advertise-tags=tag:hail-mary"
+    "--advertise-tags=tag:hail-mary,tag:k3s"
   ];
 
   # ml cache directory

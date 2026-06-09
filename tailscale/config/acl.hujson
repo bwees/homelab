@@ -2,6 +2,7 @@
   "tagOwners": {
     "tag:ci": ["brandonwees@gmail.com"],
     "tag:hail-mary": ["brandonwees@gmail.com"],
+    "tag:k3s": ["brandonwees@gmail.com"],
   },
   "acls": [
     {
