@@ -5,7 +5,8 @@ metadata:
   name: immich-ml-cache
 spec:
   accessModes: [ReadWriteOnce]
-  storageClassName: local-hostpath 
+  storageClassName: ""
+  volumeName: immich-ml-cache
   resources:
     requests:
       storage: 10Gi

@@ -116,4 +116,5 @@ spec:
 
       persistence:
         cache:
+          type: persistentVolumeClaim
           existingClaim: immich-ml-cache
