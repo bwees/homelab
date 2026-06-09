@@ -19,13 +19,6 @@ all:
         homelab-router:
           ansible_ssh_user: root
 
-    nas:
-      hosts:
-        homelab-nas:
-          ansible_ssh_user: bwees
-      vars:
-        deploy_source: nas
-
     stepien:
       hosts:
         stepien-server:
