@@ -14,7 +14,7 @@ build-custom-images:
 [working-directory: 'nixos']
 switch HOST USER="bwees":
   nixos-rebuild switch \
-    --flake .#"astrophage" \
+    --flake .#"{{HOST}}" \
     --target-host "{{USER}}@{{HOST}}" \
     --build-host "{{USER}}@{{HOST}}" \
     --sudo \
