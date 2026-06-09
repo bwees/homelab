@@ -43,7 +43,7 @@ jobs:
       - uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
