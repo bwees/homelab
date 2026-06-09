@@ -65,7 +65,7 @@ spec:
                     key: password
               TZ: America/Chicago
             image:
-              repository: ghcr.io/immich-app/immich-server
+              # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
               tag: "v2.7.5"
 
     server:
@@ -102,7 +102,7 @@ spec:
           containers:
             main:
               image:
-                repository: ghcr.io/immich-app/immich-machine-learning
+                # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
                 tag: v2.7.5-openvino
               env:
                 GUNICORN_CMD_ARGS: "--no-control-socket"
