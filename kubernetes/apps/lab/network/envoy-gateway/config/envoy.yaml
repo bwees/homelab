@@ -106,7 +106,7 @@ metadata:
   name: envoy-external
   namespace: network
   annotations:
-    external-dns.alpha.kubernetes.io/target: lab.tun.bwees.io
+    external-dns.alpha.kubernetes.io/target: hail-mary.tun.bwees.io
 
 spec:
   gatewayClassName: envoy-external
