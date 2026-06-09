@@ -23,9 +23,6 @@
     config.users.users.bwees.openssh.authorizedKeys.keys
   ];
 
-  # Used for receiving builds from homelab-bwees
-  nix.settings.trusted-users = [ "bwees" ];
-
   security.sudo.extraRules = [
     {
       users = [ "bwees" ];
