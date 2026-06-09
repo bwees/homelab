@@ -26,7 +26,7 @@ curl -f \
   -o /dev/null \
   "${auth_hdr[@]}" \
   -H "Content-Type: application/json" \
-  --data-binary @acl.hujson \
+  --data-binary @config/acl.hujson \
   -X POST \
   "$API_BASE/tailnet/$TS_TAILNET/acl"
 
@@ -36,7 +36,7 @@ curl -f \
   -o /dev/null \
   "${auth_hdr[@]}" \
   -H "Content-Type: application/json" \
-  --data-binary @dns.json \
+  --data-binary @config/dns.json \
   -X POST \
   "$API_BASE/tailnet/$TS_TAILNET/dns/configuration"
 

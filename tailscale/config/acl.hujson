@@ -1,7 +1,7 @@
 {
   "tagOwners": {
     "tag:ci": ["brandonwees@gmail.com"],
-    "tag:vps-relay-user": ["brandonwees@gmail.com"],
+    "tag:hail-mary": ["brandonwees@gmail.com"],
   },
   "acls": [
     {
@@ -12,19 +12,23 @@
   ],
   "nodeAttrs": [
     {
+      // brandon-iphone
       "target": ["100.76.234.121"],
       "attr": ["mullvad"],
     },
     {
-      "target": ["100.107.103.20"],
-      "attr": ["mullvad"],
-    },
-    {
+      // brandon-ipad-air
       "target": ["100.64.153.110"],
       "attr": ["mullvad"],
     },
     {
+      // brandon-macbook-pro
       "target": ["100.89.139.58"],
+      "attr": ["mullvad"],
+    },
+    {
+      // qbittorrent
+      "target": ["100.84.136.31"],
       "attr": ["mullvad"],
     },
   ],
