@@ -1,12 +1,5 @@
 all:
   children:
-    # lab:
-    #   hosts:
-    #     homelab-bwees:
-    #       ansible_ssh_user: bwees
-    #   vars:
-    #     deploy_source: lab
-
     home:
       hosts:
         homelab-home:

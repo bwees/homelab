@@ -11,27 +11,6 @@ http:
         - public
         - publicsecure
 
-    immich:
-      rule: 'Host(`immich.bwees.io`)'
-      service: homelab-bwees
-      entryPoints:
-        - public
-        - publicsecure
-
-    n8n:
-      rule: 'Host(`n8n.bwees.io`)'
-      service: homelab-bwees
-      entryPoints:
-        - public
-        - publicsecure
-
-    jellyfin:
-      rule: 'Host(`jellyfin.bwees.io`)'
-      service: homelab-bwees
-      entryPoints:
-        - public
-        - publicsecure
-
     album:
       rule: 'Host(`album.bwees.io`)'
       service: homelab-home
@@ -42,13 +21,6 @@ http:
     hass:
       rule: 'Host(`hass.bwees.io`)'
       service: homelab-home
-      entryPoints:
-        - public
-        - publicsecure
-
-    transfer:
-      rule: 'Host(`transfer.bwees.io`)'
-      service: homelab-bwees
       entryPoints:
         - public
         - publicsecure
@@ -82,12 +54,6 @@ http:
         - publicsecure
 
   services:
-    homelab-bwees:
-      loadBalancer:
-        servers:
-          - url: 'https://100.65.90.4'
-        serversTransport: insecureTransport
-
     homelab-home:
       loadBalancer:
         servers:
