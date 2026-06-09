@@ -19,11 +19,11 @@
       inherit (utils) mkHost;
     in
     {
-      nixosConfigurations.homelab-bwees = mkHost {
+      nixosConfigurations.grace = mkHost {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
-          ./hosts/homelab-bwees/configuration.nix
+          ./hosts/hail-mary/grace/configuration.nix
         ];
       };
       nixosConfigurations.homelab-vps = mkHost {
