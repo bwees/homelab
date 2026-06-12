@@ -7,3 +7,4 @@ resources:
   - cloudnative-pg/ks.yaml
   - node-feature-discovery/ks.yaml
   - intel-device-plugins/ks.yaml
+  - pod-gc/ks.yaml

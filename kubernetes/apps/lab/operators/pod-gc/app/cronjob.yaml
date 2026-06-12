@@ -1,0 +1,47 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-gc
+spec:
+  # Sweep terminal pods every 5 minutes. UnexpectedAdmissionError pods
+  # (e.g. GPU device-plugin race after a node reboot) and Evicted pods are
+  # left behind as status.phase=Failed once a healthy replica takes over;
+  # this removes them.
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 120
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          serviceAccountName: pod-gc
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: kubectl
+              image: registry.k8s.io/kubectl:v1.34.2
+              command:
+                - /bin/sh
+                - -c
+                - kubectl delete pods --all-namespaces --field-selector=status.phase=Failed
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 64Mi
