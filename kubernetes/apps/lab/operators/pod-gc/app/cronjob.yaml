@@ -30,10 +30,11 @@ spec:
           containers:
             - name: kubectl
               image: registry.k8s.io/kubectl:v1.36.1
-              command:
-                - /bin/sh
-                - -c
-                - kubectl delete pods --all-namespaces --field-selector=status.phase=Failed
+              args:
+                - delete
+                - pods
+                - --all-namespaces
+                - --field-selector=status.phase=Failed
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
