@@ -26,6 +26,13 @@
           ./hosts/hail-mary/grace/configuration.nix
         ];
       };
+      nixosConfigurations.rocky = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/hail-mary/rocky/configuration.nix
+        ];
+      };
       nixosConfigurations.astrophage = mkHost {
         system = "x86_64-linux";
         modules = [
