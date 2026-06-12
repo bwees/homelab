@@ -3,6 +3,7 @@
   boot.loader.grub = {
     efiSupport = true;
     efiInstallAsRemovable = true;
+    devices = lib.mkForce [ "nodev" ];
   };
 
   swapDevices = [
