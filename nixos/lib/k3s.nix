@@ -40,6 +40,7 @@
     fluxcd
     k9s
     nfs-utils
+    openiscsi
   ];
 
   ### Longhorn
@@ -48,5 +49,10 @@
     name = "iqn.2025-06.lab.bwees:${config.networking.hostName}";
   };
 
-  boot.kernelModules = [ "iscsi_tcp" ]; 
+  boot.kernelModules = [ "iscsi_tcp" ];
+
+  # https://github.com/longhorn/longhorn/issues/2166
+  systemd.tmpfiles.rules = [
+    "L+ /usr/local/sbin/iscsiadm - - - - /run/current-system/sw/bin/iscsiadm"
+  ];
 }
