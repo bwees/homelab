@@ -15,6 +15,10 @@ spec:
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
     cacheStorageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_UID:=1000}
+      runAsGroup: ${VOLSYNC_GID:=1000}
+      fsGroup: ${VOLSYNC_GID:=1000}
     pruneIntervalDays: 7
     retain:
       daily: 7
@@ -41,6 +45,10 @@ spec:
 #     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
 #     cacheStorageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
 #     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
+#     moverSecurityContext:
+#       runAsUser: ${VOLSYNC_UID:=1000}
+#       runAsGroup: ${VOLSYNC_GID:=1000}
+#       fsGroup: ${VOLSYNC_GID:=1000}
 #     pruneIntervalDays: 7
 #     retain:
 #       daily: 7
