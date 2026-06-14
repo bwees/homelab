@@ -11,8 +11,18 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: democratic-csi
+    - name: longhorn
       namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
     - name: media-library
     - name: tailscale
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: radarr
+      VOLSYNC_CLAIM: radarr-config
   targetNamespace: media

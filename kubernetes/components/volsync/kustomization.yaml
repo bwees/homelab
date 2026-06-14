@@ -8,11 +8,11 @@
 #     - ../../../../../components/volsync
 #   postBuild:
 #     substitute:
-#       APP: n8n                 # required: names the Secrets/ReplicationSources + repo subpath
-#       VOLSYNC_CLAIM: n8n-config  # optional: defaults to ${APP}-config
-#       # VOLSYNC_CACHE_CAPACITY: 8Gi
+#       APP: n8n                  # required: names the Secrets/ReplicationSources + repo subpath
+#       VOLSYNC_CLAIM: n8n-config # required: the PVC to back up (Flux envsubst has no nested defaults)
+#       # VOLSYNC_CACHE_CAPACITY: 2Gi
 #       # VOLSYNC_SCHEDULE_B2: "0 2 * * *"
-#       # VOLSYNC_SCHEDULE_NAS: "0 3 * * *"
+# (CLUSTER is injected globally by the apps Kustomization patch.)
 #
 # Do NOT add this to cache/scratch volumes (e.g. immich-ml-cache) — those get a
 # plain Longhorn PVC with no ReplicationSource.

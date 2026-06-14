@@ -11,7 +11,17 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: democratic-csi
+    - name: longhorn
       namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
     - name: media-library
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: qbittorrent
+      VOLSYNC_CLAIM: qbittorrent-config
   targetNamespace: media

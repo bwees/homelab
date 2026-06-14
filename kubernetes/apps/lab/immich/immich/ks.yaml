@@ -16,7 +16,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: operators
-    - name: democratic-csi
+    - name: longhorn
       namespace: storage
     - name: intel-device-plugins
       namespace: operators

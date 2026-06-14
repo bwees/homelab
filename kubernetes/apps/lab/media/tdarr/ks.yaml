@@ -11,9 +11,19 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: democratic-csi
+    - name: longhorn
       namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
     - name: media-library
     - name: intel-device-plugins
       namespace: operators
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: tdarr
+      VOLSYNC_CLAIM: tdarr-config
   targetNamespace: media
