@@ -42,4 +42,11 @@
   # Blacklisting simpledrm stops card0 (and the stale symlink) being created.
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
+  services.k3s.clusterInit = true;
+
+  # Longhorn: only nodes with this label get a default disk
+  # (createDefaultDiskLabeledNodes=true in the longhorn HelmRelease).
+  services.k3s.extraFlags = [
+    "--node-label=node.longhorn.io/create-default-disk=true"
+  ];
 }

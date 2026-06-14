@@ -51,6 +51,13 @@
                 "@storage" = {
                   mountpoint = "/storage";
                 };
+                "@longhorn" = {
+                  mountpoint = "/var/lib/longhorn";
+                  mountOptions = [
+                    "noatime"
+                    "nodatacow"
+                  ];
+                };
               };
             };
           };

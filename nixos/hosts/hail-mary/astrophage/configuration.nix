@@ -45,4 +45,10 @@
   services.beszel.agent.environment = {
     "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKL+/R5W0b6x/4/bbbcNr/k2yQ96MIbXesRDWxgXWQtD";
   };
+
+  services.k3s.serverAddr = "https://192.168.50.110:6443";
+  services.k3s.extraFlags = [
+    "--node-taint=dedicated=storage:NoSchedule"
+    "--node-label=lab.bwees/role=nas"
+  ];
 }
