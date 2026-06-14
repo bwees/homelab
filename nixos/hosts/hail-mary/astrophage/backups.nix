@@ -1,14 +1,9 @@
 {
-  lib,
   pkgs,
   ...
 }:
 
 {
-  imports = [
-    ../../../lib/storage-backup.nix
-  ];
-
   # Sanoid for ZFS snapshot management
   services.sanoid = {
     enable = true;
@@ -21,10 +16,6 @@
         monthly = 4;
       };
     };
-  };
-
-  services.restic.backups.local.copies = lib.mkForce {
-    b2.environmentFile = "/etc/restic/credentials/restic.b2.env";
   };
 
   # Main ZFS Pool Backup

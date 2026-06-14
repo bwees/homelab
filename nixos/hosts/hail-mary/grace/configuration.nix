@@ -10,7 +10,6 @@
     ../../../lib/bwees.nix
     ../../../lib/k3s.nix
     ../../../lib/garbage-collect.nix
-    ../../../lib/storage-backup.nix
     ../../../lib/tailscale.nix
   ];
 
@@ -24,11 +23,6 @@
   services.tailscale.extraUpFlags = [ 
     "--advertise-exit-node"
     "--advertise-tags=tag:hail-mary,tag:k3s"
-  ];
-
-  # ml cache directory
-  systemd.tmpfiles.rules = [
-    "d /var/lib/immich-ml-cache 0770 1000 1000 -"
   ];
 
   services.beszel.agent.enable = true;
