@@ -1,0 +1,45 @@
+---
+# Nightly restic backup of ${VOLSYNC_CLAIM} to BACKBLAZE B2 (offsite).
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ${APP}-b2
+spec:
+  sourcePVC: ${VOLSYNC_CLAIM:=${APP}-config}
+  trigger:
+    schedule: "${VOLSYNC_SCHEDULE_B2:=0 2 * * *}"
+  restic:
+    repository: ${APP}-restic-b2
+    # snapshot the longhorn PVC so the app keeps running during the backup
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
+    cacheStorageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=8Gi}"
+    pruneIntervalDays: 7
+    retain:
+      daily: 7
+      weekly: 2
+      monthly: 2
+      yearly: 1
+---
+# Nightly restic backup of ${VOLSYNC_CLAIM} to the NAS (local). Staggered after B2.
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ${APP}-nas
+spec:
+  sourcePVC: ${VOLSYNC_CLAIM:=${APP}-config}
+  trigger:
+    schedule: "${VOLSYNC_SCHEDULE_NAS:=0 3 * * *}"
+  restic:
+    repository: ${APP}-restic-nas
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
+    cacheStorageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=8Gi}"
+    pruneIntervalDays: 7
+    retain:
+      daily: 7
+      weekly: 2
+      monthly: 2
+      yearly: 1

@@ -8,3 +8,4 @@ resources:
   - democratic-csi/ks.yaml
   - snapshot-controller/ks.yaml
   - longhorn/ks.yaml
+  - volsync/ks.yaml

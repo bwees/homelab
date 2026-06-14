@@ -9,8 +9,8 @@ spec:
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
-    size: 10Gi
-    storageClass: local-hostpath
+    size: 5Gi
+    storageClass: longhorn
   bootstrap:
     initdb:
       database: ${APP}

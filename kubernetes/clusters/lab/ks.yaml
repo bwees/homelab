@@ -23,6 +23,9 @@ spec:
         metadata:
           name: _
         spec:
+          postBuild:
+            substitute:
+              CLUSTER: hail-mary
           patches:
             - target:
                 group: helm.toolkit.fluxcd.io
