@@ -30,7 +30,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/qbittorrent
-              tag: "5.2.1"
+              tag: "5.2.2"
             env:
               TZ: America/Chicago
               QBITTORRENT_DOWNLOAD_PATH: /downloads
