@@ -8,6 +8,15 @@ endpoints:
     alerts:
       - type: discord
 
+  - name: rocky
+    group: lab
+    url: 'icmp://100.110.137.55'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
   - name: astrophage
     group: lab
     url: 'icmp://100.80.89.123'
