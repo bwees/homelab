@@ -35,6 +35,12 @@ spec:
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
+            # The following plugins take no args, but v1alpha2 still requires a
+            # pluginConfig entry for every plugin enabled below.
+            - name: RemoveDuplicates
+            - name: RemovePodsViolatingTopologySpreadConstraint
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingInterPodAntiAffinity
             - name: LowNodeUtilization
               args:
                 # Nodes below these % (of requests vs allocatable) are
