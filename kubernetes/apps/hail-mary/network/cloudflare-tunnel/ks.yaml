@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudflare-tunnel-secret
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  # wait so the ExternalSecret has synced cloudflare-tunnel-secret before the
+  # app Kustomization substitutes ${CLOUDFLARE_TUNNEL_ID} from it
+  wait: true
+  path: ./kubernetes/apps/hail-mary/network/cloudflare-tunnel/secret
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+    
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudflare-tunnel
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  dependsOn:
+    - name: cloudflare-tunnel-secret
+  path: ./kubernetes/apps/hail-mary/network/cloudflare-tunnel/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cloudflare-tunnel-secret

@@ -1,0 +1,26 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: gitea-mirror
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/hail-mary/dev/gitea-mirror/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: gitea-mirror
+      VOLSYNC_CLAIM: gitea-mirror-data
+  targetNamespace: dev
