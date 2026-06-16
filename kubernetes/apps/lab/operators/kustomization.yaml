@@ -8,3 +8,4 @@ resources:
   - node-feature-discovery/ks.yaml
   - intel-device-plugins/ks.yaml
   - pod-gc/ks.yaml
+  - descheduler/ks.yaml
