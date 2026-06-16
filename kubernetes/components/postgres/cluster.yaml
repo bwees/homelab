@@ -4,10 +4,14 @@ kind: Cluster
 metadata:
   name: ${APP}-db
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: preferred
   storage:
     size: 5Gi
     storageClass: longhorn
