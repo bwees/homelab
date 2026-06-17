@@ -25,7 +25,6 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
-  services.tailscale.ip = "100.105.77.106";
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
     "--accept-routes"

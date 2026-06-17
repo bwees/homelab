@@ -23,5 +23,4 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
-  services.tailscale.ip = "0.0.0.0";
 }
