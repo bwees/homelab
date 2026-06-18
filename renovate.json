@@ -59,6 +59,10 @@
       "matchDatasources": ["docker", "dockerfile"],
       "matchPackageNames": ["n8nio/runners", "n8nio/n8n"],
       "groupName": "n8n"
+    },
+    {
+      "matchFileNames": ["**/flux-system/**"],
+      "groupName": "fluxcd"
     }
   ],
   "ignoreTests": true
