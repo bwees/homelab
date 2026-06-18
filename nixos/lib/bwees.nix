@@ -13,7 +13,8 @@
     ];
 
     openssh.authorizedKeys.keys = [
-     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJr7fOsF74yPo/dhdorxFhgnCURWPVDkIjeRz2md0Jzq"
+     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJr7fOsF74yPo/dhdorxFhgnCURWPVDkIjeRz2md0Jzq" # bwees SSH Key
+     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn42VXrrAvqNscrPuZxKR1zRUldp8ZZKRVT7yFwPW97" # GH Actions Deployment SSH Key
     ];
   };
 
