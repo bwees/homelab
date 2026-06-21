@@ -54,15 +54,6 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: traefik
-    group: lab
-    url: 'https://lab.bwees.lab/'
-    interval: 1m
-    conditions:
-      - '[STATUS] == 404'
-    alerts:
-      - type: discord
-
   - name: immich
     group: lab
     url: 'https://immich.bwees.lab/'

@@ -5,6 +5,7 @@ resources:
   - ocirepository.yaml
   - helmrelease.yaml
   - externalsecret.yaml
+  - pvc.yaml
 
 configMapGenerator:
   - name: gatus-config

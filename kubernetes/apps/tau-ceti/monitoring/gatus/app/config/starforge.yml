@@ -1,21 +1,21 @@
 endpoints:
-  - name: nvr
-    group: starforge
-    url: 'https://cam.starforgefoundry.com/'
-    interval: 1m
-    conditions:
-      - '[STATUS] == 200'
-    alerts:
-      - type: discord
+  # - name: nvr
+  #   group: starforge
+  #   url: 'https://cam.starforgefoundry.com/'
+  #   interval: 1m
+  #   conditions:
+  #     - '[STATUS] == 200'
+  #   alerts:
+  #     - type: discord
 
-  - name: homeassistant
-    group: starforge
-    url: 'https://hass.starforgefoundry.com/'
-    interval: 1m
-    conditions:
-      - '[STATUS] == 200'
-    alerts:
-      - type: discord
+  # - name: homeassistant
+  #   group: starforge
+  #   url: 'https://hass.starforgefoundry.com/'
+  #   interval: 1m
+  #   conditions:
+  #     - '[STATUS] == 200'
+  #   alerts:
+  #     - type: discord
 
   - name: website
     group: starforge

@@ -67,7 +67,7 @@ spec:
         globalMounts:
           - path: /config
       data:
-        type: emptyDir
+        existingClaim: gatus-data
         globalMounts:
           - path: /data
       ca:
