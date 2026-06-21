@@ -30,8 +30,6 @@ in
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
 
-  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
-
   networking.firewall.allowedTCPPorts = [
     6443       # kube-apiserver
     2379       # etcd client

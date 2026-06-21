@@ -40,11 +40,11 @@
           ./hosts/hail-mary/astrophage/configuration.nix
         ];
       };
-      nixosConfigurations.homelab-vps = mkHost {
+      nixosConfigurations.tau-ceti = mkHost {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
-          ./hosts/homelab-vps/configuration.nix
+          ./hosts/tau-ceti/configuration.nix
         ];
       };
       nixosConfigurations.stepien-server = mkHost {

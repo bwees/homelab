@@ -8,10 +8,8 @@
     ./disk-config.nix
     ../../lib/base-packages.nix
     ../../lib/bwees.nix
-    ../../lib/docker.nix
     ../../lib/garbage-collect.nix
     ../../lib/root-ca.nix
-    ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix
   ];
@@ -19,7 +17,7 @@
   system.stateVersion = "25.05";
 
   # Networking/Clock
-  networking.hostName = "homelab-vps";
+  networking.hostName = "tau-ceti";
   time.timeZone = "America/New_York";
 
   services.openssh.enable = true;

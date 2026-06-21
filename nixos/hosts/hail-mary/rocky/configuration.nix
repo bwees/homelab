@@ -37,6 +37,7 @@
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
   services.k3s.serverAddr = "https://192.168.50.110:6443";
+  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
 
   # Longhorn: only nodes with this label get a default disk
   # (createDefaultDiskLabeledNodes=true in the longhorn HelmRelease).
