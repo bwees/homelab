@@ -6,5 +6,4 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-  - ./egress-service.yaml
   - ./dnsendpoint.yaml
