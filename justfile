@@ -35,13 +35,6 @@ restic CREDS REPO *ARGS:
   source ./credentials/restic.{{CREDS}}.env
   RESTIC_REPOSITORY="${RESTIC_REPOSITORY}/{{REPO}}" \
   restic {{ARGS}}
-  
-# [working-directory: 'restic/credentials']
-# copy-restic-creds HOST USER="bwees":
-#   op inject --in-file restic.b2.env.op --out-file restic.b2.env -f
-#   op inject --in-file restic.nas.env.op --out-file restic.nas.env -f
-#   op inject --in-file restic.local.env.op --out-file restic.local.env -f
-#   rsync -av --mkpath --rsync-path="sudo rsync" *.env "{{USER}}@{{HOST}}:/etc/restic/credentials/"
 
 bootstrap HOST USER="bwees":
   #!/bin/bash
@@ -52,12 +45,12 @@ bootstrap HOST USER="bwees":
     --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
 
   # 1Password service-account token -> external-secrets secret on the host
-  op read "op://Homelab Deployment/1password-service-account/credential" \
+  op read --no-newline "op://Homelab Deployment/1password-service-account/credential" \
     | ssh "{{USER}}@{{HOST}}" 'sudo k3s kubectl create secret generic onepassword-secret-token \
         --namespace external-secrets \
         --from-file=token=/dev/stdin \
         --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
 
   # Shared k3s cluster token -> /etc/rancher/k3s/cluster-token on the host
-  op read "op://Homelab Deployment/hail-mary-k3s/cluster-token" \
-    | ssh "{{USER}}@{{HOST}}" 'sudo mkdir -p /etc/rancher/k3s && sudo tee /etc/rancher/k3s/cluster-token >/dev/null'
+  # op read "op://Homelab Deployment/hail-mary-k3s/cluster-token" \
+  #   | ssh "{{USER}}@{{HOST}}" 'sudo mkdir -p /etc/rancher/k3s && sudo tee /etc/rancher/k3s/cluster-token >/dev/null'
