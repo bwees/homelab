@@ -5,7 +5,7 @@ metadata:
   name: cloudflare-tunnel
 spec:
   endpoints:
-    - dnsName: hail-mary.tun.bwees.io
+    - dnsName: ${CLUSTER}.tun.bwees.io
       recordType: CNAME
       targets:
         - ${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com

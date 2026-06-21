@@ -34,7 +34,7 @@ spec:
     sources:
       - crd
       - gateway-httproute
-    txtOwnerId: lab-cluster
+    txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.%{record_type}-
     domainFilters:
       - bwees.io
