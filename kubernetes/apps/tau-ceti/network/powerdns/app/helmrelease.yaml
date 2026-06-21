@@ -59,6 +59,13 @@ spec:
             port: 8081
             protocol: TCP
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 953
+        runAsGroup: 953
+        fsGroup: 953
+        fsGroupChangePolicy: OnRootMismatch
+
     persistence:
       data:
         existingClaim: powerdns-data
@@ -68,6 +75,7 @@ spec:
               - path: /var/lib/powerdns
             main:
               - path: /var/lib/powerdns
+
       config:
         type: configMap
         name: powerdns-config
