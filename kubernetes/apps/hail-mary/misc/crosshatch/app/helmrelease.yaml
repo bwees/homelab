@@ -50,4 +50,4 @@ spec:
       data:
         existingClaim: crosshatch-data
         globalMounts:
-          - path: /app/server/data
+          - path: /data
