@@ -4,3 +4,6 @@ ui:
 storage:
   type: sqlite
   path: /data/gatus.db
+
+client:
+  dns-resolver: 100.102.42.104:53
