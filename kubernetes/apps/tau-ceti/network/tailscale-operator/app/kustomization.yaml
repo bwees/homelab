@@ -7,4 +7,3 @@ resources:
   - ./helmrepository.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./proxygroup.yaml
