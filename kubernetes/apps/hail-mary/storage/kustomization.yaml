@@ -8,3 +8,4 @@ resources:
   - snapshot-controller/ks.yaml
   - longhorn/ks.yaml
   - volsync/ks.yaml
+  - restic/ks.yaml

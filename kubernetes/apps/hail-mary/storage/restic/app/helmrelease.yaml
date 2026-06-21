@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: restic
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: restic
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: restic/rest-server
+              tag: '0.14.0'
+            env:
+              DATA_DIRECTORY: /data
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8000
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+              readiness: *probes
+
+    defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: astrophage
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: storage
+          effect: NoSchedule
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8000
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - restic.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8000
+
+    persistence:
+      data:
+        type: hostPath
+        hostPath: /mnt/main/restic
+        globalMounts:
+          - path: /data
