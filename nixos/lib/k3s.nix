@@ -1,5 +1,14 @@
 { pkgs, config, ... }:
 
+let
+  # imageMaximumGCAge is a KubeletConfiguration-only field (no equivalent
+  # --kubelet-arg flag), so it must be supplied via a config file.
+  kubeletConfig = pkgs.writeText "k3s-kubelet-config.yaml" ''
+    apiVersion: kubelet.config.k8s.io/v1beta1
+    kind: KubeletConfiguration
+    imageMaximumGCAge: "168h"
+  '';
+in
 {
   services.k3s = {
     enable = true;
@@ -12,6 +21,7 @@
       "--write-kubeconfig-group=k3s"
       "--kube-apiserver-arg=feature-gates=ImageVolume=true"
       "--kubelet-arg=feature-gates=ImageVolume=true"
+      "--kubelet-arg=config=${kubeletConfig}"
       "--etcd-snapshot-schedule-cron=0 */6 * * *"
       "--etcd-snapshot-retention=14"
     ];
