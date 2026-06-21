@@ -82,7 +82,7 @@ metadata:
   namespace: network
   annotations:
     # CNAME target → MagicDNS name of the operator ingress device
-    external-dns.alpha.kubernetes.io/target: tau-ceti-ingress.taila72746.ts.net
+    external-dns.alpha.kubernetes.io/target: tau-ceti-ingress.tail72746.ts.net
 spec:
   gatewayClassName: envoy-internal
   listeners:

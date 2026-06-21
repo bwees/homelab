@@ -7,7 +7,7 @@ metadata:
   name: powerdns
   namespace: network
   annotations:
-    tailscale.com/tailnet-fqdn: dns.taila72746.ts.net
+    tailscale.com/tailnet-fqdn: dns.tail72746.ts.net
 spec:
   type: ExternalName
   externalName: placeholder # operator replaces this with a ClusterIP proxy
