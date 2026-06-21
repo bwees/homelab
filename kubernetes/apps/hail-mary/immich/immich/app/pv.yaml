@@ -7,7 +7,7 @@ spec:
     storage: 1Ti
   accessModes: [ReadWriteMany]
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
+  storageClassName: ''
   mountOptions:
     - nfsvers=4.1
     - nolock

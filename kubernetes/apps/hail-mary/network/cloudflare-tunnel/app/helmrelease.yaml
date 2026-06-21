@@ -13,7 +13,7 @@ spec:
         replicas: 2
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: 'true'
         containers:
           app:
             image:
@@ -24,7 +24,7 @@ spec:
               TUNNEL_METRICS: 0.0.0.0:8080
             envFrom:
               - secretRef:
-                  name: "cloudflare-tunnel-secret"
+                  name: 'cloudflare-tunnel-secret'
             args:
               - tunnel
               - run
@@ -44,7 +44,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: { drop: ['ALL'] }
             resources:
               requests:
                 cpu: 10m

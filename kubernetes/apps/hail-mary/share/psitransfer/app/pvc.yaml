@@ -5,7 +5,7 @@ metadata:
   namespace: share
 spec:
   accessModes: [ReadWriteMany]
-  storageClassName: ""
+  storageClassName: ''
   volumeName: nas-psitransfer
   resources:
     requests:

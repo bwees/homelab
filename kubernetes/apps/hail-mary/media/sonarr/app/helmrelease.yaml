@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: "4.0.17.2969"
+              tag: '4.0.17.2969'
             env:
               TZ: America/Chicago
             securityContext:
@@ -74,6 +74,3 @@ spec:
             subPath: tv
           - path: /downloads
             subPath: downloads
-
-
-

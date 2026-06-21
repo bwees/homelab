@@ -8,7 +8,7 @@ spec:
     storage: 100Gi
   accessModes: [ReadWriteMany]
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
+  storageClassName: ''
   mountOptions:
     - nfsvers=4.1
     - nolock

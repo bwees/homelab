@@ -14,15 +14,15 @@ spec:
           main:
             image:
               repository: tailscale/tailscale
-              tag: "v1.98.4"
+              tag: 'v1.98.4'
             env:
               TZ: America/Chicago
-              TS_USERSPACE: "true"
-              TS_SOCKS5_SERVER: "0.0.0.0:1055"
-              TS_EXTRA_ARGS: "--reset --exit-node=100.105.77.106 --exit-node-allow-lan-access=true --hostname=media-stack"
+              TS_USERSPACE: 'true'
+              TS_SOCKS5_SERVER: '0.0.0.0:1055'
+              TS_EXTRA_ARGS: '--reset --exit-node=100.105.77.106 --exit-node-allow-lan-access=true --hostname=media-stack'
               TS_STATE_DIR: /var/lib/tailscale
-              TS_KUBE_SECRET: ""
-              TS_ACCEPT_DNS: "false"
+              TS_KUBE_SECRET: ''
+              TS_ACCEPT_DNS: 'false'
             resources:
               requests:
                 cpu: 25m

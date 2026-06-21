@@ -14,22 +14,22 @@ spec:
           main:
             image:
               repository: n8nio/n8n
-              tag: "2.27.3"
+              tag: '2.27.3'
             envFrom:
               - secretRef:
                   name: n8n-secret
             env:
               TZ: America/Chicago
               WEBHOOK_URL: https://n8n.bwees.io
-              N8N_RUNNERS_ENABLED: "true"
+              N8N_RUNNERS_ENABLED: 'true'
               N8N_RUNNERS_MODE: external
               N8N_RUNNERS_BROKER_LISTEN_ADDRESS: 0.0.0.0
-              N8N_NATIVE_PYTHON_RUNNER: "true"
-              N8N_RUNNERS_TASK_TIMEOUT: "3600"
-              EXECUTIONS_DATA_PRUNE: "true"
-              EXECUTIONS_DATA_MAX_AGE: "24"
+              N8N_NATIVE_PYTHON_RUNNER: 'true'
+              N8N_RUNNERS_TASK_TIMEOUT: '3600'
+              EXECUTIONS_DATA_PRUNE: 'true'
+              EXECUTIONS_DATA_MAX_AGE: '24'
               EXECUTIONS_DATA_SAVE_ON_SUCCESS: none
-              NODES_EXCLUDE: "[]"
+              NODES_EXCLUDE: '[]'
             resources:
               requests:
                 cpu: 100m
@@ -50,7 +50,7 @@ spec:
                   name: n8n-secret
             env:
               N8N_RUNNERS_TASK_BROKER_URI: http://localhost:5679
-              N8N_RUNNERS_TASK_TIMEOUT: "3600"
+              N8N_RUNNERS_TASK_TIMEOUT: '3600'
             probes:
               liveness:
                 enabled: false

@@ -14,18 +14,18 @@ spec:
           main:
             image:
               repository: ghcr.io/haveagitgat/tdarr
-              tag: "2.78.01"
+              tag: '2.78.01'
             env:
               TZ: America/Chicago
-              PUID: "1000"
-              PGID: "1000"
-              UMASK_SET: "002"
+              PUID: '1000'
+              PGID: '1000'
+              UMASK_SET: '002'
               serverIP: 0.0.0.0
-              serverPort: "8266"
-              webUIPort: "8265"
-              internalNode: "true"
-              inContainer: "true"
-              ffmpegVersion: "7"
+              serverPort: '8266'
+              webUIPort: '8265'
+              internalNode: 'true'
+              inContainer: 'true'
+              ffmpegVersion: '7'
               nodeName: grace
             resources:
               requests:
@@ -33,7 +33,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 4Gi
-                gpu.intel.com/i915: "1"
+                gpu.intel.com/i915: '1'
             probes:
               liveness: &probes
                 enabled: true

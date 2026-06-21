@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: "10.11.11"
+              tag: '10.11.11'
             env:
               TZ: America/Chicago
               # LSCR.io compatability mounts
@@ -31,7 +31,7 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 2Gi
-                gpu.intel.com/i915: "1"
+                gpu.intel.com/i915: '1'
             probes:
               liveness: &probes
                 enabled: true
@@ -102,7 +102,7 @@ spec:
         existingClaim: jellyfin-config
         globalMounts:
           - path: /config
-          
+
       media:
         existingClaim: media-library
         globalMounts:
@@ -110,6 +110,3 @@ spec:
             subPath: tv
           - path: /movies
             subPath: movies
-
-
-

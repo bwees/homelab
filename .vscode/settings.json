@@ -5,9 +5,7 @@
   },
   "json.schemas": [
     {
-      "fileMatch": [
-        "*.hujson"
-      ],
+      "fileMatch": ["*.hujson"],
       "schema": {
         "allowTrailingCommas": true
       }
@@ -15,8 +13,8 @@
   ],
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "*.env.op": "${capture}.env",
+    "*.env.op": "${capture}.env"
   },
   "nix.enableLanguageServer": true,
-  "nix.serverPath": "nixd",
+  "nix.serverPath": "nixd"
 }

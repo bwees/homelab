@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
-              tag: "v3.5.0"
+              tag: 'v3.5.0'
             env:
               TZ: America/Chicago
             resources:

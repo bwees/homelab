@@ -8,7 +8,7 @@ spec:
   # (e.g. GPU device-plugin race after a node reboot) and Evicted pods are
   # left behind as status.phase=Failed once a healthy replica takes over;
   # this removes them.
-  schedule: "*/5 * * * *"
+  schedule: '*/5 * * * *'
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
@@ -39,7 +39,7 @@ spec:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
                 capabilities:
-                  drop: ["ALL"]
+                  drop: ['ALL']
               resources:
                 requests:
                   cpu: 10m

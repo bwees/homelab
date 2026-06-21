@@ -9,8 +9,8 @@
       "resources:",
       "  - ${1:deployment.yaml}",
       "",
-      "$0"
+      "$0",
     ],
-    "description": "Kustomize kustomization.yaml template"
-  }
+    "description": "Kustomize kustomization.yaml template",
+  },
 }

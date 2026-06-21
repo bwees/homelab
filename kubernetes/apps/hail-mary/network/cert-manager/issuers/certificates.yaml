@@ -6,12 +6,12 @@ metadata:
   namespace: network
 spec:
   secretName: bwees-lab-tls
-  duration: 2160h      # 90d
-  renewBefore: 720h    # 30d
-  commonName: "*.bwees.lab"
+  duration: 2160h # 90d
+  renewBefore: 720h # 30d
+  commonName: '*.bwees.lab'
   dnsNames:
-    - "bwees.lab"
-    - "*.bwees.lab"
+    - 'bwees.lab'
+    - '*.bwees.lab'
   privateKey:
     algorithm: RSA
     size: 2048
@@ -29,12 +29,12 @@ metadata:
   namespace: network
 spec:
   secretName: bwees-io-tls
-  duration: 2160h      # 90d
-  renewBefore: 720h    # 30d
-  commonName: "*.bwees.io"
+  duration: 2160h # 90d
+  renewBefore: 720h # 30d
+  commonName: '*.bwees.io'
   dnsNames:
-    - "bwees.io"
-    - "*.bwees.io"
+    - 'bwees.io'
+    - '*.bwees.io'
   privateKey:
     algorithm: RSA
     size: 2048

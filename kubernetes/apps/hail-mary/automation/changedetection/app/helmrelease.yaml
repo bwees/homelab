@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/dgtlmoon/changedetection.io
-              tag: "0.55.7"
+              tag: '0.55.7'
             env:
               PLAYWRIGHT_DRIVER_URL: ws://localhost:3000
             resources:
@@ -30,7 +30,7 @@ spec:
           sockpuppetbrowser:
             image:
               repository: dgtlmoon/sockpuppetbrowser
-              tag: "0.0.3"
+              tag: '0.0.3'
             env:
               DEFAULT_LAUNCH_ARGS: '["--window-size=1920,1080"]'
             probes:

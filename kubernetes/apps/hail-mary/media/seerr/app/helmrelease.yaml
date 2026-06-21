@@ -14,10 +14,10 @@ spec:
           main:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: "v3.3.0"
+              tag: 'v3.3.0'
             env:
               TZ: America/Chicago
-              PORT: "5055"
+              PORT: '5055'
             resources:
               requests:
                 cpu: 50m

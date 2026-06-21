@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/raylabshq/gitea-mirror
-              tag: "v3.20.0"
+              tag: 'v3.20.0'
             envFrom:
               - secretRef:
                   name: gitea-mirror-secret
@@ -25,9 +25,9 @@ spec:
               NODE_ENV: production
               DATABASE_URL: file:data/gitea-mirror.db
               HOST: 0.0.0.0
-              PORT: "4321"
-              MIRROR_ISSUE_CONCURRENCY: "1"
-              MIRROR_PULL_REQUEST_CONCURRENCY: "1"
+              PORT: '4321'
+              MIRROR_ISSUE_CONCURRENCY: '1'
+              MIRROR_PULL_REQUEST_CONCURRENCY: '1'
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000

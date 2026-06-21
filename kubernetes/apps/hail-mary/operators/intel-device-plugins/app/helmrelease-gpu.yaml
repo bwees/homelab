@@ -25,4 +25,4 @@ spec:
     sharedDevNum: 16
     nodeFeatureRule: true
     nodeSelector:
-      intel.feature.node.kubernetes.io/gpu: "true"
+      intel.feature.node.kubernetes.io/gpu: 'true'

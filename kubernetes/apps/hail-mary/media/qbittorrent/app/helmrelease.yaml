@@ -14,8 +14,8 @@ spec:
           cluster-routes:
             image:
               repository: tailscale/tailscale
-              tag: "v1.98.4"
-            command: ["/bin/sh", "-c"]
+              tag: 'v1.98.4'
+            command: ['/bin/sh', '-c']
             args:
               - |
                 ip rule add to 10.42.0.0/16 lookup main priority 5252 2>/dev/null || true
@@ -25,12 +25,12 @@ spec:
               runAsUser: 0
               runAsNonRoot: false
               capabilities:
-                add: ["NET_ADMIN"]
+                add: ['NET_ADMIN']
         containers:
           main:
             image:
               repository: ghcr.io/home-operations/qbittorrent
-              tag: "5.2.2"
+              tag: '5.2.2'
             env:
               TZ: America/Chicago
               QBITTORRENT_DOWNLOAD_PATH: /downloads
@@ -51,20 +51,20 @@ spec:
           tailscale:
             image:
               repository: tailscale/tailscale
-              tag: "v1.98.4"
+              tag: 'v1.98.4'
             env:
               TZ: America/Chicago
-              TS_USERSPACE: "false"
-              TS_EXTRA_ARGS: "--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true --hostname=qbittorrent"
+              TS_USERSPACE: 'false'
+              TS_EXTRA_ARGS: '--reset --exit-node=100.82.151.77 --exit-node-allow-lan-access=true --hostname=qbittorrent'
               TS_STATE_DIR: /var/lib/tailscale
-              TS_KUBE_SECRET: ""
-              TS_ACCEPT_DNS: "false"
+              TS_KUBE_SECRET: ''
+              TS_ACCEPT_DNS: 'false'
             securityContext:
               runAsUser: 0
               runAsGroup: 0
               runAsNonRoot: false
               capabilities:
-                add: ["NET_ADMIN", "NET_RAW"]
+                add: ['NET_ADMIN', 'NET_RAW']
             resources:
               requests:
                 cpu: 25m
