@@ -9,6 +9,7 @@
     ../../../lib/base-packages.nix
     ../../../lib/bwees.nix
     ../../../lib/k3s.nix
+    ../../../lib/k3s-multinode.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/tailscale.nix
   ];

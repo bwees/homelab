@@ -30,6 +30,8 @@ in
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
 
+  # only expose the k3s ports to the LAN (InternalIP)
+  # for multi-node clusters; use k3s-multinode.nix to enable LAN access
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
     6443 # kube-apiserver
     2379 # etcd client

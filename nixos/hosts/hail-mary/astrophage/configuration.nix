@@ -8,6 +8,7 @@
     ./disk-config.nix
     ../../../lib/base-packages.nix
     ../../../lib/k3s.nix
+    ../../../lib/k3s-multinode.nix
     ../../../lib/bwees.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/root-ca.nix
