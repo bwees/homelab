@@ -4,12 +4,8 @@
 deploy HOST="all:!homelab-router":
     ansible-playbook deploy.yml --limit {{ HOST }}
 
-[working-directory: 'deploy/images']
-build-custom-images:
-    @docker buildx build --push --platform linux/amd64 \
-        -f n8n-runner/Dockerfile \
-        -t ghcr.io/bwees/homelab/n8n-runner:latest \
-        -t ghcr.io/bwees/homelab/n8n-runner:`git rev-parse --short HEAD` .
+[group: "images"]
+mod images "images"
 
 [working-directory: 'nixos']
 switch HOST USER="bwees":
