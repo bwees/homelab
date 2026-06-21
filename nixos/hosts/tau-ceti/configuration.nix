@@ -35,6 +35,19 @@
 
   services.k3s.extraFlags = [
     "--node-label=node.longhorn.io/create-default-disk=true"
+    # expose the public IP as the node's ExternalIP so the Tailscale operator
+    # can advertise it as a static endpoint for direct ingress connections
+    "--node-external-ip=45.137.192.163"
+  ];
+
+  # Allow inbound UDP to the Tailscale ingress static-endpoint NodePorts on the
+  # public interface. Must match spec.staticEndpoints.nodePort.ports of the
+  # `tau-ceti-static-endpoints` ProxyClass.
+  networking.firewall.allowedUDPPortRanges = [
+    {
+      from = 31670;
+      to = 31690;
+    }
   ];
 
   services.fail2ban.enable = true;

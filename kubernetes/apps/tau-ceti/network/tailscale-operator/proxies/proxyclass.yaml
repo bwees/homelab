@@ -1,0 +1,23 @@
+---
+# Enables "static endpoints" so the ingress proxies can be reached directly
+# instead of relaying through a DERP (e.g. `relay "ord"`).
+#
+# The operator allocates a UDP NodePort per replica from the range below and
+# advertises <node ExternalIP>:<nodePort> as a Tailscale endpoint, letting
+# tailnet peers open a direct connection to the VPS.
+#
+# Requires (see nixos/hosts/tau-ceti):
+#   - the k3s node to expose an ExternalIP (--node-external-ip)
+#   - the host firewall to allow inbound UDP on these ports
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyClass
+metadata:
+  name: tau-ceti-static-endpoints
+spec:
+  staticEndpoints:
+    nodePort:
+      ports:
+        - port: 31670
+          endPort: 31690
+      selector:
+        kubernetes.io/os: linux

@@ -7,3 +7,5 @@ metadata:
 spec:
   type: ingress
   replicas: 1
+  # advertise static endpoints (VPS ExternalIP:nodePort) for direct connections
+  proxyClass: tau-ceti-static-endpoints
