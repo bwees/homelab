@@ -27,34 +27,33 @@ spec:
       weekly: 2
       monthly: 2
       yearly: 1
-# ─────────────────────────────────────────────────────────────────────────────
-# NAS (local rest-server) target — staggered after B2. Commented out until the
-# restic rest-server is running and reachable at ${VOLSYNC_NAS_ENDPOINT}.
-# Uncomment here AND the ${APP}-restic-nas ExternalSecret in externalsecret.yaml.
-# ─────────────────────────────────────────────────────────────────────────────
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name: ${APP}-nas
-# spec:
-#   sourcePVC: ${VOLSYNC_CLAIM}
-#   trigger:
-#     schedule: "${VOLSYNC_SCHEDULE_NAS:=0 3 * * *}"
-#   restic:
-#     repository: ${APP}-restic-nas
-#     copyMethod: Snapshot
-#     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
-#     storageClassName: "${VOLSYNC_PIT_STORAGECLASS:=longhorn-volsync-src}"
-#     cacheStorageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
-#     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
-#     moverSecurityContext:
-#       runAsUser: ${VOLSYNC_UID:=1000}
-#       runAsGroup: ${VOLSYNC_GID:=1000}
-#       fsGroup: ${VOLSYNC_GID:=1000}
-#     pruneIntervalDays: 7
-#     retain:
-#       daily: 7
-#       weekly: 2
-#       monthly: 2
-#       yearly: 1
+
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ${APP}-nas
+spec:
+  sourcePVC: ${VOLSYNC_CLAIM}
+  trigger:
+    schedule: '${VOLSYNC_SCHEDULE_NAS:=30 3 * * *}'
+  restic:
+    repository: ${APP}-restic-nas
+    customCA:
+      secretName: ${APP}-restic-nas-ca
+      key: ca.crt
+    copyMethod: Snapshot
+    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=longhorn}'
+    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=longhorn-volsync-src}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=longhorn}'
+    cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_UID:=1000}
+      runAsGroup: ${VOLSYNC_GID:=1000}
+      fsGroup: ${VOLSYNC_GID:=1000}
+    pruneIntervalDays: 7
+    retain:
+      daily: 7
+      weekly: 2
+      monthly: 2
+      yearly: 1
