@@ -15,6 +15,8 @@ status IN A  100.105.77.106 ; vps
 vps IN A 100.105.77.106 ; vps
 healthchecks IN A 100.105.77.106 ; vps
 
+restic IN A 100.80.89.123 ; astrophage
+
 unifi IN A   100.85.70.91 ; homelab-router
 
 coreone IN A 192.168.10.185 ; 3d-printer
