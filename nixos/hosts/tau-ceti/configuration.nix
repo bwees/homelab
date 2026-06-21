@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ../../lib/base-packages.nix
+    ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
     ../../lib/root-ca.nix
@@ -29,8 +30,6 @@
     "--advertise-tags=tag:tau-ceti,tag:nixos"
   ];
 
-  # Longhorn: only nodes with this label get a default disk
-  # (createDefaultDiskLabeledNodes=true in the longhorn HelmRelease).
   services.k3s.extraFlags = [
     "--node-label=node.longhorn.io/create-default-disk=true"
   ];
