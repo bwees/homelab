@@ -29,5 +29,11 @@
     "--advertise-tags=tag:tau-ceti,tag:nixos"
   ];
 
+  # Longhorn: only nodes with this label get a default disk
+  # (createDefaultDiskLabeledNodes=true in the longhorn HelmRelease).
+  services.k3s.extraFlags = [
+    "--node-label=node.longhorn.io/create-default-disk=true"
+  ];
+
   services.fail2ban.enable = true;
 }
