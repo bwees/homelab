@@ -29,6 +29,9 @@ spec:
   values:
     config:
       envoyGateway:
+        extensionApis:
+          # required to route HTTPRoutes at off-cluster IPs (home/stepien over tailscale)
+          enableBackend: true
         provider:
           type: Kubernetes
           kubernetes:

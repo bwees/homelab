@@ -1,0 +1,61 @@
+---
+# album.bwees.io -> homelab-home traefik (immich)
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: homelab-home
+  namespace: network
+spec:
+  endpoints:
+    - ip:
+        address: 100.101.55.71 # homelab-home (tailscale)
+        port: 80
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: album
+  namespace: network
+spec:
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+  hostnames:
+    - album.bwees.io
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: homelab-home
+
+---
+# stepien-immich.bwees.io -> stepien-server traefik (immich)
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: stepien-server
+  namespace: network
+spec:
+  endpoints:
+    - ip:
+        address: 100.81.233.29 # stepien-server (tailscale)
+        port: 80
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: stepien-immich
+  namespace: network
+spec:
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+  hostnames:
+    - stepien-immich.bwees.io
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: stepien-server
