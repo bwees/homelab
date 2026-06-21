@@ -5,7 +5,7 @@ metadata:
   name: cloudflare-dns
 spec:
   interval: 1h
-  path: ./kubernetes/apps/hail-mary/network/cloudflare-dns/app
+  path: ./kubernetes/apps/tau-ceti/network/cloudflare-dns/app
   prune: true
   sourceRef:
     kind: GitRepository

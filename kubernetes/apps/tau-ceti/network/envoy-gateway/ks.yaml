@@ -13,7 +13,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/network/envoy-gateway/app
+  path: ./kubernetes/apps/tau-ceti/network/envoy-gateway/app
   targetNamespace: network
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -32,4 +32,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/network/envoy-gateway/config
+  path: ./kubernetes/apps/tau-ceti/network/envoy-gateway/config

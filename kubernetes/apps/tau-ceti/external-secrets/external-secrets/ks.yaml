@@ -13,5 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/external-secrets/external-secrets/app
+  path: ./kubernetes/apps/tau-ceti/external-secrets/external-secrets/app
   targetNamespace: external-secrets

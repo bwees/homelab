@@ -13,7 +13,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/network/cert-manager/app
+  path: ./kubernetes/apps/tau-ceti/network/cert-manager/app
   targetNamespace: network
 
 ---
@@ -33,4 +33,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/network/cert-manager/issuers
+  path: ./kubernetes/apps/tau-ceti/network/cert-manager/issuers

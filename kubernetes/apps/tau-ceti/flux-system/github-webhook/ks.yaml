@@ -4,7 +4,7 @@ metadata:
   name: github-webhook
 spec:
   interval: 1h
-  path: ./kubernetes/apps/hail-mary/flux-system/github-webhook/app
+  path: ./kubernetes/apps/tau-ceti/flux-system/github-webhook/app
   prune: true
   sourceRef:
     kind: GitRepository

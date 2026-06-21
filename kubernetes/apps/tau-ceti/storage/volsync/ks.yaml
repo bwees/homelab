@@ -16,5 +16,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/storage/volsync/app
+  path: ./kubernetes/apps/tau-ceti/storage/volsync/app
   targetNamespace: storage

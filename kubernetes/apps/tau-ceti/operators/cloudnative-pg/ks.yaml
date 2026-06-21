@@ -13,5 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/operators/cloudnative-pg/app
+  path: ./kubernetes/apps/tau-ceti/operators/cloudnative-pg/app
   targetNamespace: operators

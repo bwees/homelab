@@ -13,5 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/hail-mary/storage/snapshot-controller/app
+  path: ./kubernetes/apps/tau-ceti/storage/snapshot-controller/app
   targetNamespace: storage
