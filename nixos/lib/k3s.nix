@@ -30,13 +30,13 @@ in
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
 
-  networking.firewall.allowedTCPPorts = [
-    6443       # kube-apiserver
-    2379       # etcd client
-    2380       # etcd peer
-    10250      # kubelet metrics
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
+    6443 # kube-apiserver
+    2379 # etcd client
+    2380 # etcd peer
+    10250 # kubelet metrics
   ];
-  networking.firewall.allowedUDPPorts = [ 8472 ]; # flannel vxlan
+  networking.firewall.interfaces."tailscale0".allowedUDPPorts = [ 8472 ]; # flannel vxlan
 
   users.groups.k3s = { };
   users.users.bwees.extraGroups = [ "k3s" ];

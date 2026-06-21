@@ -22,7 +22,7 @@
 
   services.tailscale.extraUpFlags = [ 
     "--advertise-exit-node"
-    "--advertise-tags=tag:hail-mary,tag:k3s"
+    "--advertise-tags=tag:hail-mary,tag:nixos"
   ];
 
   services.beszel.agent.enable = true;

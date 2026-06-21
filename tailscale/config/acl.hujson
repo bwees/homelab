@@ -1,8 +1,15 @@
 {
   "tagOwners": {
     "tag:ci": ["brandonwees@gmail.com"],
-    "tag:hail-mary": ["brandonwees@gmail.com"],
-    "tag:k3s": ["brandonwees@gmail.com"],
+
+    // cluster tags
+    "tag:tau-ceti": ["brandonwees@gmail.com", "tag:kube-operator"],
+    "tag:hail-mary": ["brandonwees@gmail.com", "tag:kube-operator"],
+
+    // platform tags
+    "tag:nixos": ["brandonwees@gmail.com"],
+    "tag:kube-operator": ["brandonwees@gmail.com"],
+    "tag:kube-service": ["brandonwees@gmail.com", "tag:kube-operator"],
   },
   "acls": [
     {
@@ -34,6 +41,8 @@
     },
   ],
   "autoApprovers": {
-    "exitNode": ["brandonwees@gmail.com"],
+    // tag:nixos covers the k3s nodes (tau-ceti, rocky) that advertise exit
+    // nodes — they're now tagged, so approve by tag rather than user.
+    "exitNode": ["brandonwees@gmail.com", "tag:nixos"],
   },
 }

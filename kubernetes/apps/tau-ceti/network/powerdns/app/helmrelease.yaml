@@ -1,0 +1,81 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: powerdns
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: powerdns
+  interval: 1h
+  values:
+    controllers:
+      main:
+        initContainers:
+          # Create the bwees.lab zone if absent
+          zone-init:
+            image:
+              repository: powerdns/pdns-auth-49
+              tag: '4.9.9'
+            command:
+              - sh
+              - -c
+              - >-
+                pdnsutil list-zone bwees.lab >/dev/null 2>&1 ||
+                pdnsutil create-zone bwees.lab ns1.bwees.lab
+        containers:
+          main:
+            image:
+              repository: powerdns/pdns-auth-49
+              tag: '4.9.9'
+            env:
+              PDNS_AUTH_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: powerdns-api
+                    key: PDNS_API_KEY
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      main:
+        controller: main
+        # operator exposes this as a dedicated tailnet device (L3 TCP/UDP DNAT)
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/hostname: dns
+        ports:
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dns-udp:
+            port: 53
+            protocol: UDP
+          api:
+            port: 8081
+            protocol: TCP
+
+    persistence:
+      data:
+        existingClaim: powerdns-data
+        advancedMounts:
+          main:
+            zone-init:
+              - path: /var/lib/powerdns
+            main:
+              - path: /var/lib/powerdns
+      config:
+        type: configMap
+        name: powerdns-config
+        advancedMounts:
+          main:
+            zone-init:
+              - path: /etc/powerdns/pdns.conf
+                subPath: pdns.conf
+            main:
+              - path: /etc/powerdns/pdns.conf
+                subPath: pdns.conf

@@ -1,0 +1,12 @@
+---
+# Apex NS glue for bwees.lab; all other records come dynamically from HTTPRoutes.
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: static-records
+spec:
+  endpoints:
+    - dnsName: ns1.bwees.lab
+      recordType: A
+      targets:
+        - 100.105.77.106 # tau-ceti

@@ -28,7 +28,7 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   services.tailscale.extraUpFlags = [ 
-    "--advertise-tags=tag:hail-mary,tag:k3s"
+    "--advertise-tags=tag:hail-mary,tag:nixos"
   ];
 
   # for zfs

@@ -1,0 +1,37 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-dns-internal
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: external-dns-internal
+  interval: 1h
+  values:
+    provider:
+      name: pdns
+    env:
+      - name: EXTERNAL_DNS_PDNS_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: powerdns-api
+            key: PDNS_API_KEY
+    extraArgs:
+      - --pdns-server=http://powerdns.network.svc.cluster.local:8081
+      - --pdns-api-key=$(EXTERNAL_DNS_PDNS_API_KEY)
+      - --gateway-name=envoy-internal
+    triggerLoopOnEvent: true
+    policy: sync
+    sources:
+      - gateway-httproute
+    txtOwnerId: ${CLUSTER}
+    txtPrefix: k8s.%{record_type}-
+    domainFilters:
+      - bwees.lab
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi

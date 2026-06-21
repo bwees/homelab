@@ -9,8 +9,14 @@ spec:
     type: Kubernetes
     kubernetes:
       useListenerPortAsContainerPort: true
+      # operator exposes this at L3 (raw TCP DNAT) so envoy still terminates the
+      # *.bwees.lab TLS.
       envoyService:
         type: ClusterIP
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/proxy-group: tau-ceti-ingress
+          tailscale.com/hostname: tau-ceti-ingress
       envoyDeployment:
         replicas: 1
         patch:
@@ -19,8 +25,6 @@ spec:
             spec:
               template:
                 spec:
-                  hostNetwork: true
-                  dnsPolicy: ClusterFirstWithHostNet
                   containers:
                     - name: envoy
                       securityContext:
@@ -70,12 +74,15 @@ spec:
     name: envoy-external
     namespace: network
 ---
-# Internal gateway — serves *.bwees.lab on the node's interfaces.
+# Internal gateway — serves *.bwees.lab.
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy-internal
   namespace: network
+  annotations:
+    # CNAME target → MagicDNS name of the operator ingress device
+    external-dns.alpha.kubernetes.io/target: tau-ceti-ingress.taila72746.ts.net
 spec:
   gatewayClassName: envoy-internal
   listeners:

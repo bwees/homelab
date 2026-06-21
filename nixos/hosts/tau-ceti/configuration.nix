@@ -26,6 +26,7 @@
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
     "--accept-routes"
+    "--advertise-tags=tag:tau-ceti,tag:nixos"
   ];
 
   services.fail2ban.enable = true;

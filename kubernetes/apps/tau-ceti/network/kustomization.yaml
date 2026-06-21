@@ -9,3 +9,6 @@ resources:
   - cert-manager/ks.yaml
   - cloudflare-dns/ks.yaml
   - cloudflare-tunnel/ks.yaml
+  - powerdns/ks.yaml
+  - external-dns-internal/ks.yaml
+  - tailscale-operator/ks.yaml

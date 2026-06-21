@@ -1,0 +1,29 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: powerdns
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/tau-ceti/network/powerdns/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: powerdns
+      VOLSYNC_CLAIM: powerdns-data
+      # pdns-auth image runs as uid/gid 953
+      VOLSYNC_UID: '953'
+      VOLSYNC_GID: '953'
+  targetNamespace: network

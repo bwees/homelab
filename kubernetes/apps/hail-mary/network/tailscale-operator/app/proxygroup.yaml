@@ -1,0 +1,9 @@
+---
+# HA ingress for envoy-internal; 2 replicas survive a single node going offline.
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: hail-mary-ingress
+spec:
+  type: ingress
+  replicas: 2
