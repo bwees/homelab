@@ -1,6 +1,0 @@
-ui:
-  default-sort-by: group
-
-storage:
-  type: postgres
-  path: '${GATUS_PG_PATH}'

@@ -1,0 +1,76 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gatus
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: gatus
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/twin/gatus
+              tag: v5.36.0
+            env:
+              GATUS_CONFIG_PATH: /config
+              # augments the image's public roots with the private bwees CA so
+              # https://*.bwees.lab endpoint checks pass TLS verification
+              SSL_CERT_DIR: /ca-certs
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
+            securityContext:
+              # gatus pings icmp:// endpoints — needs raw sockets
+              capabilities:
+                add: ['NET_RAW']
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8080
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - status.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8080
+
+    persistence:
+      config:
+        type: configMap
+        name: gatus-config
+        globalMounts:
+          - path: /config
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+      ca:
+        type: secret
+        name: gatus-ca
+        globalMounts:
+          - path: /ca-certs
