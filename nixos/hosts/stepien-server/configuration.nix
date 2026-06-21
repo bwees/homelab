@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ../../lib/base-packages.nix
+    ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/docker.nix
     ../../lib/garbage-collect.nix
