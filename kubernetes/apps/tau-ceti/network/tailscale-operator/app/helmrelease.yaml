@@ -22,6 +22,5 @@ spec:
         - tag:tau-ceti
         - tag:kube-operator
     proxyConfig:
-      defaultTags:
-        - tag:tau-ceti
-        - tag:kube-service
+      # chart renders this verbatim into the PROXY_TAGS env string (not a list)
+      defaultTags: "tag:tau-ceti,tag:kube-service"
