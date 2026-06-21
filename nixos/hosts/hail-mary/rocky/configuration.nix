@@ -23,7 +23,6 @@
   time.timeZone = "America/Chicago";
 
   services.tailscale.extraUpFlags = [
-    "--advertise-exit-node"
     "--advertise-tags=tag:hail-mary,tag:nixos"
   ];
 

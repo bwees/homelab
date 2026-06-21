@@ -24,10 +24,13 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
+  services.tailscale.extraUpFlags = [
+    "--advertise-tags=tag:tau-ceti,tag:nixos"
+  ];
+
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
     "--accept-routes"
-    "--advertise-tags=tag:tau-ceti,tag:nixos"
   ];
 
   services.k3s.extraFlags = [
