@@ -11,7 +11,12 @@ spec:
     controllers:
       main:
         pod:
-          dnsPolicy: Default
+          # resolve *.bwees.lab via PowerDNS directly instead of the node/cluster resolver
+          dnsPolicy: None
+          dnsConfig:
+            nameservers:
+              - 100.102.42.104
+              - 1.1.1.1
         containers:
           main:
             image:
