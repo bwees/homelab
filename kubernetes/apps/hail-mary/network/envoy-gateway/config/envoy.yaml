@@ -81,7 +81,7 @@ metadata:
   name: envoy-internal
   namespace: network
   annotations:
-    external-dns.alpha.kubernetes.io/target: hail-mary-ingress.tail72746.ts.net
+    external-dns.alpha.kubernetes.io/target: 100.92.76.110 # hail-mary-ingress.tail72746.ts.net
 spec:
   gatewayClassName: envoy-internal
   listeners:
