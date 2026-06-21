@@ -1,0 +1,16 @@
+---
+# Static LAN A records published into the central powerdns (bwees.lab).
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: static-records
+spec:
+  endpoints:
+    - dnsName: nas.bwees.lab
+      recordType: A
+      targets:
+        - 192.168.50.4
+    - dnsName: p2s.bwees.lab
+      recordType: A
+      targets:
+        - 192.168.10.66
