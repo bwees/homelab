@@ -29,10 +29,11 @@ collection:
   ansible-galaxy collection install -r requirements.yml
 
 [working-directory: 'restic']
-restic REPO *ARGS:
+restic CREDS REPO *ARGS:
   #!/bin/bash
   set -a
-  source ./credentials/restic.{{REPO}}.env
+  source ./credentials/restic.{{CREDS}}.env
+  RESTIC_REPOSITORY="${RESTIC_REPOSITORY}/{{REPO}}" \
   restic {{ARGS}}
   
 # [working-directory: 'restic/credentials']
