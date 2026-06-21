@@ -28,12 +28,12 @@ spec:
               limits:
                 memory: 512Mi
             probes:
+              # restic server has a 401 unauthorized response, use TCP socket ping instead
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /
+                  tcpSocket:
                     port: 8000
                   initialDelaySeconds: 10
                   periodSeconds: 30
