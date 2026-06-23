@@ -9,3 +9,4 @@ resources:
   - intel-device-plugins/ks.yaml
   - pod-gc/ks.yaml
   - descheduler/ks.yaml
+  - metrics-server/ks.yaml
