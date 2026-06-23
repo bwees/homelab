@@ -10,6 +10,8 @@ spec:
   values:
     controllers:
       main:
+        annotations:
+          configmap.reloader.stakater.com/reload: gatus-config
         pod:
           # resolve *.bwees.lab via PowerDNS directly instead of the node/cluster resolver
           dnsPolicy: Default

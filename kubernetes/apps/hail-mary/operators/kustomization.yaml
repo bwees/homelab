@@ -10,3 +10,4 @@ resources:
   - pod-gc/ks.yaml
   - descheduler/ks.yaml
   - metrics-server/ks.yaml
+  - reloader/ks.yaml
