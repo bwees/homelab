@@ -16,7 +16,7 @@ spec:
           zone-init:
             image:
               repository: powerdns/pdns-auth-49
-              tag: '4.9.15'
+              tag: '4.9.16'
             command:
               - sh
               - -c
@@ -27,7 +27,7 @@ spec:
           main:
             image:
               repository: powerdns/pdns-auth-49
-              tag: '4.9.15'
+              tag: '4.9.16'
             env:
               PDNS_AUTH_API_KEY:
                 valueFrom:
