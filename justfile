@@ -7,18 +7,8 @@ deploy HOST="all:!homelab-router":
 [group: "images"]
 mod images "images"
 
-[working-directory: 'nixos']
-switch HOST USER="bwees":
-  nixos-rebuild switch \
-    --flake .#"{{HOST}}" \
-    --target-host "{{USER}}@{{HOST}}" \
-    --build-host "{{USER}}@{{HOST}}" \
-    --sudo \
-    --no-reexec
-
-[working-directory: 'nixos']
-anywhere HOST IP USER="root":
-  nix run github:nix-community/nixos-anywhere -- --flake .#"{{HOST}}" "{{USER}}@{{IP}}"
+[group: "nixos"]
+mod nixos "nixos"
 
 [working-directory: 'deploy/ansible']
 collection:
