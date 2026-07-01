@@ -85,6 +85,8 @@ spec:
           - backendRefs:
               - identifier: main
                 port: 8096
+            timeouts:
+              request: 0s
 
     persistence:
       tmpfs:
