@@ -66,7 +66,7 @@ spec:
               TZ: America/Chicago
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-              tag: 'v3.0.0-rc.3'
+              tag: 'v3.0.0'
 
     server:
       controllers:
@@ -103,7 +103,7 @@ spec:
             main:
               image:
                 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: 'v3.0.0-rc.3-openvino'
+                tag: 'v3.0.0-openvino'
               env:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
               resources:
