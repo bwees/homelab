@@ -103,7 +103,7 @@ spec:
             main:
               image:
                 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: 'v3.0.0-openvino'
+                tag: 'v3.0.1-openvino'
               env:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
               resources:
