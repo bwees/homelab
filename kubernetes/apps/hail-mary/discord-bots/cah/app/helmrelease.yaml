@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/cah-discord
-              tag: 'v1.0.0'
+              tag: '1.1.0'
             envFrom:
               - secretRef:
                   name: cah-secret
