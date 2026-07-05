@@ -17,7 +17,7 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: stepien-server
+  - name: stepien
     group: stepien
     url: 'icmp://100.81.233.29'
     interval: 1m

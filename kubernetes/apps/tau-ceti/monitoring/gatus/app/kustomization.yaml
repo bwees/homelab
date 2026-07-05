@@ -12,7 +12,7 @@ configMapGenerator:
     files:
       - config/alerting.yml
       - config/bwees.yml
-      - config/home.yml
+      - config/eridani.yml
       - config/maroonrides.yml
       - config/misc.yml
       - config/starforge.yml

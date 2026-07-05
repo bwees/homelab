@@ -1,0 +1,25 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/eridani/immich/immich/app
+  prune: true
+  targetNamespace: immich
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../../../components/postgres
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: operators
+    - name: longhorn
+      namespace: storage
+    - name: intel-device-plugins
+      namespace: operators
+  postBuild:
+    substitute:
+      APP: immich

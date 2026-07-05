@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: immich
+resources:
+  - ocirepository.yaml
+  - helmrelease.yaml
+  - database.yaml
+  - pvc.yaml
+  - pv.yaml
+patches:
+  # Immich needs the VectorChord (vchord) extension on top of the generic
+  # postgres component's cluster.
+  - target:
+      group: postgresql.cnpg.io
+      kind: Cluster
+    patch: |-
+      - op: add
+        path: /spec/postgresql/shared_preload_libraries/-
+        value: vchord.so
+      - op: add
+        path: /spec/postgresql/extensions
+        value:
+          - name: vchord
+            image:
+              reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1
+            dynamic_library_path:
+              - /usr/lib/postgresql/18/lib
+            extension_control_path:
+              - /usr/share/postgresql/18/
+      - op: add
+        path: /spec/enableSuperuserAccess
+        value: true
+      - op: replace
+        path: /spec/instances
+        value: 1

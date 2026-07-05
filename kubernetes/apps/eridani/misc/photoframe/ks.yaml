@@ -1,0 +1,26 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: photoframe
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/eridani/misc/photoframe/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: external-secrets
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: photoframe
+      VOLSYNC_CLAIM: photoframe-data
+  targetNamespace: misc

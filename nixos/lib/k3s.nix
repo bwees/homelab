@@ -30,15 +30,12 @@ in
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
 
-  # only expose the k3s ports to the LAN (InternalIP)
-  # for multi-node clusters; use k3s-multinode.nix to enable LAN access
+  # expose k3s ports to tailscale0 interface for remote access
+  # use k3s-multinode.nix for multi-node clusters, which exposes the same ports on the LAN interface
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
     6443 # kube-apiserver
-    2379 # etcd client
-    2380 # etcd peer
     10250 # kubelet metrics
   ];
-  networking.firewall.interfaces."tailscale0".allowedUDPPorts = [ 8472 ]; # flannel vxlan
 
   users.groups.k3s = { };
   users.users.bwees.extraGroups = [ "k3s" ];

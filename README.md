@@ -6,8 +6,8 @@ This repository houses the infrastructure configuration files (docker-compose) f
 
 - Lab (homelab-bwees)
   - This is my main homelab machine that self-hosts the majority of my applications.
-- Home (homelab-home)
-  - This machine stays at my parent's house and provides Home Assistant, Jellyfin, and a few other services.
+- Home (eridani)
+  - This machine stays at my parent's house and provides Jellyfin, Immich, and a few other services.
 - Linode (homelab-linode)
   - This is a Linode VPS (1 CPU, 1GB RAM) that provides mission critical services as well as being the entrypoint for all public traffic. Once public traffic hits homelab-linode, it is routed via Traefik to the destination host over Tailscale. This is similar to Cloudflare Tunnels and Pangolin based approaches.
 - NAS (homelab-nas)
@@ -22,7 +22,7 @@ Tailscale is used for all private networking. The Ansible host inventory uses Ta
 I have 2 domains that are routed over Tailscale (using custom split DNS servers):
 
 - `*.bwees.lab` - Personal Services
-- `*.bwees.home` - Family Services
+- `*.wees.home` - Family Services
 
 My personal domain is routed to my linode VPS which then uses Traefik and Tailscale to forward the connection to the correct server.
 

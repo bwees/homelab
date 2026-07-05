@@ -1,0 +1,26 @@
+---
+# Regenerable ML model cache — Longhorn PVC, intentionally NOT backed up
+# (no components/volsync). Safe to delete; immich re-downloads models.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-ml-cache
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 8Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ''
+  volumeName: immich-library
+  resources:
+    requests:
+      storage: 1Ti

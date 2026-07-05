@@ -1,20 +1,9 @@
 all:
   children:
-    home:
-      hosts:
-        homelab-home:
-          ansible_ssh_user: bwees
-      vars:
-        deploy_source: home
-
+    # `home` (eridani) and `stepien` are now k3s/Flux clusters — see
+    # kubernetes/{clusters,apps}/{eridani,stepien}. Only the Unifi router still
+    # deploys via Ansible.
     router:
       hosts:
         homelab-router:
           ansible_ssh_user: root
-
-    stepien:
-      hosts:
-        stepien-server:
-          ansible_ssh_user: bwees
-      vars:
-        deploy_source: stepien

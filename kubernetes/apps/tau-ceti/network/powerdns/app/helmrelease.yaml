@@ -12,7 +12,8 @@ spec:
     controllers:
       main:
         initContainers:
-          # Create the bwees.lab zone if absent
+          # Create the bwees.lab zone if absent; also hold wees.home, whose
+          # records are pushed here by the eridani cluster's external-dns.
           zone-init:
             image:
               repository: powerdns/pdns-auth-49
@@ -22,7 +23,9 @@ spec:
               - -c
               - >-
                 pdnsutil list-zone bwees.lab >/dev/null 2>&1 ||
-                pdnsutil create-zone bwees.lab ns1.bwees.lab
+                pdnsutil create-zone bwees.lab ns1.bwees.lab;
+                pdnsutil list-zone wees.home >/dev/null 2>&1 ||
+                pdnsutil create-zone wees.home ns1.wees.home
         containers:
           main:
             image:

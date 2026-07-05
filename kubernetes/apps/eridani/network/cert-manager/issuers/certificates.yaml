@@ -1,0 +1,45 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wees-home-tls
+  namespace: network
+spec:
+  secretName: wees-home-tls
+  duration: 2160h # 90d
+  renewBefore: 720h # 30d
+  commonName: '*.wees.home'
+  dnsNames:
+    - 'wees.home'
+    - '*.wees.home'
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    rotationPolicy: Always
+  issuerRef:
+    name: bwees-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bwees-io-tls
+  namespace: network
+spec:
+  secretName: bwees-io-tls
+  duration: 2160h # 90d
+  renewBefore: 720h # 30d
+  commonName: '*.bwees.io'
+  dnsNames:
+    - 'bwees.io'
+    - '*.bwees.io'
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    rotationPolicy: Always
+  issuerRef:
+    name: bwees-ca
+    kind: ClusterIssuer
+    group: cert-manager.io

@@ -47,18 +47,18 @@
           ./hosts/tau-ceti/configuration.nix
         ];
       };
-      nixosConfigurations.stepien-server = mkHost {
+      nixosConfigurations.stepien = mkHost {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
-          ./hosts/stepien-server/configuration.nix
+          ./hosts/stepien/configuration.nix
         ];
       };
-      nixosConfigurations.homelab-home = mkHost {
+      nixosConfigurations.eridani = mkHost {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
-          ./hosts/homelab-home/configuration.nix
+          ./hosts/eridani/configuration.nix
         ];
       };
     };

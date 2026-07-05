@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: powerdns-config
+  namespace: network
+data:
+  pdns.conf: |
+    launch=lmdb
+    lmdb-filename=/var/lib/powerdns/pdns.lmdb
+    lmdb-shards=1
+    lmdb-sync-mode=sync
+
+    local-address=0.0.0.0
+    local-port=53
+
+    api=yes
+    webserver=yes
+    webserver-address=0.0.0.0
+    webserver-port=8081
+    # allow the tailnet (operator proxy) + in-cluster pod/service CIDRs
+    webserver-allow-from=100.64.0.0/10,10.42.0.0/16,10.43.0.0/16,127.0.0.0/8
+
+    # The entrypoint writes api-key (from PDNS_AUTH_API_KEY) to
+    # /etc/powerdns/pdns.d/_api.conf — load it via include-dir.
+    include-dir=/etc/powerdns/pdns.d
