@@ -22,6 +22,7 @@ spec:
       - --pdns-api-key=$(EXTERNAL_DNS_PDNS_API_KEY)
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
+      - --txt-wildcard-replacement=star
     triggerLoopOnEvent: true
     policy: sync
     # crd only: publishes the wees-home-tailnet DNSEndpoint (100.101.55.71, eridani's
