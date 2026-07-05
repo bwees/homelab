@@ -22,12 +22,13 @@ spec:
       - --pdns-api-key=$(EXTERNAL_DNS_PDNS_API_KEY)
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-name=envoy-internal
     triggerLoopOnEvent: true
     policy: sync
+    # crd only: publishes the wees-home-tailnet DNSEndpoint (100.101.55.71, eridani's
+    # tailnet IP) into tau-ceti's central powerdns so tailnet clients reach envoy
+    # directly instead of via the 10.0.1.2 LAN route.
     sources:
       - crd
-      - gateway-httproute
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.%{record_type}-
     domainFilters:

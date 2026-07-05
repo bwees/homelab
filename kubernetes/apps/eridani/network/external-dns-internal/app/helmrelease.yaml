@@ -20,13 +20,13 @@ spec:
     extraArgs:
       - --pdns-server=http://powerdns.network.svc.cluster.local:8081
       - --pdns-api-key=$(EXTERNAL_DNS_PDNS_API_KEY)
-      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
-      - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-internal
     triggerLoopOnEvent: true
     policy: sync
+    # gateway-httproute only: LAN clients get the envoy-internal LB IP (10.0.1.2).
+    # No crd source, so this instance won't consume the tailnet DNSEndpoint that
+    # external-dns-tau-ceti uses to publish 100.101.55.71.
     sources:
-      - crd
       - gateway-httproute
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.%{record_type}-

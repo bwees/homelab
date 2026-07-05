@@ -1,0 +1,18 @@
+---
+# Published into tau-ceti's central powerdns by external-dns-tau-ceti (crd source).
+# Tailnet clients resolving *.wees.home get eridani's tailnet IP directly; envoy
+# (klipper LB also binds tailscale0) host-routes to the right app.
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: wees-home-tailnet
+spec:
+  endpoints:
+    - dnsName: '*.wees.home'
+      recordType: A
+      targets:
+        - 100.101.55.71 # eridani (tailscale)
+    - dnsName: ns1.wees.home
+      recordType: A
+      targets:
+        - 100.101.55.71 # eridani (tailscale)
