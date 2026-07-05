@@ -9,8 +9,22 @@ spec:
     type: Kubernetes
     kubernetes:
       useListenerPortAsContainerPort: true
+      # Two ingress paths, node's own tailnet IP used for neither:
+      #  - LAN: kube-proxy binds the externalIP 10.0.1.2 only (not tailscale0).
+      #  - Tailnet: the operator exposes this as a dedicated `eridani-ingress`
+      #    tailscale device (ProxyGroup), L3 TCP so envoy still terminates TLS.
       envoyService:
-        type: LoadBalancer
+        type: ClusterIP
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/proxy-group: eridani-ingress
+          tailscale.com/hostname: eridani-ingress
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              externalIPs:
+                - 10.0.1.2
       envoyDeployment:
         replicas: 1
         patch:

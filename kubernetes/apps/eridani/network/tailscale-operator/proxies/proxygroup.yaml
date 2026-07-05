@@ -1,0 +1,11 @@
+---
+# Dedicated tailnet ingress device for *.wees.home (envoy-internal exposes itself
+# to this proxy-group). replicas: 1 (eridani is single-node). No static-endpoint
+# ProxyClass — eridani is residential/NAT, so it connects via direct/DERP.
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: eridani-ingress
+spec:
+  type: ingress
+  replicas: 1

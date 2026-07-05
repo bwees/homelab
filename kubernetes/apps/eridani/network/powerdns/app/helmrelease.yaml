@@ -44,7 +44,11 @@ spec:
     service:
       main:
         controller: main
-        type: LoadBalancer
+        # LAN-only DNS: bind the node's LAN IP, not tailscale0. Tailnet clients get
+        # DNS from tau-ceti's `dns` device, not from this node's tailscale IP.
+        type: ClusterIP
+        externalIPs:
+          - 10.0.1.2
         ports:
           dns-tcp:
             port: 53
