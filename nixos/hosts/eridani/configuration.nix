@@ -34,6 +34,8 @@
     "--node-label=node.longhorn.io/create-default-disk=true"
   ];
 
+  boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
+
   # Expose the klipper LoadBalancer services on the LAN: PowerDNS (:53) serves
   # *.wees.home to the home network, and envoy-internal (:80/:443) serves the
   # cluster's internal HTTP(S) ingress. All bind the node IP 10.0.1.2.

@@ -28,6 +28,8 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
+  boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
+
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
   ];
