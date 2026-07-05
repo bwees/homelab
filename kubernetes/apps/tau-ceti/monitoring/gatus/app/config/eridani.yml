@@ -17,15 +17,6 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: abkk-drive
-    group: eridani
-    url: 'icmp://100.125.237.53'
-    interval: 1m
-    conditions:
-      - '[CONNECTED] == true'
-    alerts:
-      - type: discord
-
   - name: jellyfin
     group: eridani
     url: 'http://jellyfin.wees.home'
