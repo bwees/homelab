@@ -5,6 +5,8 @@
     // cluster tags
     "tag:tau-ceti": ["brandonwees@gmail.com", "tag:kube-operator"],
     "tag:hail-mary": ["brandonwees@gmail.com", "tag:kube-operator"],
+    "tag:stepien": ["brandonwees@gmail.com", "tag:kube-operator"],
+    "tag:eridani": ["brandonwees@gmail.com", "tag:kube-operator"],
 
     // platform tags
     "tag:nixos": ["brandonwees@gmail.com"],
