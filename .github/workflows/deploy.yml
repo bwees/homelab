@@ -52,43 +52,6 @@ jobs:
       - name: Build custom images
         run: just images build
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-custom-images
-    if: always()
-    env:
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
-
-      - name: Install 1Password CLI
-        uses: 1password/install-cli-action@a5215d3a7f75c1629216c465ea9ab3ab399c4b71 # v4.0.0
-
-      - name: Tailscale Setup
-        uses: tailscale/github-action@780049a30b6ff5c378a9e7b389d15ece7a204888 # v4.1.3
-        with:
-          oauth-client-id: ${{ secrets.TS_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_CLIENT_SECRET }}
-          tags: tag:ci
-
-      - name: Add SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          op read "op://Homelab/7eudmvndhcruyq6azuj4y2vmaq/private key?ssh-format=openssh" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Install Ansible collections
-        run: just collection
-
-      - name: Deploy playbook
-        run: just deploy
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: False
-
   tailscale:
     runs-on: ubuntu-latest
     needs: detect-changes
