@@ -29,10 +29,14 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        fsGroup: 1000
+        # stepien's NAS (Synology, NFSv4 ACLs) only grants the mapped root user,
+        # and the existing immich library is owned by root — the old compose stack
+        # ran immich as root (it set no `user:`). Run as root here to keep write
+        # access to the library; uid 1000 is denied even on mode-777 dirs.
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+        fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44
