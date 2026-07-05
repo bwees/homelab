@@ -1,8 +1,8 @@
 switch HOST USER="bwees":
   nixos-rebuild switch \
     --flake .#"{{HOST}}" \
-    --target-host "{{USER}}@homelab-home" \
-    --build-host "{{USER}}@homelab-home" \
+    --target-host "{{USER}}@{{HOST}}" \
+    --build-host "{{USER}}@{{HOST}}" \
     --sudo \
     --no-reexec
 
