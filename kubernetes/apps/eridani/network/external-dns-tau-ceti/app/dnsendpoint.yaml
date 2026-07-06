@@ -1,8 +1,4 @@
 ---
-# Published into tau-ceti's central powerdns by external-dns-tau-ceti (crd source).
-# Tailnet clients resolving *.wees.home are CNAMEd to the dedicated eridani-ingress
-# tailscale device (ProxyGroup), which L3-forwards to envoy-internal — so the node's
-# own tailnet IP is never used for service routing (management/SSH only).
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
@@ -10,6 +6,6 @@ metadata:
 spec:
   endpoints:
     - dnsName: '*.wees.home'
-      recordType: CNAME
+      recordType: A
       targets:
-        - eridani-ingress.tail72746.ts.net
+        - 100.108.214.28 # svc:eridani-ingress (tailscale VIPService)
