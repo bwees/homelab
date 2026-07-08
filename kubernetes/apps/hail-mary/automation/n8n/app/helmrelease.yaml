@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: n8nio/n8n
-              tag: '2.30.0'
+              tag: '2.30.1'
             envFrom:
               - secretRef:
                   name: n8n-secret
