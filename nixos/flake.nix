@@ -61,5 +61,12 @@
           ./hosts/eridani/configuration.nix
         ];
       };
+      nixosConfigurations.wolf = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/wolf/configuration.nix
+        ];
+      };
     };
 }
