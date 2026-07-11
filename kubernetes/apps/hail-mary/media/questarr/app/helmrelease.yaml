@@ -17,14 +17,12 @@ spec:
               tag: 'v1.4.0-rc2'
             env:
               TZ: America/Chicago
+              PUID: '1000'
+              PGID: '1000'
               SQLITE_DB_PATH: /app/data/questarr.db
             envFrom:
               - secretRef:
                   name: questarr-secret
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              runAsNonRoot: true
             resources:
               requests:
                 cpu: 50m
