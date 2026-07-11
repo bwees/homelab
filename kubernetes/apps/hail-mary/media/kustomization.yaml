@@ -10,6 +10,7 @@ resources:
   - jellyfin/ks.yaml
   - sonarr/ks.yaml
   - radarr/ks.yaml
+  - questarr/ks.yaml
   - prowlarr/ks.yaml
   - seerr/ks.yaml
   - tdarr/ks.yaml
