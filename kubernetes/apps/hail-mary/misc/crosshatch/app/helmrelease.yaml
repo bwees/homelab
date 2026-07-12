@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/crosshatch
-              tag: 'v0.4.0'
+              tag: 'v0.4.1'
             resources:
               requests:
                 cpu: 50m
