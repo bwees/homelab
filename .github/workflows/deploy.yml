@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.changes.outputs.images }}
-      tailscale: ${{ steps.changes.outputs.tailscale }}
+      tofu: ${{ steps.changes.outputs.tofu }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
