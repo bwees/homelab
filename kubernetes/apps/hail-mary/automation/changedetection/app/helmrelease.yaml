@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/dgtlmoon/changedetection.io
-              tag: '0.55.7'
+              tag: '0.55.8'
             env:
               PLAYWRIGHT_DRIVER_URL: ws://localhost:3000
             resources:
