@@ -27,7 +27,7 @@ jobs:
             images:
               - 'images/**'
             tofu:
-              - 'tf/**'
+              - 'tofu/**'
 
   build-custom-images:
     runs-on: ubuntu-latest
