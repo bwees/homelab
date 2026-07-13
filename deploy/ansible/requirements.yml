@@ -1,5 +1,0 @@
-collections:
-  - name: bwees.deploy
-    type: git
-    source: https://github.com/bwees/deploy.git
-    version: 3.0.0
