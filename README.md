@@ -1,40 +1,72 @@
 # Homelab
 
-This repository houses the infrastructure configuration files (docker-compose) for my homelab as well as deployment playbooks (ansible). Configuration files for individual apps (ie container persistent storage) are not housed in this repository. All compute machines (excluding appliance devices like NAS and Homelab Router) run on a mix of NixOS/Ubuntu 24.04 and use Docker for application deployment.
+This repository houses the infrastructure configuration for my homelab. The entire stack is managed with GitOps, and the repository is the single source of truth for all configuration. The tools to accomplish this are:
 
-## Hosts
+- **NixOS** provisions and configures every machine. Updates are manually applied.
+- **Kubernetes** (k3s) runs the applications, managed with Flux via GitOps.
+- **OpenTofu** manages the external services used by the homelab (Cloudflare, Tailscale, and 1Password).
 
-- Lab (homelab-bwees)
-  - This is my main homelab machine that self-hosts the majority of my applications.
-- Home (eridani)
-  - This machine stays at my parent's house and provides Jellyfin, Immich, and a few other services.
-- Linode (homelab-linode)
-  - This is a Linode VPS (1 CPU, 1GB RAM) that provides mission critical services as well as being the entrypoint for all public traffic. Once public traffic hits homelab-linode, it is routed via Traefik to the destination host over Tailscale. This is similar to Cloudflare Tunnels and Pangolin based approaches.
-- NAS (homelab-nas)
-  - This is my main TrueNAS SCALE server. I use docker directly on the host rather than the Apps interface in TrueNAS. This is for consistency reasons so the deployment is the same as other hosts.
-- Homelab Router (homelab-router)
-  - This is a Unifi Express 7. Under the hood it runs debian and thus can be controlled quite easily with Ansible.
+## NixOS
 
-## Tailscale
+Every node runs NixOS, defined in [nixos/](nixos/). Each host has its own directory under [nixos/hosts/](nixos/hosts/), and shared functionality lives in reusable modules under [nixos/lib/](nixos/lib/) (k3s, Tailscale, Docker, Longhorn prerequisites, backups, garbage collection, and so on). The [flake](nixos/flake.nix) wires each host configuration into a `nixosConfiguration`.
 
-Tailscale is used for all private networking. The Ansible host inventory uses Tailscale for all communication in playbooks.
+Nodes are partitioned with Disko and can be provisioned from scratch using nixos-anywhere. Once a machine is up, configuration changes are pushed with `nixos-rebuild switch`. Both of these are wrapped as mise tasks:
 
-I have 2 domains that are routed over Tailscale (using custom split DNS servers):
+```bash
+mise run nixos:anywhere <host> <ip>   # provision a new machine from scratch
+mise run nixos:switch <host>          # apply configuration changes
+```
 
-- `*.bwees.lab` - Personal Services
-- `*.wees.home` - Family Services
+See [nixos/README.md](nixos/README.md) for more detail on disk layout and hardware configuration.
 
-My personal domain is routed to my linode VPS which then uses Traefik and Tailscale to forward the connection to the correct server.
+## Kubernetes
 
-## Ansible
+Applications run on k3s clusters that are managed entirely through GitOps with Flux. When I push to `main`, Flux reconciles the cluster to match the repository.
 
-This year I decided to try and automate some of the tasks in my lab with Ansible. Ansible currently handles the following operations:
+The manifests in [kubernetes/](kubernetes/) are organized as:
 
-- Deployment of Docker-compose files and related secrets to each machine
-- Secret Management
-- Updating Tailscale
-- DNS Configuration Deployment
+- [kubernetes/clusters/](kubernetes/clusters/) - the Flux entrypoint for each cluster. This is what Flux watches and reconciles.
+- [kubernetes/apps/](kubernetes/apps/) - the applications, grouped by cluster.
+- [kubernetes/components/](kubernetes/components/) - reusable pieces (for example a PostgreSQL cluster and volsync backup config) that apps pull in.
 
-### Secret Management
+I run several clusters, each with a different purpose:
 
-Secrets are stored in 1Password for security and CI/CD. Secrets are dumped via `op item get` as JSON, parsed, and rendered out to individual env files for each host.
+- **eridani** - a small node at my parent's house.
+- **hail-mary** - a multi-node HA cluster (grace, rocky, astrophage) running the majority of my services.
+- **stepien** - a small node at my grandparent's house, specifically for Immich.
+- **tau-ceti** - a VPS that currently handles monitoring.
+
+A few things worth calling out about the cluster setup:
+
+- **Storage** is handled by Longhorn, with volsync taking scheduled backups of persistent volumes.
+- **Secrets** come from 1Password through External Secrets. Bootstrapping a new cluster only requires seeding the 1Password service account token, which the `mise run bootstrap <host>` task handles.
+- **Databases** run on CloudNative-PG.
+- **Ingress** is served through Envoy Gateway, with cert-manager issuing certificates.
+
+Custom container images are built from [images/](images/) and pushed to GHCR.
+
+## Networking
+
+Tailscale is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
+
+I run three domains:
+
+- `bwees.io` - public services, fronted by Cloudflare.
+- `*.bwees.lab` - personal services, resolved internally over Tailscale.
+- `*.wees.home` - family services, resolved internally over Tailscale.
+
+The internal domains use split DNS served by a PowerDNS instance on `tau-ceti`, with Kubernetes external-dns keeping records in sync.
+
+## OpenTofu
+
+The external services that live outside of Kubernetes are managed with OpenTofu in [tofu/](tofu/). This currently covers:
+
+- **Cloudflare** - Zero Trust tunnels and the public DNS records that point at them.
+- **Tailscale** - ACLs, DNS preferences, nameservers, and split DNS configuration.
+- **1Password** - storing generated secrets (such as tunnel tokens) back into the vault so the clusters can consume them.
+
+State is stored in a Cloudflare R2 bucket, and all provider credentials are pulled from 1Password at plan/apply time.
+
+## CI/CD
+
+The [deploy workflow](.github/workflows/deploy.yml) runs on every push to `main`. It detects which parts of the repository changed and only runs the relevant jobs: building custom images when `images/` changes, and applying the OpenTofu configuration when `tofu/` changes. Kubernetes changes are reconciled by Flux directly rather than through CI, and NixOS changes are applied manually with mise.
