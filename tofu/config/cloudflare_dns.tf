@@ -1,4 +1,3 @@
-
 resource "cloudflare_dns_record" "bwees_io_wildcard" {
   zone_id = local.bwees_io_zone
   name    = "*"
