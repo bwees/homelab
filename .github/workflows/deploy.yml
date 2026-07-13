@@ -26,8 +26,10 @@ jobs:
           filters: |
             images:
               - 'images/**'
+              - '.github/workflows/deploy.yml'
             tofu:
               - 'tofu/**'
+              - '.github/workflows/deploy.yml'
 
   build-custom-images:
     runs-on: ubuntu-latest
@@ -63,7 +65,7 @@ jobs:
 
       - name: Apply Tofu Configuration
         run: tofu apply -auto-approve
-        working-directory: ./tofu
+        working-directory: ./tofu/config
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
