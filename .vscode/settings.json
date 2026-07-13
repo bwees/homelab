@@ -1,20 +1,16 @@
 {
-  "files.associations": {
-    "*.hujson": "jsonc",
-    "*.env.op": "dotenv"
-  },
-  "json.schemas": [
-    {
-      "fileMatch": ["*.hujson"],
-      "schema": {
-        "allowTrailingCommas": true
-      }
-    }
-  ],
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.patterns": {
-    "*.env.op": "${capture}.env"
-  },
+
   "nix.enableLanguageServer": true,
-  "nix.serverPath": "nixd"
+  "nix.serverPath": "nixd",
+
+  "[terraform][terraform-vars]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+
+    "editor.defaultFormatter": "bwees.custom-formatter",
+    "customFormatter.command": "/Users/bwees/.local/share/mise/shims/tofu fmt"
+  }
 }

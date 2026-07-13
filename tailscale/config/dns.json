@@ -1,9 +1,0 @@
-{
-  "nameservers": [{ "address": "1.1.1.1" }],
-  "splitDNS": {
-    "wees.home": [{ "address": "100.102.42.104" }],
-    "bwees.lab": [{ "address": "100.102.42.104" }]
-  },
-  "searchPaths": ["taila68cb8.ts.net", "tail5f8a8.ts.net"],
-  "preferences": { "overrideLocalDNS": true, "magicDNS": true }
-}

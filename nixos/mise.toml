@@ -1,0 +1,23 @@
+["nixos:switch"]
+dir = "{{config_root}}/nixos"
+usage = '''
+arg "host"
+arg "user" default="bwees"
+'''
+run = '''
+nixos-rebuild switch \
+  --flake ".#$usage_host" \
+  --target-host "$usage_user@$usage_host" \
+  --build-host "$usage_user@$usage_host" \
+  --sudo \
+  --no-reexec
+'''
+
+["nixos:anywhere"]
+dir = "{{config_root}}/nixos"
+usage = '''
+arg "host"
+arg "ip"
+arg "user" default="root"
+'''
+run = 'nix run github:nix-community/nixos-anywhere -- --flake ".#$usage_host" "$usage_user@$usage_ip"'

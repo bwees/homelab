@@ -1,0 +1,58 @@
+variable "tunnels" {
+  type = set(string)
+
+  default = [
+    "eridani",
+    "hail-mary",
+    "stepien",
+    "tau-ceti",
+  ]
+}
+
+resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnels" {
+  for_each = var.tunnels
+
+  account_id = local.cloudflare_account_id
+  name       = each.key
+  config_src = "cloudflare"
+}
+
+resource "cloudflare_dns_record" "tunnels" {
+  for_each = var.tunnels
+
+  zone_id = local.bwees_io_zone
+  name    = "${each.key}.tun"
+  type    = "CNAME"
+  content = "${cloudflare_zero_trust_tunnel_cloudflared.tunnels[each.key].id}.cfargotunnel.com"
+  comment = "Cloudflare Tunnel for ${each.key}. Managed by Tofu."
+  proxied = true
+  
+  ttl = 1
+}
+
+data "cloudflare_zero_trust_tunnel_cloudflared_token" "tunnels" {
+  for_each = var.tunnels
+
+  account_id = local.cloudflare_account_id
+  tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.tunnels[each.key].id
+}
+
+resource "onepassword_item" "tunnel_tokens" {
+  for_each = var.tunnels
+
+  vault = data.onepassword_vault.homelab_deployment.uuid
+  title = "cf-tunnel-${each.key}"
+  category = "login"
+
+  section_map = {
+    "credentials" = {
+      field_map = {
+        "token" = {
+          type = "CONCEALED"
+          value = data.cloudflare_zero_trust_tunnel_cloudflared_token.tunnels[each.key].token
+        }
+      }
+    }
+  }
+}
+

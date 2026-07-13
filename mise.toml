@@ -1,2 +1,26 @@
 [tools]
-just = "latest"
+opentofu = "1.11.6"
+
+[task_config]
+includes = ["images/mise.toml", "nixos/mise.toml", "tofu/mise.toml"]
+
+[tasks.bootstrap]
+usage = '''
+arg "host"
+arg "user" default="bwees"
+'''
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure the external-secrets namespace exists
+ssh "$usage_user@$usage_host" 'sudo k3s kubectl create namespace external-secrets \
+  --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
+
+# 1Password service-account token -> external-secrets secret on the host
+op read --no-newline "op://Homelab Deployment/1password-service-account/credential" \
+  | ssh "$usage_user@$usage_host" 'sudo k3s kubectl create secret generic onepassword-secret-token \
+      --namespace external-secrets \
+      --from-file=token=/dev/stdin \
+      --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
+'''
