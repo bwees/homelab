@@ -6,11 +6,10 @@
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nixd",
 
-  "[terraform][terraform-vars]": {
+  "[tofu][tofu-vars]": {
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",
 
-    "editor.defaultFormatter": "bwees.custom-formatter",
-    "customFormatter.command": "/Users/bwees/.local/share/mise/shims/tofu fmt"
+    "editor.defaultFormatter": "opentofu.vscode-opentofu"
   }
 }

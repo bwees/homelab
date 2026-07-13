@@ -26,7 +26,7 @@ resource "cloudflare_dns_record" "tunnels" {
   content = "${cloudflare_zero_trust_tunnel_cloudflared.tunnels[each.key].id}.cfargotunnel.com"
   comment = "Cloudflare Tunnel for ${each.key}. Managed by Tofu."
   proxied = true
-  
+
   ttl = 1
 }
 
@@ -40,15 +40,15 @@ data "cloudflare_zero_trust_tunnel_cloudflared_token" "tunnels" {
 resource "onepassword_item" "tunnel_tokens" {
   for_each = var.tunnels
 
-  vault = data.onepassword_vault.homelab_deployment.uuid
-  title = "cf-tunnel-${each.key}"
+  vault    = data.onepassword_vault.homelab_deployment.uuid
+  title    = "cf-tunnel-${each.key}"
   category = "login"
 
   section_map = {
     "credentials" = {
       field_map = {
         "token" = {
-          type = "CONCEALED"
+          type  = "CONCEALED"
           value = data.cloudflare_zero_trust_tunnel_cloudflared_token.tunnels[each.key].token
         }
       }
