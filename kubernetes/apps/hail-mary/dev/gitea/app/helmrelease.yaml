@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: gitea/gitea
-              tag: '1.26'
+              tag: '1.27'
             env:
               USER_UID: '1000'
               USER_GID: '1000'
