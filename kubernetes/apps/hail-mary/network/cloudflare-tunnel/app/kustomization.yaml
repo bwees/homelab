@@ -4,5 +4,4 @@ namespace: network
 
 resources:
   - helmrelease.yaml
-  - dnsendpoint.yaml
   - ocirepository.yaml
