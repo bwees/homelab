@@ -38,7 +38,7 @@ spec:
       main:
         parentRefs:
           - name: envoy-internal
-            namespace: network
+            namespace: networking
         hostnames:
           - crosshatch.bwees.lab
         rules:

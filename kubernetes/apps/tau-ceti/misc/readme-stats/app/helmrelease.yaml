@@ -42,7 +42,7 @@ spec:
       main:
         parentRefs:
           - name: envoy-external
-            namespace: network
+            namespace: networking
         hostnames:
           - stats.bwees.io
         rules:

@@ -4,8 +4,4 @@ kind: Kustomization
 namespace: storage
 
 resources:
-  - namespace.yaml
-  - snapshot-controller/ks.yaml
-  - longhorn/ks.yaml
-  - volsync/ks.yaml
   - restic/ks.yaml

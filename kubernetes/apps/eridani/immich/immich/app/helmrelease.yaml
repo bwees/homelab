@@ -84,9 +84,9 @@ spec:
         main:
           parentRefs:
             - name: envoy-external
-              namespace: network
+              namespace: networking
             - name: envoy-internal
-              namespace: network
+              namespace: networking
           hostnames:
             - immich.wees.home
             - album.bwees.io

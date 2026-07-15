@@ -16,7 +16,7 @@ spec:
     - name: volsync
       namespace: storage
     - name: onepassword
-      namespace: external-secrets
+      namespace: secrets
     - name: tailscale
   components:
     - ../../../../../components/volsync

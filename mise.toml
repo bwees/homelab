@@ -13,11 +13,11 @@ run = '''
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure the external-secrets namespace exists
-ssh "$usage_user@$usage_host" 'sudo k3s kubectl create namespace external-secrets \
+# Ensure the secrets namespace exists
+ssh "$usage_user@$usage_host" 'sudo k3s kubectl create namespace secrets \
   --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
 
-# 1Password Connect credentials + access token -> external-secrets secret on the host
+# 1Password Connect credentials + access token -> secrets secret on the host
 token=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/access_token" | base64 | tr -d '\n')
 creds=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/1password-credentials.json" | base64 | tr -d '\n')
 
@@ -26,7 +26,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: onepassword-connect-secret
-  namespace: external-secrets
+  namespace: secrets
 type: Opaque
 data:
   token: $token

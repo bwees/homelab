@@ -1,0 +1,171 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-internal
+  namespace: networking
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      useListenerPortAsContainerPort: true
+      # Two ingress paths, node's own tailnet IP used for neither:
+      #  - LAN: kube-proxy binds the externalIP 10.0.1.2 only (not tailscale0).
+      #  - Tailnet: the operator exposes this as a dedicated `eridani-ingress`
+      #    tailscale device (ProxyGroup), L3 TCP so envoy still terminates TLS.
+      envoyService:
+        type: ClusterIP
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/proxy-group: eridani-ingress
+          tailscale.com/hostname: eridani-ingress
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              externalIPs:
+                - 10.0.1.2
+      envoyDeployment:
+        replicas: 1
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: envoy
+                      securityContext:
+                        runAsNonRoot: false
+                        runAsUser: 0
+                        capabilities:
+                          add: ['NET_BIND_SERVICE']
+
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-external
+  namespace: networking
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: ClusterIP
+      envoyDeployment:
+        replicas: 1
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy-internal
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: envoy-internal
+    namespace: networking
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy-external
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: envoy-external
+    namespace: networking
+---
+# Internal gateway — serves *.wees.home.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-internal
+  namespace: networking
+  annotations:
+    external-dns.alpha.kubernetes.io/target: 10.0.1.2
+spec:
+  gatewayClassName: envoy-internal
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '*.wees.home'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.wees.home'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: wees-home-tls # issue via cert-manager (local CA — .home isn't a public TLD)
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-external
+  namespace: networking
+  annotations:
+    external-dns.alpha.kubernetes.io/target: ${CLUSTER}.tun.bwees.io
+
+spec:
+  gatewayClassName: envoy-external
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '*.bwees.io'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.bwees.io'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: bwees-io-tls
+
+---
+# Redirect http -> https on both gateways.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: https-redirect
+  namespace: networking
+  annotations:
+    # disable *.wees.home/*.bwees.io wildcard route
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: networking
+      sectionName: http
+    - name: envoy-external
+      namespace: networking
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

@@ -12,5 +12,5 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: onepassword
-      namespace: external-secrets
+      namespace: secrets
   targetNamespace: share

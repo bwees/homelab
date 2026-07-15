@@ -46,7 +46,7 @@ spec:
       main:
         parentRefs:
           - name: envoy-internal
-            namespace: network
+            namespace: networking
         hostnames:
           - seerr.bwees.lab
         rules:

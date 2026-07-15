@@ -50,9 +50,9 @@ spec:
       main:
         parentRefs:
           - name: envoy-internal
-            namespace: network
+            namespace: networking
           - name: envoy-external
-            namespace: network
+            namespace: networking
         hostnames:
           - transfer.bwees.lab
           - transfer.bwees.io
