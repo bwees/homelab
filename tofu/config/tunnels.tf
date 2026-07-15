@@ -42,7 +42,7 @@ resource "onepassword_item" "tunnel_tokens" {
 
   vault    = data.onepassword_vault.homelab_deployment.uuid
   title    = "cf-tunnel-${each.key}"
-  category = "login"
+  category = "password"
 
   section_map = {
     "credentials" = {

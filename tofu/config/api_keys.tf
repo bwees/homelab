@@ -19,7 +19,7 @@ resource "cloudflare_api_token" "external_dns" {
 resource "onepassword_item" "cf_external_dns" {
   vault    = data.onepassword_vault.homelab_deployment.uuid
   title    = "cf-external-dns"
-  category = "login"
+  category = "password"
 
   section_map = {
     "credentials" = {
