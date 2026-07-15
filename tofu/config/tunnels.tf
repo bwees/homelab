@@ -12,7 +12,7 @@ variable "tunnels" {
 resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnels" {
   for_each = var.tunnels
 
-  account_id = local.cloudflare_account_id
+  account_id = data.cloudflare_account.main.id
   name       = each.key
   config_src = "cloudflare"
 }
@@ -20,7 +20,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnels" {
 resource "cloudflare_dns_record" "tunnels" {
   for_each = var.tunnels
 
-  zone_id = local.bwees_io_zone
+  zone_id = data.cloudflare_zone.bwees_io.zone_id
   name    = "${each.key}.tun"
   type    = "CNAME"
   content = "${cloudflare_zero_trust_tunnel_cloudflared.tunnels[each.key].id}.cfargotunnel.com"
@@ -33,7 +33,7 @@ resource "cloudflare_dns_record" "tunnels" {
 data "cloudflare_zero_trust_tunnel_cloudflared_token" "tunnels" {
   for_each = var.tunnels
 
-  account_id = local.cloudflare_account_id
+  account_id = data.cloudflare_account.main.id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.tunnels[each.key].id
 }
 
