@@ -16,3 +16,4 @@ spec:
     name: flux-system
     namespace: flux-system
   path: ./kubernetes/apps/tau-ceti/external-secrets/onepassword/app
+  targetNamespace: external-secrets
