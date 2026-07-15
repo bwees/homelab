@@ -76,12 +76,18 @@ resource "tailscale_dns_search_paths" "search_paths" {
   ]
 }
 
+
+data "tailscale_device" "dns" {
+  name     = "dns.${local.tailnet}"
+  wait_for = "60s"
+}
+
 resource "tailscale_dns_split_nameservers" "bwees_lab" {
   domain      = "bwees.lab"
-  nameservers = ["100.102.42.104"]
+  nameservers = [data.tailscale_device.dns.addresses[0]]
 }
 
 resource "tailscale_dns_split_nameservers" "wees_home" {
   domain      = "wees.home"
-  nameservers = ["100.102.42.104"]
+  nameservers = [data.tailscale_device.dns.addresses[0]]
 }

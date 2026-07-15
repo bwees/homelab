@@ -10,3 +10,7 @@ data "cloudflare_zone" "bwees_io" {
 data "onepassword_vault" "homelab_deployment" {
   name = "Homelab Deployment"
 }
+
+locals {
+  tailnet = "tail72746.ts.net"
+}
