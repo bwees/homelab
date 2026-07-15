@@ -5,6 +5,7 @@ namespace: operators
 
 resources:
   - descheduler/ks.yaml
-  - intel-device-plugins/ks.yaml
-  - node-feature-discovery/ks.yaml
   - pod-gc/ks.yaml
+
+components:
+  - ../../../components/intel-gpu
