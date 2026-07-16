@@ -17,6 +17,11 @@ spec:
               tag: latest@sha256:01b4f98aabaf3f5fe394213f7a32578c9e84e42080f52e2f8334021a4473b202
             env:
               TZ: America/Chicago
+              LOG_LEVEL: info
+              EXPOSE_FEED_ENDPOINTS: 'true'
+            envFrom:
+              - secretRef:
+                  name: pinchflat-secret
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
