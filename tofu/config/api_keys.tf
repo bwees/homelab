@@ -1,19 +1,19 @@
 
-resource "cloudflare_api_token" "external_dns" {
-  name = "k3s External DNS"
+resource "cloudflare_account_token" "external_dns" {
+  account_id = data.cloudflare_account.main.id
+  name       = "k3s External DNS"
+
   policies = [
     {
       effect = "allow"
-      resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}" = "*"
-      })
       permission_groups = [
         { id = "4755a26eedb94da69e1066d98aa820be" }, # DNS Write
       ]
+      resources = jsonencode({
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}" = "*"
+      })
     }
   ]
-  status    = "active"
-  condition = {}
 }
 
 resource "onepassword_item" "cf_external_dns" {
@@ -30,7 +30,7 @@ resource "onepassword_item" "cf_external_dns" {
         }
         "token" = {
           type  = "CONCEALED"
-          value = cloudflare_api_token.external_dns.value
+          value = cloudflare_account_token.external_dns.value
         }
       }
     }

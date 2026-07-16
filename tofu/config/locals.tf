@@ -1,4 +1,3 @@
-
 data "cloudflare_account" "main" {
   account_id = "5e2ba2ec4aedeea294c2bf45f28c6414"
 }
