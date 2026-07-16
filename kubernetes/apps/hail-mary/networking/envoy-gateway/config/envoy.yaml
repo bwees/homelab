@@ -103,7 +103,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: bwees-lab-tls # issue via cert-manager (local CA — .lab isn't a public TLD)
+            name: wildcard-tls
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -135,7 +135,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: bwees-io-tls
+            name: wildcard-tls
 
 ---
 # Redirect http -> https on both gateways.

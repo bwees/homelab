@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: networking
 
 resources:
-  - cert-manager/ks.yaml
   - envoy-gateway/ks.yaml
