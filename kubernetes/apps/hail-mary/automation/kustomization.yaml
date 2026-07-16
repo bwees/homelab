@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: automation
 resources:
   - namespace.yaml
-  - n8n/ks.yaml
   - changedetection/ks.yaml

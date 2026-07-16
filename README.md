@@ -43,8 +43,6 @@ A few things worth calling out about the cluster setup:
 - **Databases** run on CloudNative-PG.
 - **Ingress** is served through Envoy Gateway, with cert-manager issuing certificates.
 
-Custom container images are built from [images/](images/) and pushed to GHCR.
-
 ## Networking
 
 Tailscale is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
@@ -69,4 +67,4 @@ State is stored in a Cloudflare R2 bucket, and all provider credentials are pull
 
 ## CI/CD
 
-The [deploy workflow](.github/workflows/deploy.yml) runs on every push to `main`. It detects which parts of the repository changed and only runs the relevant jobs: building custom images when `images/` changes, and applying the OpenTofu configuration when `tofu/` changes. Kubernetes changes are reconciled by Flux directly rather than through CI, and NixOS changes are applied manually with mise.
+The [deploy workflow](.github/workflows/deploy.yml) runs on every push to `main` and applies the changes from OpenTofu.
