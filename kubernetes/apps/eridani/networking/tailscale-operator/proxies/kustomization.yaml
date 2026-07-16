@@ -2,5 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: networking
+# Single-node, residential/NAT: default replicas, no static-endpoint ProxyClass.
 resources:
-  - ./proxygroup.yaml
+  - ../../../../base/networking/tailscale-operator/proxies

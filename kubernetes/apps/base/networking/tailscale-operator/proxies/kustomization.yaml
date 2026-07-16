@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: networking
 
 resources:
-  - envoy-gateway/ks.yaml
-  - tailscale-operator/ks.yaml
+  - proxygroup.yaml

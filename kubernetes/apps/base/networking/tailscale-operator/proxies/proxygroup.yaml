@@ -1,0 +1,10 @@
+---
+# Tailnet ingress device for envoy-internal. Defaults to a single replica;
+# multi-node clusters bump replicas via overlay for HA.
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: ${CLUSTER}-ingress
+spec:
+  type: ingress
+  replicas: 1

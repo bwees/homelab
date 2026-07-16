@@ -2,4 +2,16 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - envoy.yaml
+  - ../../../../base/networking/envoy-gateway/config
+
+patches:
+  - target:
+      kind: Gateway
+      name: envoy-internal
+    patch: |-
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: Gateway
+      metadata:
+        name: envoy-internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: 100.83.16.72 # tau-ceti-ingress.tail72746.ts.net

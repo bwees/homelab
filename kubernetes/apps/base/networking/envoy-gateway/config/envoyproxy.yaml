@@ -1,0 +1,49 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-external
+  namespace: networking
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: ClusterIP
+      envoyDeployment:
+        replicas: 1
+
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-internal
+  namespace: networking
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      useListenerPortAsContainerPort: true
+      # operator exposes this at L3 (raw TCP DNAT) so envoy still terminates the
+      # internal wildcard TLS; ProxyGroup backing gives HA across nodes.
+      envoyService:
+        type: ClusterIP
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/proxy-group: ${CLUSTER}-ingress
+          tailscale.com/hostname: ${CLUSTER}-ingress
+      envoyDeployment:
+        replicas: 1
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: envoy
+                      securityContext:
+                        runAsNonRoot: false
+                        runAsUser: 0
+                        capabilities:
+                          add: ['NET_BIND_SERVICE']

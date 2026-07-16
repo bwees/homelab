@@ -2,4 +2,45 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - envoy.yaml
+  - ../../../../base/networking/envoy-gateway/config
+
+patches:
+  # Internal serves *.wees.home here and fronts the LAN externalIP as well as tailnet.
+  - target:
+      kind: Gateway
+      name: envoy-internal
+    patch: |-
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: Gateway
+      metadata:
+        name: envoy-internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: 10.0.1.2
+  - target:
+      kind: Gateway
+      name: envoy-internal
+    patch: |-
+      - op: replace
+        path: /spec/listeners/0/hostname
+        value: '*.wees.home'
+      - op: replace
+        path: /spec/listeners/1/hostname
+        value: '*.wees.home'
+  - target:
+      kind: EnvoyProxy
+      name: envoy-internal
+    patch: |-
+      apiVersion: gateway.envoyproxy.io/v1alpha1
+      kind: EnvoyProxy
+      metadata:
+        name: envoy-internal
+      spec:
+        provider:
+          kubernetes:
+            envoyService:
+              patch:
+                type: StrategicMerge
+                value:
+                  spec:
+                    externalIPs:
+                      - 10.0.1.2
