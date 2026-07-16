@@ -49,7 +49,7 @@ resource "cloudflare_account_token" "pages_deployment" {
         { id = "8d28297797f24fb8a0c332fe0866ec89" }, # Pages Edit
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}" = "*"
+        "com.cloudflare.api.account.${data.cloudflare_account.main.id}" = "*"
       })
     }
   ]
