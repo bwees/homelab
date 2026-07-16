@@ -1,0 +1,17 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: disable-request-timeout
+spec:
+  # Envoy's default route request timeout is 15s; disable it gateway-wide.
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-external
+  timeout:
+    http:
+      requestTimeout: 0s
