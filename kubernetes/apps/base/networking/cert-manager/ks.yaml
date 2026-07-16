@@ -31,4 +31,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   path: ./kubernetes/apps/base/networking/cert-manager/issuers
