@@ -14,4 +14,4 @@ patches:
       metadata:
         name: envoy-internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: 100.100.100.100 # stepien-ingress tailnet IP
+          external-dns.alpha.kubernetes.io/target: 100.123.110.122 # stepien-ingress tailnet IP
