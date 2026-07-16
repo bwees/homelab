@@ -1,0 +1,66 @@
+---
+# Advertises the AMD GPU render node + uinput as shareable extended resources
+# (squat.ai/dri, squat.ai/uinput) that Wolf/Fenrir session pods request.
+#
+# The DaemonSet is pinned to the GPU node via nodeSelector, so squat.ai/dri
+# only exists on that node. This is what pins game sessions to the GPU node:
+# Fenrir's User/Session CRDs have no nodeSelector/toleration field, so the
+# resource request itself does the scheduling. Do NOT taint the GPU node —
+# session pods cannot express a toleration and would become unschedulable.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: generic-device-plugin-gaming
+  labels:
+    app.kubernetes.io/name: generic-device-plugin-gaming
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: generic-device-plugin-gaming
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: generic-device-plugin-gaming
+    spec:
+      priorityClassName: system-node-critical
+      nodeSelector:
+        lab.bwees/role: gpu
+      containers:
+        - name: generic-device-plugin-gaming
+          image: ghcr.io/squat/generic-device-plugin:2cc50b0
+          args:
+            - --device
+            - |
+              name: uinput
+              groups:
+                - count: 10
+                  paths:
+                    - path: /dev/uinput
+            - --device
+            - |
+              name: dri
+              groups:
+                - count: 10
+                  paths:
+                    - path: /dev/dri/renderD128
+                    - path: /dev/kfd
+          resources:
+            requests:
+              cpu: 50m
+              memory: 10Mi
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: device-plugin
+              mountPath: /var/lib/kubelet/device-plugins
+            - name: dev
+              mountPath: /dev
+      volumes:
+        - name: device-plugin
+          hostPath:
+            path: /var/lib/kubelet/device-plugins
+        - name: dev
+          hostPath:
+            path: /dev
+  updateStrategy:
+    type: RollingUpdate

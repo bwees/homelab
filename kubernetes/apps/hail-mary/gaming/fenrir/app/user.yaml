@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://github.com/games-on-whales/fenrir/raw/refs/heads/main/schemas/direwolf.games-on-whales.github.io/user_v1alpha1.json
+# The moonlight-proxy is hardcoded to a user named "alex" upstream — do not rename.
+# AMD GPU path: request the generic-device-plugin resource (squat.ai/dri), which
+# only exists on the labeled GPU node, so sessions schedule there automatically.
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: User
+metadata:
+  name: alex
+spec:
+  resources:
+    limits:
+      squat.ai/dri: "1"
+      cpu: 4000m
+      memory: 8G
+    requests:
+      squat.ai/dri: "1"
+      cpu: 4000m
+      memory: 8G
+  sidecarPolicies:
+    wolf:
+      resources:
+        requests:
+          squat.ai/dri: "1"
+          squat.ai/uinput: "1"
+          cpu: 1000m
+          memory: 2G
+        limits:
+          squat.ai/dri: "1"
+          squat.ai/uinput: "1"
+          cpu: 1000m
+          memory: 2G

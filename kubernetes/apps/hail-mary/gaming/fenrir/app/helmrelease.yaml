@@ -1,0 +1,26 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: fenrir
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: fenrir
+  interval: 1h
+  values:
+    service:
+      app:
+        # Expose the moonlight-proxy pairing ports (47984/47989) as a dedicated
+        # tailnet device via the tailscale operator (L3 DNAT) — same mechanism
+        # as the `dns` powerdns device. Replaces the upstream MetalLB/Cilium
+        # shared-IP LoadBalancer, which this cluster does not run. Moonlight
+        # clients pair against wolf.<tailnet>.ts.net.
+        #
+        # NOTE: the operator still provisions per-session Wolf UDP ports the
+        # upstream way (shared-IP LoadBalancer). Those will not get an IP here —
+        # this is the known-unsolved part of the POC (see README.md).
+        type: ClusterIP
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/hostname: wolf

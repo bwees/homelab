@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Fenrir's Helm chart (bjw-s common library) does not ship CRDs; upstream
+# installs them separately from crds/. Vendored here from
+# github.com/games-on-whales/fenrir so Flux owns them. Cluster-scoped, so the
+# parent ks targetNamespace does not apply.
+resources:
+  - apps.yaml
+  - pairings.yaml
+  - sessions.yaml
+  - users.yaml

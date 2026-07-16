@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: fenrir
+spec:
+  interval: 1h
+  url: oci://ghcr.io/games-on-whales/charts/direwolf-operator
+  # Upstream only publishes SNAPSHOT builds (no stable semver yet); this is a POC.
+  ref:
+    tag: 0.0.1-29362939347-SNAPSHOT
