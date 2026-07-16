@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: misc
 resources:
   - namespace.yaml
-  - wakapi/ks.yaml
   - crosshatch/ks.yaml
