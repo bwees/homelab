@@ -12,6 +12,7 @@ resources:
   - radarr/ks.yaml
   - questarr/ks.yaml
   - prowlarr/ks.yaml
+  - pinchflat/ks.yaml
   - seerr/ks.yaml
   - tdarr/ks.yaml
   - flaresolverr/ks.yaml
