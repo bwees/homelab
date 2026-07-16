@@ -56,7 +56,8 @@ spec:
             appProtocol: kubernetes.io/ws
 
     route:
-      main:
+      # Internal: full access, no path filtering.
+      internal:
         parentRefs:
           - name: envoy-internal
             namespace: networking
@@ -64,6 +65,31 @@ spec:
           - pinchflat.bwees.lab
         rules:
           - backendRefs:
+              - identifier: main
+                port: 8945
+
+      # External: only expose the public podcast feed/media endpoints.
+      external:
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+        hostnames:
+          - podcasts.bwees.io
+        rules:
+          - matches:
+              - path:
+                  type: RegularExpression
+                  value: /sources/[^/]+/feed(\.[^/]+)?
+              - path:
+                  type: RegularExpression
+                  value: /sources/[^/]+/feed_image(\.[^/]+)?
+              - path:
+                  type: RegularExpression
+                  value: /media/[^/]+/episode_image(\.[^/]+)?
+              - path:
+                  type: RegularExpression
+                  value: /media/[^/]+/stream(\.[^/]+)?
+            backendRefs:
               - identifier: main
                 port: 8945
 
