@@ -14,7 +14,7 @@ spec:
           cluster-routes:
             image:
               repository: tailscale/tailscale
-              tag: 'v1.98.8'
+              tag: 'v1.98.9'
             command: ['/bin/sh', '-c']
             args:
               - |
@@ -51,7 +51,7 @@ spec:
           tailscale:
             image:
               repository: tailscale/tailscale
-              tag: 'v1.98.8'
+              tag: 'v1.98.9'
             env:
               TZ: America/Chicago
               TS_USERSPACE: 'false'

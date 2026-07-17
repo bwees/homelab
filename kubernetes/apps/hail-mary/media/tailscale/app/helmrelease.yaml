@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: tailscale/tailscale
-              tag: 'v1.98.8'
+              tag: 'v1.98.9'
             env:
               TZ: America/Chicago
               TS_USERSPACE: 'true'
