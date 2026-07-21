@@ -19,7 +19,7 @@ spec:
           merge-config:
             image:
               repository: ghcr.io/tomwright/dasel
-              tag: v2.8.1-alpine
+              tag: 3.11.2-alpine
             command:
               - sh
               - -c
