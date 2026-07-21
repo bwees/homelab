@@ -11,8 +11,6 @@ spec:
   values:
     controllers:
       main:
-        # Roll the pod when the wolf-config ConfigMap (config.toml) changes;
-        # the merge-config init re-runs and paired_clients are preserved.
         annotations:
           configmap.reloader.stakater.com/reload: wolf-config
         strategy: Recreate
@@ -56,28 +54,18 @@ spec:
               repository: ghcr.io/games-on-whales/wolf
               tag: stable
             env:
-              # Host path Wolf hands dockerd for app bind-mounts; must equal the
-              # /etc/wolf hostPath so paths resolve on xenonite.
               HOST_APPS_STATE_FOLDER: /etc/wolf
-              # Used verbatim as the host path for app-container socket mounts,
-              # so it must be a 1:1 hostPath (see persistence.wolf-run).
               XDG_RUNTIME_DIR: /run/user/wolf
             securityContext:
               privileged: true
 
     defaultPodOptions:
-      # Pin to the AMD-GPU + docker host; the docker-socket approach requires
-      # Wolf and the app containers to share xenonite's kernel/filesystem.
       nodeSelector:
         kubernetes.io/hostname: xenonite
 
     service:
       main:
         controller: main
-        # Exposed as a dedicated tailnet device (L3 TCP/UDP DNAT) named `wolf`,
-        # the same mechanism as the PowerDNS `dns` device. Moonlight pairs and
-        # streams against wolf.<tailnet>.ts.net — one device for both, so the
-        # pairing IP == stream IP requirement is satisfied automatically.
         annotations:
           tailscale.com/expose: 'true'
           tailscale.com/hostname: wolf
@@ -102,7 +90,6 @@ spec:
             protocol: UDP
 
     persistence:
-      # In-repo config source, read by the merge-config init container.
       wolf-config:
         type: configMap
         name: wolf-config
@@ -113,8 +100,6 @@ spec:
                 subPath: config.toml
                 readOnly: true
 
-      # Persistent config + certs + pairings + per-app state; shared as the
-      # docker bind-mount root with launched app containers.
       wolf-state:
         type: hostPath
         hostPath: /etc/wolf
@@ -126,8 +111,6 @@ spec:
             main:
               - path: /etc/wolf
 
-      # Ephemeral runtime sockets (wayland/pulse); host-backed 1:1 so Wolf can
-      # bind-mount them into the app containers it launches on dockerd.
       wolf-run:
         type: hostPath
         hostPath: /run/user/wolf

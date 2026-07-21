@@ -12,6 +12,3 @@ configMapGenerator:
 
 generatorOptions:
   disableNameSuffixHash: true
-  annotations:
-    # config.toml has no ${VAR}s; keep Flux postBuild off it regardless
-    kustomize.toolkit.fluxcd.io/substitute: disabled

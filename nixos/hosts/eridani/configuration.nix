@@ -18,7 +18,6 @@
 
   system.stateVersion = "25.11";
 
-  # Networking/Clock
   networking.hostName = "eridani";
   time.timeZone = "America/New_York";
 
