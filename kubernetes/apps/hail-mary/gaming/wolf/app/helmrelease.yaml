@@ -27,20 +27,16 @@ spec:
                 set -u
                 SRC=/cfg-src/config.toml
                 LIVE=/etc/wolf/cfg/config.toml
-                PC=/tmp/paired_clients.json
                 mkdir -p /etc/wolf/cfg
-                if [ -f "$LIVE" ] && dasel query -i toml -o json 'paired_clients' < "$LIVE" > "$PC" 2>/dev/null; then
-                  if dasel query -i toml -o toml --var pc="json:file:$PC" 'merge($this, {paired_clients: $pc})' < "$SRC" > "$LIVE.new" 2>/dev/null; then
-                    mv "$LIVE.new" "$LIVE"
-                    echo "wolf: applied repo config, preserved paired_clients"
-                  else
-                    rm -f "$LIVE.new"
-                    echo "wolf: merge failed, kept existing live config"
-                  fi
-                  rm -f "$PC"
-                else
+                if [ ! -f "$LIVE" ]; then
                   cp "$SRC" "$LIVE"
                   echo "wolf: seeded config from repo"
+                elif dasel query -i toml -o toml --var live="toml:file:$LIVE" 'merge($this, {paired_clients: $live.paired_clients})' < "$SRC" > "$LIVE.new" 2>/dev/null; then
+                  mv "$LIVE.new" "$LIVE"
+                  echo "wolf: applied repo config, preserved paired_clients"
+                else
+                  rm -f "$LIVE.new"
+                  echo "wolf: merge failed, kept existing live config"
                 fi
 
         containers:
