@@ -32,7 +32,7 @@ The manifests in [kubernetes/](kubernetes/) are organized as:
 I run several clusters, each with a different purpose:
 
 - **eridani** - a small node at my parent's house.
-- **hail-mary** - a multi-node HA cluster (grace, rocky, astrophage) running the majority of my services.
+- **hail-mary** - a multi-node HA cluster (grace, rocky, xenonite, astrophage) running the majority of my services.
 - **stepien** - a small node at my grandparent's house, specifically for Immich.
 - **tau-ceti** - a VPS that currently handles monitoring.
 
