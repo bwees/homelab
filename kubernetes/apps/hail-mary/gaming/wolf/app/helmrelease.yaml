@@ -17,9 +17,7 @@ spec:
           configmap.reloader.stakater.com/reload: wolf-config
         strategy: Recreate
         initContainers:
-          # Render the live config from the in-repo ConfigMap while preserving
-          # the paired_clients Wolf writes back on pairing. First run seeds; on
-          # a failed merge we reseed so Wolf always gets a valid config.
+          # Merge the in-repo config with the live config, preserving paired_clients.
           merge-config:
             image:
               repository: ghcr.io/tomwright/dasel
@@ -37,14 +35,19 @@ spec:
                   echo "wolf: seeded config from repo"
                   exit 0
                 fi
-                clients=$(dasel -f "$LIVE" -r toml -w json 'paired_clients' 2>/dev/null)
-                if [ -n "$clients" ] && dasel put -f "$SRC" -o "$LIVE.new" -r toml -w toml -t json -v "$clients" 'paired_clients' 2>/dev/null; then
-                  mv "$LIVE.new" "$LIVE"
-                  echo "wolf: merged repo config, preserved paired_clients"
+                work="$LIVE.new"
+                cp "$LIVE" "$work"
+                ok=1
+                for key in hostname config_version profiles gstreamer; do
+                  val=$(dasel -f "$SRC" -r toml -w json "$key" 2>/dev/null) || { ok=0; break; }
+                  dasel put -f "$work" -o "$work" -r toml -w toml -t json -v "$val" "$key" 2>/dev/null || { ok=0; break; }
+                done
+                if [ "$ok" = 1 ]; then
+                  mv "$work" "$LIVE"
+                  echo "wolf: applied repo config, preserved paired_clients"
                 else
-                  rm -f "$LIVE.new"
-                  cp "$SRC" "$LIVE"
-                  echo "wolf: merge failed, reseeded from repo (clients must re-pair)"
+                  rm -f "$work"
+                  echo "wolf: merge failed, kept existing live config"
                 fi
 
         containers:
