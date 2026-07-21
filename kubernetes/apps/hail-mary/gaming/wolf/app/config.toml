@@ -102,7 +102,7 @@ base_create_json = '''{
             "Options": {
               "type": "nfs",
               "o": "addr=nas.bwees.lab,nfsvers=4.1,nolock,soft,ro",
-              "device": ":/media/games/switch"
+              "device": ":/games/switch"
             }
           }
         }
