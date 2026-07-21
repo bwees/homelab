@@ -113,7 +113,7 @@ base_create_json = '''{
 '''
 devices = []
 env = [ 'RUN_SWAY=true', 'GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*' ]
-image = 'ghcr.io/bwees-forks/ryujinx-fedora:latest'
+image = 'ghcr.io/bwees/ryujinx-fedora:latest'
 mounts = []
 name = 'WolfRyujinx'
 ports = []
