@@ -1,5 +1,5 @@
 # The name that will be displayed in Moonlight
-hostname = "Wolf"
+hostname = "Xenonite"
 # The version of this config file
 config_version = 7
 # A list of paired clients that will be allowed to stream
@@ -41,87 +41,11 @@ name = 'Wolf-UI'
 ports = []
 type = 'docker'
 
-[[profiles.apps]]
-title = "Test ball"
-icon_png_path = "https://raw.githubusercontent.com/games-on-whales/wolf/refs/heads/stable/docs/images/test_ball_icon.png"
-start_virtual_compositor = false
-start_audio_server = false
-
-[profiles.apps.runner]
-type = "process"
-run_cmd = "sh -c \"while :; do echo 'running...'; sleep 10; done\""
-
-[profiles.apps.video]
-source = """
-videotestsrc pattern=ball flip=true is-live=true !
-video/x-raw, framerate={fps}/1
-\
-"""
-
-[profiles.apps.audio]
-source = "audiotestsrc wave=ticks is-live=true"
 
 # An example profile that will be shown in our Wolf UI
 [[profiles]]
-id = "user"
-name = "User"
-
-[[profiles.apps]]
-title = "Firefox"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/firefox/assets/icon.png"
-start_virtual_compositor = true
-
-[profiles.apps.runner]
-type = "docker"
-name = "WolfFirefox"
-image = "ghcr.io/games-on-whales/firefox:edge"
-mounts = []
-env = [
-    "RUN_SWAY=1",
-    "MOZ_ENABLE_WAYLAND=1",
-    "GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*",
-]
-devices = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "Privileged": false,
-    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN"],
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
-
-[[profiles.apps]]
-title = "RetroArch"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/retroarch/assets/icon.png"
-start_virtual_compositor = true
-
-[profiles.apps.runner]
-type = "docker"
-name = "WolfRetroarch"
-image = "ghcr.io/games-on-whales/retroarch:edge"
-mounts = []
-env = [
-    "RUN_SWAY=true",
-    "GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*",
-]
-devices = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN", "SYS_ADMIN", "SYS_NICE"],
-    "Privileged": false,
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
+id = "bwees"
+name = "bwees"
 
 [[profiles.apps]]
 title = "Steam"
@@ -155,163 +79,45 @@ base_create_json = """
 """
 
 [[profiles.apps]]
-title = "Pegasus"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/pegasus/assets/icon.png"
+icon_png_path = ''
 start_virtual_compositor = true
+title = 'Ryujinx'
 
 [profiles.apps.runner]
-type = "docker"
-name = "WolfPegasus"
-image = "ghcr.io/games-on-whales/pegasus:edge"
-mounts = []
-env = [
-    "RUN_SWAY=1",
-    "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia*",
-]
-devices = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN", "SYS_ADMIN", "SYS_NICE"],
-    "Privileged": false,
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
-
-[[profiles.apps]]
-title = "Lutris"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/lutris/assets/icon.png"
-start_virtual_compositor = true
-
-[profiles.apps.runner]
-type = "docker"
-name = "WolfLutris"
-image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = ["lutris:/var/lutris/:rw"]
-env = [
-    "RUN_SWAY=1",
-    "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
-]
-devices = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
-    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
-    "Ulimits": [{"Name":"nofile", "Hard":524288, "Soft":524288}],
-    "Privileged": false,
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
-
-[[profiles.apps]]
-title = "Prismlauncher"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/prismlauncher/assets/icon.png"
-start_virtual_compositor = true
-
-[profiles.apps.runner]
-type = "docker"
-name = "Prismlauncher"
-image = "ghcr.io/games-on-whales/prismlauncher:edge"
-mounts = []
-env = [
-    "RUN_SWAY=1",
-    "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
-]
-devices = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN", "SYS_ADMIN", "SYS_NICE"],
-    "Privileged": false,
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
-
-[[profiles.apps]]
-title = 'Desktop (xfce)'
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/xfce/assets/icon.png"
-
-[profiles.apps.runner]
-type = 'docker'
-name = 'WolfXFCE'
-image = 'ghcr.io/games-on-whales/xfce:edge'
-env = ['GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*']
-devices = []
-mounts = []
-ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "Privileged": false,
-    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
-    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
-
-[[profiles.apps]]
-title = "EmulationStation"
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/es-de/assets/icon.png"
-
-[profiles.apps.runner]
-type = "docker"
-name = "WolfES-DE"
-image = "ghcr.io/games-on-whales/es-de:edge"
-mounts = []
-env = ["RUN_SWAY=1", "MOZ_ENABLE_WAYLAND=1", "GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*", ]
-devices = []
-ports = []
-base_create_json = """
-{
+base_create_json = '''{
   "HostConfig": {
     "IpcMode": "host",
     "Privileged": false,
     "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN"],
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"],
+    "Mounts": [
+      {
+        "Type": "volume",
+        "Source": "switch-roms",
+        "Target": "/games",
+        "ReadOnly": true,
+        "VolumeOptions": {
+          "DriverConfig": {
+            "Name": "local",
+            "Options": {
+              "type": "nfs",
+              "o": "addr=nas.bwees.lab,nfsvers=4.1,nolock,soft,ro",
+              "device": ":/media/games/switch"
+            }
+          }
+        }
+      }
+    ]
   }
 }
-\
-"""
-
-[[profiles.apps]]
-title = 'Kodi'
-icon_png_path = "https://games-on-whales.github.io/wildlife/apps/kodi/assets/icon.png"
-
-[profiles.apps.runner]
-type = 'docker'
-name = 'WolfKodi'
-image = 'ghcr.io/games-on-whales/kodi:edge'
-env = ['RUN_SWAY=true', 'GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*']
+'''
 devices = []
+env = [ 'RUN_SWAY=true', 'GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*' ]
+image = 'ghcr.io/bwees-forks/ryujinx-fedora:latest'
 mounts = []
+name = 'WolfRyujinx'
 ports = []
-base_create_json = """
-{
-  "HostConfig": {
-    "IpcMode": "host",
-    "Privileged": false,
-    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN"],
-    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
-  }
-}
-\
-"""
+type = 'docker'
 
 
 ######################

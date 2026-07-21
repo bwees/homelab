@@ -11,6 +11,10 @@ spec:
   values:
     controllers:
       main:
+        # Roll the pod when the wolf-config ConfigMap (config.toml) changes;
+        # the merge-config init re-runs and paired_clients are preserved.
+        annotations:
+          configmap.reloader.stakater.com/reload: wolf-config
         strategy: Recreate
         initContainers:
           # Render the live config from the in-repo ConfigMap while preserving
