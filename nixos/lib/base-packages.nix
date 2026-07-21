@@ -7,7 +7,6 @@
   environment.systemPackages = with pkgs; [
     wget
     btop
-    python314
     git
     restic
   ];

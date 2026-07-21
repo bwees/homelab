@@ -40,6 +40,13 @@
           ./hosts/hail-mary/astrophage/configuration.nix
         ];
       };
+      nixosConfigurations.xenonite = mkHost {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          ./hosts/hail-mary/xenonite/configuration.nix
+        ];
+      };
       nixosConfigurations.tau-ceti = mkHost {
         system = "x86_64-linux";
         modules = [
