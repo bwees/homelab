@@ -1,0 +1,158 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wolf
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: wolf
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        initContainers:
+          # Render the live config from the in-repo ConfigMap while preserving
+          # the paired_clients Wolf writes back on pairing. First run seeds; on
+          # a failed merge we reseed so Wolf always gets a valid config.
+          merge-config:
+            image:
+              repository: ghcr.io/tomwright/dasel
+              tag: v2.8.1-alpine
+            command:
+              - sh
+              - -c
+              - |
+                set -u
+                SRC=/cfg-src/config.toml
+                LIVE=/etc/wolf/cfg/config.toml
+                mkdir -p /etc/wolf/cfg
+                if [ ! -f "$LIVE" ]; then
+                  cp "$SRC" "$LIVE"
+                  echo "wolf: seeded config from repo"
+                  exit 0
+                fi
+                clients=$(dasel -f "$LIVE" -r toml -w json 'paired_clients' 2>/dev/null)
+                if [ -n "$clients" ] && dasel put -f "$SRC" -o "$LIVE.new" -r toml -w toml -t json -v "$clients" 'paired_clients' 2>/dev/null; then
+                  mv "$LIVE.new" "$LIVE"
+                  echo "wolf: merged repo config, preserved paired_clients"
+                else
+                  rm -f "$LIVE.new"
+                  cp "$SRC" "$LIVE"
+                  echo "wolf: merge failed, reseeded from repo (clients must re-pair)"
+                fi
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/games-on-whales/wolf
+              tag: stable
+            env:
+              # Host path Wolf hands dockerd for app bind-mounts; must equal the
+              # /etc/wolf hostPath so paths resolve on xenonite.
+              HOST_APPS_STATE_FOLDER: /etc/wolf
+              # Used verbatim as the host path for app-container socket mounts,
+              # so it must be a 1:1 hostPath (see persistence.wolf-run).
+              XDG_RUNTIME_DIR: /run/user/wolf
+            securityContext:
+              privileged: true
+
+    defaultPodOptions:
+      # Pin to the AMD-GPU + docker host; the docker-socket approach requires
+      # Wolf and the app containers to share xenonite's kernel/filesystem.
+      nodeSelector:
+        kubernetes.io/hostname: xenonite
+
+    service:
+      main:
+        controller: main
+        # Exposed as a dedicated tailnet device (L3 TCP/UDP DNAT) named `wolf`,
+        # the same mechanism as the PowerDNS `dns` device. Moonlight pairs and
+        # streams against wolf.<tailnet>.ts.net — one device for both, so the
+        # pairing IP == stream IP requirement is satisfied automatically.
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/hostname: wolf
+        ports:
+          https:
+            port: 47989
+            protocol: TCP
+          http:
+            port: 47984
+            protocol: TCP
+          rtsp:
+            port: 48010
+            protocol: TCP
+          control:
+            port: 47999
+            protocol: UDP
+          video:
+            port: 48100
+            protocol: UDP
+          audio:
+            port: 48200
+            protocol: UDP
+
+    persistence:
+      # In-repo config source, read by the merge-config init container.
+      wolf-config:
+        type: configMap
+        name: wolf-config
+        advancedMounts:
+          main:
+            merge-config:
+              - path: /cfg-src/config.toml
+                subPath: config.toml
+                readOnly: true
+
+      # Persistent config + certs + pairings + per-app state; shared as the
+      # docker bind-mount root with launched app containers.
+      wolf-state:
+        type: hostPath
+        hostPath: /etc/wolf
+        hostPathType: DirectoryOrCreate
+        advancedMounts:
+          main:
+            merge-config:
+              - path: /etc/wolf
+            main:
+              - path: /etc/wolf
+
+      # Ephemeral runtime sockets (wayland/pulse); host-backed 1:1 so Wolf can
+      # bind-mount them into the app containers it launches on dockerd.
+      wolf-run:
+        type: hostPath
+        hostPath: /run/user/wolf
+        hostPathType: DirectoryOrCreate
+        advancedMounts:
+          main:
+            main:
+              - path: /run/user/wolf
+
+      dockersock:
+        type: hostPath
+        hostPath: /var/run/docker.sock
+        hostPathType: Socket
+        advancedMounts:
+          main:
+            main:
+              - path: /var/run/docker.sock
+
+      dev:
+        type: hostPath
+        hostPath: /dev
+        hostPathType: Directory
+        advancedMounts:
+          main:
+            main:
+              - path: /dev
+
+      udev:
+        type: hostPath
+        hostPath: /run/udev
+        hostPathType: Directory
+        advancedMounts:
+          main:
+            main:
+              - path: /run/udev

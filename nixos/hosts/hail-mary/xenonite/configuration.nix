@@ -13,6 +13,8 @@
     ../../../lib/k3s-multinode.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/tailscale.nix
+    ../../../lib/docker.nix
+    ../../../lib/amd-gpu.nix
   ];
 
   system.stateVersion = "25.05";
