@@ -11,6 +11,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    # need the tailscale operator to publish the `wolf` device
     - name: tailscale-operator
+      namespace: networking
   targetNamespace: gaming
