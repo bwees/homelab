@@ -13,4 +13,6 @@ spec:
   dependsOn:
     - name: onepassword
       namespace: secrets
+    - name: miroir-config
+      namespace: storage
   targetNamespace: monitoring
