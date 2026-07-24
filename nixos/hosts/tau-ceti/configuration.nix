@@ -13,6 +13,7 @@
     ../../lib/root-ca.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix
+    ../../lib/miroir.nix
   ];
 
   system.stateVersion = "25.05";

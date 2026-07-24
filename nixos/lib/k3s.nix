@@ -7,6 +7,8 @@ let
     apiVersion: kubelet.config.k8s.io/v1beta1
     kind: KubeletConfiguration
     imageMaximumGCAge: "168h"
+    shutdownGracePeriod: "120s"
+    shutdownGracePeriodCriticalPods: "60s"
   '';
 in
 {
@@ -29,6 +31,8 @@ in
 
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
+
+  services.logind.settings.Login.InhibitDelayMaxSec = 130;
 
   # expose k3s ports to tailscale0 interface for remote access
   # use k3s-multinode.nix for multi-node clusters, which exposes the same ports on the LAN interface

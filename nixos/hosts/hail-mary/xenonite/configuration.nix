@@ -11,6 +11,8 @@
     ../../../lib/bwees.nix
     ../../../lib/k3s.nix
     ../../../lib/k3s-multinode.nix
+    ../../../lib/miroir.nix
+    ../../../lib/miroir-drbd.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/tailscale.nix
     ../../../lib/docker.nix

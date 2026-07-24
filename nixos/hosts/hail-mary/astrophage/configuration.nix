@@ -9,6 +9,7 @@
     ../../../lib/base-packages.nix
     ../../../lib/k3s.nix
     ../../../lib/k3s-multinode.nix
+    ../../../lib/miroir.nix
     ../../../lib/bwees.nix
     ../../../lib/beszel.nix
     ../../../lib/garbage-collect.nix

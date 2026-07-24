@@ -14,6 +14,7 @@
     ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix
+    ../../lib/miroir.nix
   ];
 
   system.stateVersion = "25.11";

@@ -55,6 +55,13 @@
                     "nodatacow"
                   ];
                 };
+                "@miroir" = {
+                  mountpoint = "/var/lib/miroir";
+                  mountOptions = [
+                    "noatime"
+                    "compress=zstd"
+                  ];
+                };
               };
             };
           };
