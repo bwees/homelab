@@ -201,6 +201,24 @@ backup-then-restore-into-new-storageclass flow):
 Migrate a low-risk app first (e.g. gatus/beszel) to validate the flow end-to-end before
 touching stateful heavies like immich and gitea.
 
+**Operational notes from execution:**
+
+- **Use the b2 (offsite) restic repo for the backup+restore, not nas.** The nas repo is
+  `restic.bwees.lab`, a `.lab` name served by powerdns; the b2 repo is a public Backblaze
+  endpoint resolved via the node's tailscale upstream (`100.100.100.100`). Quiescing an app
+  during migration must not depend on cluster `.lab` DNS.
+- **powerdns is a DNS-authority bootstrap trap.** It *serves* `.lab`, so while it is scaled
+  to 0 the nas repo cannot resolve — its own migration (and ideally every app's) must go
+  through b2. First attempt via nas failed with `lookup restic.bwees.lab ... i/o timeout`.
+- **helm does not re-scale a manually scaled-to-0 workload on resume** (no diff to trigger an
+  upgrade), so explicitly `kubectl scale deploy <app> --replicas=1` after un-suspending.
+- Reusable per-app flow lives in the migration script (suspend ks+hr → scale 0 → manual b2
+  backup → delete Longhorn PVC → create miroir PVC → ReplicationDestination Direct restore →
+  revert trigger → resume → scale up → verify).
+
+**Status:** tau-ceti fully migrated (beszel, powerdns). Single-node clusters (eridani,
+stepien) next; hail-mary last, gated on the DRBD build validation.
+
 ### Phase 3 — Flip defaults and retire Longhorn (per cluster)
 
 1. When every PVC in a cluster is on miroir, make `miroir` the default StorageClass and
