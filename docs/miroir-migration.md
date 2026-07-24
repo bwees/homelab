@@ -216,8 +216,23 @@ touching stateful heavies like immich and gitea.
   backup → delete Longhorn PVC → create miroir PVC → ReplicationDestination Direct restore →
   revert trigger → resume → scale up → verify).
 
-**Status:** tau-ceti fully migrated (beszel, powerdns). Single-node clusters (eridani,
-stepien) next; hail-mary last, gated on the DRBD build validation.
+**Status: COMPLETE.** All four clusters (tau-ceti, eridani, stepien, hail-mary) fully
+migrated to miroir and Longhorn retired:
+
+- Every stateful workload runs on miroir — volsync apps (b2 restic backup→restore), all four
+  immich CNPG clusters (single-instance scale-up+switchover on eridani/stepien; 2-instance
+  rolling recreation on hail-mary), gatus, tailscale-state PVCs, ml-caches.
+- hail-mary runs `replicas: 2` DRBD (9.3.3, out-of-tree module activated via reboot; ports
+  7000-7999 opened) — every volume 2/2 Ready.
+- Longhorn uninstalled on all clusters (HR/pods/CRDs gone, `deleting-confirmation-flag` set),
+  miroir is the sole default StorageClass, volsync + postgres defaults flipped to miroir.
+- miroir relocated from `miroir-system` to the shared `storage` namespace.
+- NixOS: iscsi, `node.longhorn.io` label flags, and `@longhorn` subvolumes removed; node
+  labels stripped; `@longhorn` subvolumes deleted on all six storage hosts.
+
+Actual migration method used the b2 (offsite) restic repo, not nas, to avoid a DNS bootstrap
+trap (powerdns serves the `.lab` name the nas repo resolves through). See operational notes
+above.
 
 ### Phase 3 — Flip defaults and retire Longhorn (per cluster)
 
