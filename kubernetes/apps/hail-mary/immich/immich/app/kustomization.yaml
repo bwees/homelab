@@ -30,3 +30,6 @@ patches:
       - op: add
         path: /spec/enableSuperuserAccess
         value: true
+      - op: replace
+        path: /spec/storage/storageClass
+        value: miroir

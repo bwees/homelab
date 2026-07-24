@@ -16,6 +16,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: operators
+    - name: miroir-config
+      namespace: storage
     - name: longhorn
       namespace: storage
     - name: intel-device-plugins
