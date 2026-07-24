@@ -51,15 +51,6 @@
                 "@storage" = {
                   mountpoint = "/storage";
                 };
-                # Dedicated subvolume for Longhorn's default disk. CoW + compression
-                # are disabled — Longhorn replica files fragment badly under btrfs CoW.
-                "@longhorn" = {
-                  mountpoint = "/var/lib/longhorn";
-                  mountOptions = [
-                    "noatime"
-                    "nodatacow"
-                  ];
-                };
                 "@miroir" = {
                   mountpoint = "/var/lib/miroir";
                   mountOptions = [

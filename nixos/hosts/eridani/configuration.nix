@@ -30,10 +30,6 @@
     "--advertise-routes=10.0.1.0/24"
   ];
 
-  services.k3s.extraFlags = [
-    "--node-label=node.longhorn.io/create-default-disk=true"
-  ];
-
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
   # Expose the klipper LoadBalancer services on the LAN: PowerDNS (:53) serves

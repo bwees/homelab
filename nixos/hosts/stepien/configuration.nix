@@ -34,8 +34,4 @@
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
   ];
-
-  services.k3s.extraFlags = [
-    "--node-label=node.longhorn.io/create-default-disk=true"
-  ];
 }

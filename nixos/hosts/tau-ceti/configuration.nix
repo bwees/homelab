@@ -35,7 +35,6 @@
   ];
 
   services.k3s.extraFlags = [
-    "--node-label=node.longhorn.io/create-default-disk=true"
     # Expose the public IP as the node's ExternalIP so the Tailscale operator can
     # advertise it as a static endpoint for direct ingress connections.
     # --node-ip must be pinned: otherwise k3s auto-detects a dual-stack node and

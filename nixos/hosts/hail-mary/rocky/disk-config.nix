@@ -48,13 +48,6 @@
                 "@" = {
                   mountpoint = "/";
                 };
-                "@longhorn" = {
-                  mountpoint = "/var/lib/longhorn";
-                  mountOptions = [
-                    "noatime"
-                    "nodatacow"
-                  ];
-                };
                 "@miroir" = {
                   mountpoint = "/var/lib/miroir";
                   mountOptions = [

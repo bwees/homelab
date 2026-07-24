@@ -32,8 +32,4 @@
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
   services.k3s.clusterInit = true;
-  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
-  services.k3s.extraFlags = [
-    "--node-label=node.longhorn.io/create-default-disk=true"
-  ];
-}
+  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";}
