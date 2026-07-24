@@ -94,7 +94,7 @@ spec:
               CLUSTER: hail-mary
               LONGHORN_DATA_REPLICAS: "2"
               LONGHORN_CSI_REPLICAS: "2"
-              MIROIR_DATA_REPLICAS: "2"
+              MIROIR_DATA_REPLICAS: '"2"'
           patches:
             - patch: |-
                 apiVersion: helm.toolkit.fluxcd.io/v2
