@@ -11,11 +11,11 @@ spec:
   restic:
     repository: ${APP}-restic-b2
     copyMethod: Snapshot
-    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=longhorn}'
+    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=miroir}'
     # Snapshot storage class, 1 replica,
     # Delete reclaim policy to prevent ballooning
-    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=longhorn-volsync-src}'
-    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=longhorn}'
+    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir}'
     cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
     moverSecurityContext:
       runAsUser: ${VOLSYNC_UID:=1000}
@@ -43,9 +43,9 @@ spec:
       secretName: ${APP}-restic-nas-ca
       key: ca.crt
     copyMethod: Snapshot
-    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=longhorn}'
-    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=longhorn-volsync-src}'
-    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=longhorn}'
+    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=miroir}'
+    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir}'
     cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
     moverSecurityContext:
       runAsUser: ${VOLSYNC_UID:=1000}

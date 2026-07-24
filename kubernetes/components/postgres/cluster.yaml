@@ -14,7 +14,7 @@ spec:
     podAntiAffinityType: preferred
   storage:
     size: 5Gi
-    storageClass: longhorn
+    storageClass: miroir
   bootstrap:
     initdb:
       database: ${APP}
