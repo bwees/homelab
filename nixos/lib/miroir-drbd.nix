@@ -18,4 +18,11 @@ in
   boot.extraModprobeConfig = ''
     options drbd usermode_helper=disabled
   '';
+
+  networking.firewall.allowedTCPPortRanges = [
+    {
+      from = 7000;
+      to = 7999;
+    }
+  ];
 }
