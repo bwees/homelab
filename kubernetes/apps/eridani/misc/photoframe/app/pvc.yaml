@@ -5,7 +5,7 @@ metadata:
   namespace: misc
 spec:
   accessModes: [ReadWriteOnce]
-  storageClassName: longhorn
+  storageClassName: miroir
   resources:
     requests:
       storage: 2Gi
