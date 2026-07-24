@@ -1,0 +1,9 @@
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: miroir
+  labels:
+    velero.io/csi-volumesnapshot-class: 'true'
+driver: miroir.home-operations.com
+deletionPolicy: Delete

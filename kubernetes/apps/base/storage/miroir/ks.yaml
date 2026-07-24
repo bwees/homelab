@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: miroir
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
+  prune: true
+  wait: true
+  dependsOn:
+    - name: snapshot-controller
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./kubernetes/apps/base/storage/miroir/app
+  targetNamespace: miroir-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: miroir-config
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
+  prune: true
+  wait: true
+  dependsOn:
+    - name: miroir
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./kubernetes/apps/base/storage/miroir/config

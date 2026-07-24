@@ -1,0 +1,14 @@
+---
+apiVersion: miroir.home-operations.com/v1alpha1
+kind: MiroirNodeGroup
+metadata:
+  name: std
+spec:
+  nodeSelector:
+    matchLabels:
+      storage.miroir.home-operations.com/class: std
+  template:
+    pools:
+      - name: default
+        loopfile:
+          baseDir: /var/lib/miroir

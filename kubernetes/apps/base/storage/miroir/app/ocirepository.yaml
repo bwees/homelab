@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: miroir
+spec:
+  interval: 1h
+  url: oci://ghcr.io/home-operations/charts/miroir
+  ref:
+    tag: '0.11.4'

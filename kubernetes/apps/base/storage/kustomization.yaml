@@ -7,4 +7,5 @@ resources:
   - namespace.yaml
   - snapshot-controller/ks.yaml
   - longhorn/ks.yaml
+  - miroir/ks.yaml
   - volsync/ks.yaml
