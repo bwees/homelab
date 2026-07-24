@@ -10,7 +10,6 @@ spec:
   prune: true
   wait: true
   dependsOn:
-    - name: longhorn
     - name: snapshot-controller
   sourceRef:
     kind: GitRepository
