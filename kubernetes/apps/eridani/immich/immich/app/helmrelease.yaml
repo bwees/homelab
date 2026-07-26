@@ -80,6 +80,12 @@ spec:
                 limits:
                   memory: 3Gi
                   gpu.intel.com/i915: '1'
+      persistence:
+        nas-media:
+          existingClaim: nas-media
+          globalMounts:
+            - path: /nas-media
+              readOnly: true
       route:
         main:
           parentRefs:

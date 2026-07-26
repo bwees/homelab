@@ -24,3 +24,16 @@ spec:
   resources:
     requests:
       storage: 1Ti
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-media
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ''
+  volumeName: immich-nas-media
+  resources:
+    requests:
+      storage: 1Ti
