@@ -52,6 +52,7 @@ spec:
                 drop:
                   - NET_RAW
             env:
+              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: 'ViT-B-32__openai'
               DB_HOSTNAME:
                 valueFrom:
                   secretKeyRef:
