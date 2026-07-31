@@ -1,12 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>home-operations/renovate-presets"],
-  "docker-compose": {
-    "managerFilePatterns": ["/^deploy\\/compose\\/.*\\.ya?ml$/"],
-    "digest": {
-      "enabled": false
-    }
-  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
@@ -15,20 +9,6 @@
     {
       "matchUpdateTypes": ["major", "minor", "patch"],
       "semanticCommitType": "chore"
-    },
-
-    // Ignore rules
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "docker.io/valkey/valkey",
-        "ghcr.io/immich-app/postgres"
-      ],
-      "matchFileNames": [
-        "deploy/compose/home/immich.yml",
-        "deploy/compose/stepien/immich.yml"
-      ],
-      "enabled": false
     },
 
     // Groups
@@ -47,16 +27,6 @@
         "haveagitgat/tdarr_node"
       ],
       "groupName": "tdarr"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["henrygd/beszel", "henrygd/beszel-agent"],
-      "groupName": "beszel"
-    },
-    {
-      "matchDatasources": ["docker", "dockerfile"],
-      "matchPackageNames": ["n8nio/runners", "n8nio/n8n"],
-      "groupName": "n8n"
     },
     {
       "matchFileNames": ["**/flux-system/**"],
