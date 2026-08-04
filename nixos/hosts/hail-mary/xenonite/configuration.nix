@@ -15,6 +15,7 @@
     ../../../lib/miroir-drbd.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/tailscale.nix
+    ../../../lib/tailscale-pod-nat.nix
     ../../../lib/docker.nix
     ../../../lib/amd-gpu.nix
   ];
@@ -34,4 +35,5 @@
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
   services.k3s.serverAddr = "https://192.168.50.110:6443";
-  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";}
+  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
+}
