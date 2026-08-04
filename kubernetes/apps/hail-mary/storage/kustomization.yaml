@@ -5,3 +5,4 @@ namespace: storage
 
 resources:
   - restic/ks.yaml
+  - dropla/ks.yaml

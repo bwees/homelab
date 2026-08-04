@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: psitransfer
+  name: dropla
 spec:
   interval: 1h
   url: oci://ghcr.io/bjw-s-labs/helm/app-template

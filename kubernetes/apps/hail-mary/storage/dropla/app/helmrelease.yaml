@@ -1,23 +1,23 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: psitransfer
+  name: dropla
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: psitransfer
+    name: dropla
   values:
     controllers:
       main:
         containers:
           main:
             image:
-              repository: psitrax/psitransfer
-              tag: latest
-            envFrom:
-              - secretRef:
-                  name: psitransfer-secret
+              repository: ghcr.io/bwees/dropla
+              tag: v0.1.0
+            env:
+              PUBLIC_BASE_URL: https://dropla.bwees.io
+              ABANDONED_UPLOAD_AFTER: 12h
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -25,7 +25,7 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 128Mi
+                memory: 64Mi
               limits:
                 memory: 512Mi
             probes:
@@ -54,8 +54,8 @@ spec:
           - name: envoy-external
             namespace: networking
         hostnames:
-          - transfer.bwees.lab
-          - transfer.bwees.io
+          - dropla.bwees.lab
+          - dropla.bwees.io
         rules:
           - backendRefs:
               - identifier: main
@@ -63,6 +63,10 @@ spec:
 
     persistence:
       data:
-        existingClaim: psitransfer-data
+        existingClaim: dropla-storage
         globalMounts:
-          - path: /data
+          - path: /data/uploads
+      config:
+        existingClaim: dropla-config
+        globalMounts:
+          - path: /data/db

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dropla-storage
+  namespace: share
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: ''
+  volumeName: nas-dropla
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dropla-config
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 256Mi
