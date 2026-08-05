@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/dropla
-              tag: v0.2.0
+              tag: v0.3.0
             env:
               PUBLIC_BASE_URL: https://dropla.bwees.io
               ABANDONED_UPLOAD_AFTER: 12h
