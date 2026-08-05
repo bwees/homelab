@@ -21,3 +21,7 @@ arg "ip"
 arg "user" default="root"
 '''
 run = 'nix run github:nix-community/nixos-anywhere -- --flake ".#$usage_host" "$usage_user@$usage_ip"'
+
+["nixos:update"]
+dir = "{{config_root}}/nixos"
+run = 'nix --extra-experimental-features "nix-command flakes" flake update'
