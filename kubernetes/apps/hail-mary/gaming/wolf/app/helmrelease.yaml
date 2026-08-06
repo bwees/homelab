@@ -47,6 +47,7 @@ spec:
             env:
               HOST_APPS_STATE_FOLDER: /etc/wolf
               XDG_RUNTIME_DIR: /run/user/wolf
+              WOLF_DOCKER_SOCKET: /var/run/docker/docker.sock
             securityContext:
               privileged: true
 
@@ -111,14 +112,16 @@ spec:
             main:
               - path: /run/user/wolf
 
+      # Mount socket directory so docker.socket does not become
+      # unbound when docker restarts.
       dockersock:
         type: hostPath
-        hostPath: /var/run/docker.sock
-        hostPathType: Socket
+        hostPath: /var/run/docker
+        hostPathType: Directory
         advancedMounts:
           main:
             main:
-              - path: /var/run/docker.sock
+              - path: /var/run/docker
 
       dev:
         type: hostPath

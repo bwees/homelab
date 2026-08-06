@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 
@@ -36,4 +37,13 @@
 
   services.k3s.serverAddr = "https://192.168.50.110:6443";
   services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
+
+  # create additional docker socket that can be folder mounted by wolf
+  virtualisation.docker.daemon.settings.hosts = [
+    "unix:///var/run/docker/docker.sock"
+  ];
+
+  systemd.services.docker.serviceConfig.ExecStartPre = [
+    "${pkgs.coreutils}/bin/mkdir -p /var/run/docker"
+  ];
 }
