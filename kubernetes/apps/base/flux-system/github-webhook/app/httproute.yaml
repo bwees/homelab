@@ -4,7 +4,7 @@ metadata:
   name: github-webhook
 spec:
   parentRefs:
-    - name: envoy-external
+    - name: envoy-ingress
       namespace: networking
   hostnames:
     - fluxhook-${CLUSTER}.bwees.io

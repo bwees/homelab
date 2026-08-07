@@ -59,7 +59,7 @@ spec:
       # Internal: full access, no path filtering.
       internal:
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-ingress
             namespace: networking
         hostnames:
           - pinchflat.bwees.lab
@@ -71,7 +71,7 @@ spec:
       # External: only expose the public podcast feed/media endpoints.
       external:
         parentRefs:
-          - name: envoy-external
+          - name: envoy-ingress
             namespace: networking
         hostnames:
           - podcasts.bwees.io

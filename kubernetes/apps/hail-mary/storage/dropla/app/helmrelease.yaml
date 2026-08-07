@@ -49,9 +49,7 @@ spec:
     route:
       main:
         parentRefs:
-          - name: envoy-internal
-            namespace: networking
-          - name: envoy-external
+          - name: envoy-ingress
             namespace: networking
         hostnames:
           - dropla.bwees.lab

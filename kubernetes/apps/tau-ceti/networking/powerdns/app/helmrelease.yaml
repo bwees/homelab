@@ -12,8 +12,8 @@ spec:
     controllers:
       main:
         initContainers:
-          # Create the bwees.lab zone if absent; also hold wees.home, whose
-          # records are pushed here by the eridani cluster's external-dns.
+          # bwees.io is a split-horizon view served only to this cluster's CoreDNS,
+          # so the forward proxy resolves to the owning cluster, not back to itself.
           zone-init:
             image:
               repository: powerdns/pdns-auth-49
@@ -25,7 +25,9 @@ spec:
                 pdnsutil list-zone bwees.lab >/dev/null 2>&1 ||
                 pdnsutil create-zone bwees.lab ns1.bwees.lab;
                 pdnsutil list-zone wees.home >/dev/null 2>&1 ||
-                pdnsutil create-zone wees.home ns1.wees.home
+                pdnsutil create-zone wees.home ns1.wees.home;
+                pdnsutil list-zone bwees.io >/dev/null 2>&1 ||
+                pdnsutil create-zone bwees.io ns1.bwees.lab
         containers:
           main:
             image:
@@ -47,6 +49,8 @@ spec:
     service:
       main:
         controller: main
+        # Stable service IP so dynamic proxy can reference it directly.
+        clusterIP: 10.43.148.50
         # operator exposes this as a dedicated tailnet device (L3 TCP/UDP DNAT)
         annotations:
           tailscale.com/expose: 'true'

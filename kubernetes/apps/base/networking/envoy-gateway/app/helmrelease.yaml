@@ -34,3 +34,10 @@ spec:
           kubernetes:
             deploy:
               type: GatewayNamespace
+        extensionApis:
+          # required for the DynamicResolver Backend on tau-ceti
+          enableBackend: true
+    deployment:
+      # the controller reads envoy-gateway-config only at startup
+      annotations:
+        reloader.stakater.com/auto: 'true'

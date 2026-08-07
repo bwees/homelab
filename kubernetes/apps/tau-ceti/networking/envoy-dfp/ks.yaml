@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-dfp
+spec:
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  prune: true
+  wait: false
+  dependsOn:
+    - name: envoy-gateway
+    - name: coredns
+    - name: cert-manager-acme
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./kubernetes/apps/tau-ceti/networking/envoy-dfp/app

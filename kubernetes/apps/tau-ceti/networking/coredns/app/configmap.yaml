@@ -1,0 +1,16 @@
+---
+# k3s's CoreDNS already imports /etc/coredns/custom/*.server from an optional
+# ConfigMap of this name. No `fallthrough` on purpose: an unknown host must get
+# NXDOMAIN, not fall back to the public wildcard that points at this node.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  bwees-io.server: |
+    bwees.io {
+      errors
+      cache 30
+      forward . 10.43.148.50
+    }

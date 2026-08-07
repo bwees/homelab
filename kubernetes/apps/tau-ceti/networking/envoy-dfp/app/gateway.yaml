@@ -1,0 +1,65 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy-dfp
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: envoy-dfp
+    namespace: networking
+
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-dfp
+  namespace: networking
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: ClusterIP
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              externalIPs:
+                - 45.137.192.163
+      envoyDeployment:
+        replicas: 1
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-dfp
+  namespace: networking
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  gatewayClassName: envoy-dfp
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '*.bwees.io'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.bwees.io'
+      allowedRoutes:
+        namespaces:
+          from: Same
+      tls:
+        mode: Terminate
+        certificateRefs:
+          # publicly trusted, not the bwees-ca wildcard-tls used internally
+          - kind: Secret
+            name: bwees-io-tls

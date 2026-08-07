@@ -53,7 +53,7 @@ spec:
     route:
       main:
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-ingress
             namespace: networking
         hostnames:
           - prowlarr.bwees.lab

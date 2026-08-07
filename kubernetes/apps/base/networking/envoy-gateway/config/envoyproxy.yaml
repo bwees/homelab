@@ -2,22 +2,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
-  name: envoy-external
-  namespace: networking
-spec:
-  provider:
-    type: Kubernetes
-    kubernetes:
-      envoyService:
-        type: ClusterIP
-      envoyDeployment:
-        replicas: 1
-
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyProxy
-metadata:
-  name: envoy-internal
+  name: envoy-ingress
   namespace: networking
 spec:
   provider:
@@ -25,7 +10,7 @@ spec:
     kubernetes:
       useListenerPortAsContainerPort: true
       # operator exposes this at L3 (raw TCP DNAT) so envoy still terminates the
-      # internal wildcard TLS; ProxyGroup backing gives HA across nodes.
+      # wildcard TLS; ProxyGroup backing gives HA across nodes.
       envoyService:
         type: ClusterIP
         annotations:

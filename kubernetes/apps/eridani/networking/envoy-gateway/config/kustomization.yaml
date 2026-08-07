@@ -5,35 +5,26 @@ resources:
   - ../../../../base/networking/envoy-gateway/config
 
 patches:
-  # Internal serves *.wees.home here and fronts the LAN externalIP as well as tailnet.
+  # Tailnet IP, not the 10.0.1.2 externalIP below: the tau-ceti forward proxy has
+  # to reach this cluster too. LAN clients still get 10.0.1.2 from local powerdns.
   - target:
       kind: Gateway
-      name: envoy-internal
+      name: envoy-ingress
     patch: |-
       apiVersion: gateway.networking.k8s.io/v1
       kind: Gateway
       metadata:
-        name: envoy-internal
+        name: envoy-ingress
         annotations:
-          external-dns.alpha.kubernetes.io/target: 10.0.1.2
-  - target:
-      kind: Gateway
-      name: envoy-internal
-    patch: |-
-      - op: replace
-        path: /spec/listeners/0/hostname
-        value: '*.wees.home'
-      - op: replace
-        path: /spec/listeners/1/hostname
-        value: '*.wees.home'
+          external-dns.alpha.kubernetes.io/target: 100.108.214.28 # svc:eridani-ingress
   - target:
       kind: EnvoyProxy
-      name: envoy-internal
+      name: envoy-ingress
     patch: |-
       apiVersion: gateway.envoyproxy.io/v1alpha1
       kind: EnvoyProxy
       metadata:
-        name: envoy-internal
+        name: envoy-ingress
       spec:
         provider:
           kubernetes:

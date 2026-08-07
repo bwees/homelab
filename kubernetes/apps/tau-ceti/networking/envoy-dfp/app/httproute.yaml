@@ -1,0 +1,56 @@
+---
+# The route's hostnames are the access control: anything not matching *.bwees.io is
+# rejected before the resolver sees it, so this cannot be aimed at bwees.lab or at
+# arbitrary internet hosts.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: dynamic-resolver
+  namespace: networking
+spec:
+  type: DynamicResolver
+  tls:
+    caCertificateRefs:
+      # cert-manager writes the bwees-ca root into this secret's ca.crt
+      - group: ''
+        kind: Secret
+        name: wildcard-tls
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dynamic-forward-proxy
+  namespace: networking
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: envoy-dfp
+      sectionName: https
+  hostnames:
+    - '*.bwees.io'
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: dynamic-resolver
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dfp-https-redirect
+  namespace: networking
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: envoy-dfp
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

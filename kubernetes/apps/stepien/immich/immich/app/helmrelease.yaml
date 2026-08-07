@@ -88,7 +88,7 @@ spec:
       route:
         main:
           parentRefs:
-            - name: envoy-external
+            - name: envoy-ingress
               namespace: networking
           hostnames:
             - stepien-immich.bwees.io

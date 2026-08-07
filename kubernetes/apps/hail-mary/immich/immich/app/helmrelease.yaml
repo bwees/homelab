@@ -84,9 +84,7 @@ spec:
       route:
         main:
           parentRefs:
-            - name: envoy-external
-              namespace: networking
-            - name: envoy-internal
+            - name: envoy-ingress
               namespace: networking
           hostnames:
             - photos.bwees.io

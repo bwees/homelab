@@ -12,7 +12,8 @@ spec:
     controllers:
       main:
         initContainers:
-          # Create the wees.home zone if absent
+          # No external-dns writes to this LAN-only resolver, so the wildcard is
+          # static. replace-rrset is idempotent; add-record is not.
           zone-init:
             image:
               repository: powerdns/pdns-auth-49
@@ -21,8 +22,9 @@ spec:
               - sh
               - -c
               - >-
-                pdnsutil list-zone wees.home >/dev/null 2>&1 ||
-                pdnsutil create-zone wees.home ns1.wees.home
+                { pdnsutil list-zone wees.home >/dev/null 2>&1 ||
+                pdnsutil create-zone wees.home ns1.wees.home; } &&
+                pdnsutil replace-rrset wees.home '*' A 300 10.0.1.2
         containers:
           main:
             image:

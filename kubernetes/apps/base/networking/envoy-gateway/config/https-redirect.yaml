@@ -1,5 +1,4 @@
 ---
-# Redirect http -> https on both gateways.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -10,10 +9,7 @@ metadata:
     external-dns.alpha.kubernetes.io/controller: none
 spec:
   parentRefs:
-    - name: envoy-internal
-      namespace: networking
-      sectionName: http
-    - name: envoy-external
+    - name: envoy-ingress
       namespace: networking
       sectionName: http
   rules:
