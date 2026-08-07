@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./gateway.yaml
   - ./httproute.yaml
+  - ./clienttrafficpolicy.yaml
