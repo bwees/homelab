@@ -11,5 +11,9 @@
     "editor.formatOnSaveMode": "file",
 
     "editor.defaultFormatter": "opentofu.vscode-opentofu"
+  },
+
+  "search.exclude": {
+    "kubernetes/clusters/**/flux-system": true
   }
 }
