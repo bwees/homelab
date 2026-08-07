@@ -68,6 +68,13 @@ cluster token. The token is a secret and is **not** in the repo — it lives at
 
    The node should reach `Ready` within a few seconds and show up as an etcd member.
 
+## Shutting down and starting up
+
+```bash
+mise run cluster:shutdown hail-mary
+mise run cluster:startup  hail-mary
+```
+
 ## Longhorn default disk
 
 Nodes providing storage carry `--node-label=node.longhorn.io/create-default-disk=true`

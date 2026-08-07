@@ -33,3 +33,78 @@ data:
   1password-credentials.json: $creds
 EOF
 '''
+
+[tasks."cluster:shutdown"]
+usage = '''
+arg "cluster"
+arg "user" default="bwees"
+'''
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+k() { kubectl --context "$usage_cluster" "$@"; }
+on_node() { ssh -o BatchMode=yes -o ConnectTimeout=5 "$usage_user@$1" "${@:2}"; }
+names() { k get nodes "$@" -o jsonpath='{.items[*].metadata.name}'; }
+
+# "!=" also matches nodes carrying no lab.bwees/role label at all
+nas=$(names -l lab.bwees/role=nas)
+order="$(names -l 'lab.bwees/role!=nas') $nas"
+
+echo "==> $usage_cluster power-off order: $order"
+read -r -p "    Shut these nodes down? [y/N] " reply
+[[ "$reply" == [yY]* ]] || exit 1
+
+etcd_node=$(names -l node-role.kubernetes.io/etcd=true | awk '{print $1}')
+if [ -n "$etcd_node" ]; then
+  echo "==> Taking an etcd snapshot on $etcd_node"
+  on_node "$etcd_node" 'sudo k3s etcd-snapshot save'
+fi
+
+echo "==> Suspending Flux and cordoning nodes"
+flux --context "$usage_cluster" suspend source git flux-system -n flux-system
+k cordon $order
+
+for node in $order; do
+  echo "==> Powering off $node"
+  on_node "$node" 'sudo systemctl poweroff' || true
+  while on_node "$node" true 2>/dev/null; do sleep 5; done
+  echo "    $node is down"
+done
+
+echo "==> $usage_cluster is down. Power ${nas:-the nodes} on first, then: mise run cluster:startup $usage_cluster"
+'''
+
+[tasks."cluster:startup"]
+usage = '''
+arg "cluster"
+'''
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+k() { kubectl --context "$usage_cluster" "$@"; }
+
+echo "==> Waiting for the $usage_cluster API server"
+until k get --raw /readyz >/dev/null 2>&1; do sleep 5; done
+
+echo "==> Waiting for nodes to be Ready"
+k wait --for=condition=Ready nodes --all --timeout=15m
+
+echo "==> Waiting for miroir volumes to resync"
+k wait --for=jsonpath='{.status.phase}'=Ready miroirvolumes --all -A --timeout=30m >/dev/null
+
+split=$(k get miroirvolumes -A -o json |
+  jq -r '.items[] | select([.status.perNode[]?.splitBrain] | any) | .metadata.name')
+if [ -n "$split" ]; then
+  echo "!!! split brain, resolve before resuming Flux:"
+  echo "$split"
+  exit 1
+fi
+
+echo "==> Uncordoning nodes and resuming Flux"
+k uncordon $(k get nodes -o jsonpath='{.items[*].metadata.name}')
+flux --context "$usage_cluster" resume source git flux-system -n flux-system
+
+k get nodes
+'''
