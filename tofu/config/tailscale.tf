@@ -47,9 +47,8 @@ resource "tailscale_acl" "acls" {
     ],
 
     autoApprovers : {
-      // tag:nixos covers the k3s nodes (tau-ceti, rocky) that advertise exit
-      // nodes — they're now tagged, so approve by tag rather than user.
-      "exitNode" : ["brandonwees@gmail.com", "tag:nixos"],
+      "exitNode" : ["tag:nixos", "brandonwees@gmail.com"],
+      "services" : ["tag:kube-service"],
     },
   })
 
