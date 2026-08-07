@@ -1,0 +1,21 @@
+---
+# DNS-01, not HTTP-01: a wildcard cannot be issued from an HTTP-01 challenge.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: brandonwees@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-cert-manager
+              key: api-token
+        selector:
+          dnsZones:
+            - bwees.io
