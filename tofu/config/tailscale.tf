@@ -1,3 +1,12 @@
+locals {
+  mullvad_nodes = [
+    "brandon-iphone-17",
+    "brandon-ipad-air",
+    "brandon-macbook-pro",
+    "qbittorrent"
+  ]
+}
+
 resource "tailscale_acl" "acls" {
   acl = jsonencode({
     tagOwners : {
@@ -24,26 +33,10 @@ resource "tailscale_acl" "acls" {
     ],
 
     nodeAttrs : [
-      {
-        // brandon-iphone
-        target : ["100.76.234.121"],
+      for mullvad_device in data.tailscale_device.mullvad_nodes : {
+        target : [mullvad_device.addresses[0]],
         attr : ["mullvad"],
-      },
-      {
-        // brandon-ipad-air
-        target : ["100.64.153.110"],
-        attr : ["mullvad"],
-      },
-      {
-        // brandon-macbook-pro
-        target : ["100.89.139.58"],
-        attr : ["mullvad"],
-      },
-      {
-        // qbittorrent
-        target : ["100.84.136.31"],
-        attr : ["mullvad"],
-      },
+      }
     ],
 
     autoApprovers : {
@@ -80,6 +73,13 @@ resource "tailscale_dns_search_paths" "search_paths" {
 
 data "tailscale_device" "dns" {
   name     = "dns.${local.tailnet}"
+  wait_for = "60s"
+}
+
+data "tailscale_device" "mullvad_nodes" {
+  for_each = toset(local.mullvad_nodes)
+
+  name     = "${each.value}.${local.tailnet}"
   wait_for = "60s"
 }
 
