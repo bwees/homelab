@@ -48,7 +48,9 @@ resource "tailscale_acl" "acls" {
 
     autoApprovers : {
       "exitNode" : ["tag:nixos", "brandonwees@gmail.com"],
-      "services" : ["tag:kube-service"],
+      "services" : {
+        for cluster in local.clusters : "svc:${cluster}-ingress" => ["tag:kube-service"]
+      },
     },
   })
 

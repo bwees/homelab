@@ -11,5 +11,6 @@ data "onepassword_vault" "homelab_deployment" {
 }
 
 locals {
-  tailnet = "tail72746.ts.net"
+  tailnet  = "tail72746.ts.net"
+  clusters = ["tau-ceti", "hail-mary", "stepien", "eridani"]
 }
