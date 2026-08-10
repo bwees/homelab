@@ -5,3 +5,4 @@ namespace: misc
 resources:
   - namespace.yaml
   - crosshatch/ks.yaml
+  - futomarket/ks.yaml
