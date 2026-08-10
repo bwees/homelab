@@ -21,10 +21,19 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1024Mi
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
             probes:
               liveness: &probes
                 enabled: true
               readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       main:
