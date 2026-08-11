@@ -28,6 +28,11 @@ spec:
             probes:
               liveness: &probes
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
               readiness: *probes
 
     defaultPodOptions:
