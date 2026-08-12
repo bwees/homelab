@@ -2,13 +2,16 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: dfp-http2-window-sizes
+  name: dfp-client-tuning
   namespace: networking
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-dfp
-  tls:
-    alpnProtocols:
-      - http/1.1
+  http2:
+    initialStreamWindowSize: 32Mi
+    initialConnectionWindowSize: 64Mi
+  connection:
+    bufferLimit: 32Mi
+  http3: {}
