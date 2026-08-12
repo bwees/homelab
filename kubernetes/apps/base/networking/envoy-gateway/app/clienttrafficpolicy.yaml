@@ -8,6 +8,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-ingress
-  http2:
-    initialStreamWindowSize: 4Mi
-    initialConnectionWindowSize: 8Mi
+  tls:
+    alpnProtocols:
+      - http/1.1

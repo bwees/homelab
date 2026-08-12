@@ -9,6 +9,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-dfp
-  http2:
-    initialStreamWindowSize: 8Mi
-    initialConnectionWindowSize: 16Mi
+  tls:
+    alpnProtocols:
+      - http/1.1
