@@ -22,5 +22,8 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
+          # prioritize bwees.io falling back if fails
+          - kind: Secret
+            name: bwees-io-tls
           - kind: Secret
             name: wildcard-tls

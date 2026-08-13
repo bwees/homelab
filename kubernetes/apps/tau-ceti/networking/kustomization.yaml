@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: networking
 
 resources:
-  - cert-manager/ks.yaml
   - coredns/ks.yaml
   - dns-records/ks.yaml
   - envoy-dfp/ks.yaml

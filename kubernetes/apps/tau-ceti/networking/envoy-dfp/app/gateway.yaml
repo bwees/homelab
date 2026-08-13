@@ -50,16 +50,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
-    - name: https
-      protocol: HTTPS
+    # Passthrough, so nothing is decrypted here: the origin serves its own
+    # bwees-io-tls and the client validates it end to end. The hostname is the SNI
+    # match, and the SNI is also what the dynamic resolver forwards to.
+    - name: tls
+      protocol: TLS
       port: 443
       hostname: '*.bwees.io'
       allowedRoutes:
         namespaces:
           from: Same
       tls:
-        mode: Terminate
-        certificateRefs:
-          # publicly trusted, not the bwees-ca wildcard-tls used internally
-          - kind: Secret
-            name: bwees-io-tls
+        mode: Passthrough

@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: envoy-gateway
     - name: coredns
-    - name: cert-manager-acme
+    - name: cert-manager-issuers
   sourceRef:
     kind: GitRepository
     name: flux-system

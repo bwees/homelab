@@ -28,6 +28,8 @@ spec:
   wait: false
   dependsOn:
     - name: cert-manager
+    - name: onepassword
+      namespace: secrets
   sourceRef:
     kind: GitRepository
     name: flux-system

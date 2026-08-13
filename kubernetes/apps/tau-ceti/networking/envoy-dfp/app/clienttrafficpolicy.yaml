@@ -9,9 +9,8 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-dfp
-  http2:
-    initialStreamWindowSize: 32Mi
-    initialConnectionWindowSize: 64Mi
+  # Passthrough is a raw TCP relay, so there is no HTTP/2 window or HTTP/3 codec
+  # left to size here. All that remains is Envoy Gateway's 32Ki userspace buffer,
+  # which meters a gigabit relay; the kernel socket buffers absorb the BDP.
   connection:
-    bufferLimit: 32Mi
-  http3: {}
+    bufferLimit: 1Mi

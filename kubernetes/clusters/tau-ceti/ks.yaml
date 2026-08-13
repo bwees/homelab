@@ -130,3 +130,17 @@ spec:
               target:
                 group: source.toolkit.fluxcd.io
                 kind: OCIRepository
+
+    # SNI TLS dynamic forward proxy (TLSRoute -> DynamicResolver) is only available in 1.9.0-rc.1
+    # TODO: remove this patch once 1.9.0 is GA
+    - target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
+        name: envoy-gateway
+      patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: envoy-gateway
+        spec:
+          path: ./kubernetes/apps/tau-ceti/networking/envoy-gateway/app
