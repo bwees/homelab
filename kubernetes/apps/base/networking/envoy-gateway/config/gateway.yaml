@@ -22,8 +22,18 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          # prioritize bwees.io falling back if fails
-          - kind: Secret
-            name: bwees-io-tls
           - kind: Secret
             name: wildcard-tls
+    # only use bwees.io certs with its domain
+    - name: https-public
+      protocol: HTTPS
+      port: 443
+      hostname: '*.bwees.io'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: bwees-io-tls
