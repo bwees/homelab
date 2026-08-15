@@ -29,6 +29,40 @@ spec:
       yearly: 1
 
 ---
+# Nightly restic backup of ${VOLSYNC_CLAIM} to FUTO Backups (offsite).
+# The onkalo operator creates the yucca repository and writes the
+# ${APP}-restic-yucca secret; volsync stays idle until that secret appears,
+# so there is no ExternalSecret here.
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ${APP}-yucca
+  annotations:
+    onkalo.bwees.dev/yucca-endpoint: '${YUCCA_ENDPOINT:=http://futo-backups.storage.svc.cluster.local:22676}'
+    onkalo.bwees.dev/repository-name: ${CLUSTER}-${APP}
+spec:
+  sourcePVC: ${VOLSYNC_CLAIM}
+  trigger:
+    schedule: '${VOLSYNC_SCHEDULE_YUCCA:=0 4 * * *}'
+  restic:
+    repository: ${APP}-restic-yucca
+    copyMethod: Snapshot
+    volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=miroir}'
+    storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir}'
+    cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_UID:=1000}
+      runAsGroup: ${VOLSYNC_GID:=1000}
+      fsGroup: ${VOLSYNC_GID:=1000}
+    pruneIntervalDays: 7
+    retain:
+      daily: 7
+      weekly: 2
+      monthly: 2
+      yearly: 1
+
+---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:

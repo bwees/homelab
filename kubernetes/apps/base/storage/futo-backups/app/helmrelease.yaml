@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: futo-backups
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: futo-backups
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bwees/futo-backup
+              tag: '0.1.0'
+            env:
+              HOST: 0.0.0.0
+              PORT: &port 22676
+              YUCCA_STATE_PATH: /data
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ['ALL']
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: *port
+
+    # The app ships no authentication of its own, so this stays on the internal
+    # gateway only. external-dns creates the record from this route.
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - backups-${CLUSTER}.bwees.lab
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: futo-backups-data
+        globalMounts:
+          - path: /data

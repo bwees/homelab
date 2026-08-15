@@ -6,4 +6,5 @@ resources:
   - namespace.yaml
   - cloudnative-pg/ks.yaml
   - metrics-server/ks.yaml
+  - onkalo/ks.yaml
   - reloader/ks.yaml
