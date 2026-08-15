@@ -17,7 +17,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/onkalo
-              tag: 'v0.1.0'
+              tag: '0.1.0'
             args:
               - --leader-elect
             securityContext:
