@@ -100,6 +100,42 @@ spec:
                 apiVersion: helm.toolkit.fluxcd.io/v2
                 kind: HelmRelease
                 metadata:
+                  name: futo-backups
+                spec:
+                  values:
+                    controllers:
+                      main:
+                        containers:
+                          main:
+                            securityContext:
+                              runAsUser: 0
+                              runAsGroup: 0
+                              capabilities:
+                                add: ['DAC_READ_SEARCH']
+                    defaultPodOptions:
+                      nodeSelector:
+                        kubernetes.io/hostname: astrophage
+                      tolerations:
+                        - key: dedicated
+                          operator: Equal
+                          value: storage
+                          effect: NoSchedule
+                    persistence:
+                      nas:
+                        type: hostPath
+                        hostPath: /mnt/main
+                        globalMounts:
+                          - path: /media/nas
+                            readOnly: true
+              target:
+                group: helm.toolkit.fluxcd.io
+                kind: HelmRelease
+                name: futo-backups
+
+            - patch: |-
+                apiVersion: helm.toolkit.fluxcd.io/v2
+                kind: HelmRelease
+                metadata:
                   name: _
                 spec:
                   install:
