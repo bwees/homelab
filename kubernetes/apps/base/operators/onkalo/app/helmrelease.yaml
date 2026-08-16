@@ -52,6 +52,9 @@ spec:
                   periodSeconds: 10
 
     defaultPodOptions:
+      # app-template defaults this off; without the projected token the manager
+      # cannot build an in-cluster config and exits before it can log why.
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
