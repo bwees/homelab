@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: henrygd/beszel
-              tag: 0.18.7
+              tag: 0.18.8
             env:
               BESZEL_HUB_APP_URL: https://beszel.bwees.lab
             securityContext:
