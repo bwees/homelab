@@ -103,15 +103,6 @@ spec:
                   name: futo-backups
                 spec:
                   values:
-                    controllers:
-                      main:
-                        containers:
-                          main:
-                            securityContext:
-                              runAsUser: 0
-                              runAsGroup: 0
-                              capabilities:
-                                add: ['DAC_READ_SEARCH']
                     defaultPodOptions:
                       nodeSelector:
                         kubernetes.io/hostname: astrophage
