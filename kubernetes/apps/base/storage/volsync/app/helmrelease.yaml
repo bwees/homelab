@@ -15,10 +15,3 @@ spec:
         namespace: storage
   values:
     manageCRDs: true
-    # no-op on clusters without the dedicated=storage taint; lets volsync run on
-    # the tainted astrophage node on hail-mary
-    tolerations:
-      - key: dedicated
-        operator: Equal
-        value: storage
-        effect: NoSchedule

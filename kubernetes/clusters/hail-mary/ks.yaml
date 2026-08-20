@@ -115,11 +115,6 @@ spec:
                     defaultPodOptions:
                       nodeSelector:
                         kubernetes.io/hostname: astrophage
-                      tolerations:
-                        - key: dedicated
-                          operator: Equal
-                          value: storage
-                          effect: NoSchedule
                     persistence:
                       nas:
                         type: hostPath

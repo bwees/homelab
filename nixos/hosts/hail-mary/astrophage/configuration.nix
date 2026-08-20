@@ -10,6 +10,7 @@
     ../../../lib/k3s.nix
     ../../../lib/k3s-multinode.nix
     ../../../lib/miroir.nix
+    ../../../lib/miroir-drbd.nix
     ../../../lib/bwees.nix
     ../../../lib/beszel.nix
     ../../../lib/garbage-collect.nix
@@ -48,7 +49,7 @@
   services.k3s.serverAddr = "https://192.168.50.110:6443";
   services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
   services.k3s.extraFlags = [
-    "--node-taint=dedicated=storage:NoSchedule"
     "--node-label=lab.bwees/role=nas"
+    "--node-label=storage.miroir.home-operations.com/class=std"
   ];
 }
