@@ -14,7 +14,7 @@ spec:
           cluster-routes:
             image:
               repository: tailscale/tailscale
-              tag: 'v1.102.2'
+              tag: 'v1.102.3'
             command: ['/bin/sh', '-c']
             args:
               - |
@@ -51,7 +51,7 @@ spec:
           tailscale:
             image:
               repository: tailscale/tailscale
-              tag: 'v1.102.2'
+              tag: 'v1.102.3'
             env:
               TZ: America/Chicago
               TS_USERSPACE: 'false'
