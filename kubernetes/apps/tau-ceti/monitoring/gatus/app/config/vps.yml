@@ -10,7 +10,7 @@ endpoints:
 
   - name: beszel
     group: vps
-    url: 'https://beszel.bwees.lab/'
+    url: 'https://beszel.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -19,9 +19,10 @@ endpoints:
 
   - name: dns
     group: vps
-    url: '100.102.42.104' # Address of the DNS server to use
+    # confirms external-dns is still publishing into the bwees.dev Cloudflare zone
+    url: '1.1.1.1'
     dns:
-      query-name: 'nas.bwees.lab'
+      query-name: 'nas.bwees.dev'
       query-type: 'A'
     conditions:
       - '[BODY] == 192.168.50.4'

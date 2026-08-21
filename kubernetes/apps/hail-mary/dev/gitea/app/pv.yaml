@@ -14,5 +14,5 @@ spec:
     - nolock
     - soft
   nfs:
-    server: nas.bwees.lab
+    server: nas.bwees.dev
     path: /gitea

@@ -5,5 +5,4 @@ namespace: networking
 
 resources:
   - envoy-gateway/ks.yaml
-  - powerdns/ks.yaml
   - tailscale-operator/ks.yaml

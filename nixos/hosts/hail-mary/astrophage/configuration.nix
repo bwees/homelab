@@ -14,7 +14,6 @@
     ../../../lib/bwees.nix
     ../../../lib/beszel.nix
     ../../../lib/garbage-collect.nix
-    ../../../lib/root-ca.nix
     ../../../lib/tailscale.nix
     ../../../lib/tailscale-pod-nat.nix
     ./storage.nix

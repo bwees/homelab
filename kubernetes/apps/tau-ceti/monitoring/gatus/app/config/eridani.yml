@@ -10,7 +10,7 @@ endpoints:
 
   - name: immich
     group: eridani
-    url: 'http://immich.wees.home'
+    url: 'https://immich.home.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -19,7 +19,7 @@ endpoints:
 
   - name: jellyfin
     group: eridani
-    url: 'http://jellyfin.wees.home'
+    url: 'https://jellyfin.home.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -28,7 +28,7 @@ endpoints:
 
   - name: photoframe
     group: eridani
-    url: 'http://frame.wees.home'
+    url: 'https://frame.home.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'

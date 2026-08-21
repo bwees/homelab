@@ -16,7 +16,7 @@ spec:
               repository: henrygd/beszel
               tag: 0.18.8
             env:
-              BESZEL_HUB_APP_URL: https://beszel.bwees.lab
+              BESZEL_HUB_APP_URL: https://beszel.bwees.dev
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -50,7 +50,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - beszel.bwees.lab
+          - beszel.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

@@ -14,5 +14,3 @@ spec:
   dependsOn:
     - name: onepassword
       namespace: secrets
-    - name: tailscale-operator
-      namespace: networking

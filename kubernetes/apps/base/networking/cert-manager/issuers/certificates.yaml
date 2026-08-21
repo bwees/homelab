@@ -2,25 +2,21 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: wildcard-tls
+  name: bwees-dev-tls
   namespace: networking
 spec:
-  secretName: wildcard-tls
-  duration: 2160h # 90d
-  renewBefore: 720h # 30d
+  secretName: bwees-dev-tls
+  # *.bwees.dev does not cover the home.bwees.dev label, so both are listed
   dnsNames:
-    - 'bwees.io'
-    - '*.bwees.io'
-    - 'wees.home'
-    - '*.wees.home'
-    - 'bwees.lab'
-    - '*.bwees.lab'
+    - 'bwees.dev'
+    - '*.bwees.dev'
+    - '*.home.bwees.dev'
   privateKey:
-    algorithm: RSA
-    size: 2048
+    algorithm: ECDSA
+    size: 256
     rotationPolicy: Always
   issuerRef:
-    name: bwees-ca
+    name: letsencrypt
     kind: ClusterIssuer
     group: cert-manager.io
 

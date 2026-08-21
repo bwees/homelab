@@ -61,7 +61,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - changedetection.bwees.lab
+          - changedetection.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

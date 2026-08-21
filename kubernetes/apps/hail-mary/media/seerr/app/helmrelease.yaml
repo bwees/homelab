@@ -48,7 +48,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - seerr.bwees.lab
+          - seerr.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

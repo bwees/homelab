@@ -64,7 +64,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - backups-${CLUSTER}.bwees.lab
+          - backups-${CLUSTER}.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

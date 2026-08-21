@@ -40,7 +40,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - crosshatch.bwees.lab
+          - crosshatch.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

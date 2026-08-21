@@ -73,9 +73,6 @@ spec:
     schedule: '${VOLSYNC_SCHEDULE_NAS:=30 3 * * *}'
   restic:
     repository: ${APP}-restic-nas
-    customCA:
-      secretName: ${APP}-restic-nas-ca
-      key: ca.crt
     copyMethod: Snapshot
     volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=miroir}'
     storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'

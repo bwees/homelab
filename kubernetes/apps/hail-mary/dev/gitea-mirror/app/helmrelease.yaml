@@ -19,9 +19,9 @@ spec:
               - secretRef:
                   name: gitea-mirror-secret
             env:
-              BETTER_AUTH_URL: https://gitea-mirror.bwees.lab
-              BETTER_AUTH_TRUSTED_ORIGINS: https://gitea-mirror.bwees.lab
-              PUBLIC_BETTER_AUTH_URL: https://gitea-mirror.bwees.lab
+              BETTER_AUTH_URL: https://gitea-mirror.bwees.dev
+              BETTER_AUTH_TRUSTED_ORIGINS: https://gitea-mirror.bwees.dev
+              PUBLIC_BETTER_AUTH_URL: https://gitea-mirror.bwees.dev
               NODE_ENV: production
               DATABASE_URL: file:data/gitea-mirror.db
               HOST: 0.0.0.0
@@ -62,7 +62,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - gitea-mirror.bwees.lab
+          - gitea-mirror.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

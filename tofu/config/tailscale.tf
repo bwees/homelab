@@ -5,11 +5,6 @@ locals {
     "brandon-macbook-pro",
     "qbittorrent"
   ]
-
-  tailscale_dns_routes = [
-    "bwees.lab",
-    "wees.home"
-  ]
 }
 
 resource "tailscale_acl" "acls" {
@@ -80,16 +75,4 @@ data "tailscale_device" "mullvad_nodes" {
 
   name     = "${each.value}.${local.tailnet}"
   wait_for = "60s"
-}
-
-data "tailscale_device" "dns" {
-  name     = "dns.${local.tailnet}"
-  wait_for = "60s"
-}
-
-resource "tailscale_dns_split_nameservers" "split_dns_domains" {
-  for_each = toset(local.tailscale_dns_routes)
-
-  domain      = each.value
-  nameservers = [data.tailscale_device.dns.addresses[0]]
 }

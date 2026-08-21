@@ -10,30 +10,25 @@ spec:
   interval: 1h
   values:
     provider:
-      name: pdns
+      name: cloudflare
     env:
-      - name: EXTERNAL_DNS_PDNS_API_KEY
+      - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: external-dns-pdns
-            key: PDNS_API_KEY
+            name: external-dns-cloudflare
+            key: CF_API_TOKEN
     extraArgs:
-      - --pdns-server=http://dns.tail72746.ts.net:8081
-      - --pdns-api-key=$(EXTERNAL_DNS_PDNS_API_KEY)
-      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
-      - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-ingress
     triggerLoopOnEvent: true
     policy: sync
     sources:
-      - crd
       - gateway-httproute
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.%{record_type}-
+    # bwees.io is deliberately absent: its public wildcard is owned by Tofu, and
+    # the internal per-host view lives in tau-ceti's CoreDNS.
     domainFilters:
-      - bwees.io
-      - bwees.lab
-      - wees.home
+      - bwees.dev
     resources:
       requests:
         cpu: 10m

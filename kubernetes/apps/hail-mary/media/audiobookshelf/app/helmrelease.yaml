@@ -49,7 +49,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - audiobookshelf.bwees.lab
+          - audiobookshelf.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

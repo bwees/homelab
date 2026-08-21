@@ -93,7 +93,7 @@ spec:
             - name: envoy-ingress
               namespace: networking
           hostnames:
-            - immich.wees.home
+            - immich.home.bwees.dev
             - album.bwees.io
           rules:
             - backendRefs:

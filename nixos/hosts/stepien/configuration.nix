@@ -10,7 +10,6 @@
     ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
-    ../../lib/root-ca.nix
     ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix

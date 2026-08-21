@@ -47,13 +47,14 @@ A few things worth calling out about the cluster setup:
 
 Tailscale is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
 
-I run three domains:
+I run two domains:
 
 - `bwees.io` - public services, fronted by Cloudflare.
-- `*.bwees.lab` - personal services, resolved internally over Tailscale.
-- `*.wees.home` - family services, resolved internally over Tailscale.
+- `bwees.dev` - everything internal. `*.bwees.dev` is personal services and `*.home.bwees.dev` is family services.
 
-The internal domains use split DNS served by a PowerDNS instance on `tau-ceti`, with Kubernetes external-dns keeping records in sync.
+Both zones live in Cloudflare. Kubernetes external-dns writes every `bwees.dev` record straight into the zone, so the names resolve publicly even though they point at addresses that are only reachable over Tailscale or on the LAN. That keeps DNS-01 available for real Let's Encrypt certificates on internal services, so there is no private CA to distribute.
+
+`bwees.io` is the exception: its public wildcard points at `tau-ceti`, which forward-proxies by SNI to whichever cluster owns the hostname. Resolving that needs a split-horizon view, which is a static `hosts` block in `tau-ceti`'s CoreDNS - adding a `bwees.io` route means adding an entry there too.
 
 ## OpenTofu
 

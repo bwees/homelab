@@ -1,7 +1,7 @@
 ---
 # The route's hostnames are the access control: anything whose SNI does not match
 # *.bwees.io is rejected before the resolver sees it, so this cannot be aimed at
-# bwees.lab or at arbitrary internet hosts. Envoy Gateway additionally refuses
+# bwees.dev or at arbitrary internet hosts. Envoy Gateway additionally refuses
 # loopback SNIs, and the upstream port is fixed at 443.
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend

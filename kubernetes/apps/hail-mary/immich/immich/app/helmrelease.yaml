@@ -88,7 +88,7 @@ spec:
               namespace: networking
           hostnames:
             - photos.bwees.io
-            - immich.bwees.lab
+            - immich.bwees.dev
           rules:
             - backendRefs:
                 - identifier: main

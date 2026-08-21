@@ -40,7 +40,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - frame.wees.home
+          - frame.home.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

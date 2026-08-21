@@ -10,7 +10,6 @@
     ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
-    ../../lib/root-ca.nix
     ../../lib/storage-backup.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix
@@ -32,13 +31,10 @@
 
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
-  # Expose the klipper LoadBalancer services on the LAN: PowerDNS (:53) serves
-  # *.wees.home to the home network, and envoy-internal (:80/:443) serves the
-  # cluster's internal HTTP(S) ingress. All bind the node IP 10.0.1.2.
+  # Expose the envoy ingress Service on the LAN, bound to the node IP 10.0.1.2.
+  # Public DNS resolves *.home.bwees.dev here, so family devices reach it directly.
   networking.firewall.allowedTCPPorts = [
-    53
     80
     443
   ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
 }

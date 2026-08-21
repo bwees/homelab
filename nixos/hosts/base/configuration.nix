@@ -10,7 +10,6 @@
     ../../lib/bwees.nix
     ../../lib/docker.nix
     ../../lib/garbage-collect.nix
-    ../../lib/root-ca.nix
     ../../lib/tailscale.nix
   ];
 

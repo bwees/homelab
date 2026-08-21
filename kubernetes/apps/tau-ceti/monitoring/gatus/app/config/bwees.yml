@@ -38,7 +38,7 @@ endpoints:
   # Services
   - name: changedetection
     group: lab
-    url: 'https://changedetection.bwees.lab/'
+    url: 'https://changedetection.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -47,7 +47,7 @@ endpoints:
 
   - name: git
     group: lab
-    url: 'https://git.bwees.lab/'
+    url: 'https://git.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -56,7 +56,7 @@ endpoints:
 
   - name: immich
     group: lab
-    url: 'https://immich.bwees.lab/'
+    url: 'https://immich.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -66,7 +66,7 @@ endpoints:
   # Media
   - name: jellyfin
     group: lab-media
-    url: 'https://jellyfin.bwees.lab/'
+    url: 'https://jellyfin.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -75,7 +75,7 @@ endpoints:
 
   - name: seerr
     group: lab-media
-    url: 'https://seerr.bwees.lab/'
+    url: 'https://seerr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -84,7 +84,7 @@ endpoints:
 
   - name: prowlarr
     group: lab-media
-    url: 'https://prowlarr.bwees.lab/'
+    url: 'https://prowlarr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -93,7 +93,7 @@ endpoints:
 
   - name: bittorrent
     group: lab-media
-    url: 'https://bittorrent.bwees.lab/'
+    url: 'https://bittorrent.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -102,7 +102,7 @@ endpoints:
 
   - name: radarr
     group: lab-media
-    url: 'https://radarr.bwees.lab/'
+    url: 'https://radarr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -111,7 +111,7 @@ endpoints:
 
   - name: sonarr
     group: lab-media
-    url: 'https://sonarr.bwees.lab/'
+    url: 'https://sonarr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -120,7 +120,7 @@ endpoints:
 
   - name: tdarr
     group: lab-media
-    url: 'https://tdarr.bwees.lab/'
+    url: 'https://tdarr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -129,7 +129,7 @@ endpoints:
 
   - name: audiobookshelf
     group: lab-media
-    url: 'https://audiobookshelf.bwees.lab/'
+    url: 'https://audiobookshelf.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'
@@ -138,7 +138,7 @@ endpoints:
 
   - name: shelfarr
     group: lab-media
-    url: 'https://shelfarr.bwees.lab/'
+    url: 'https://shelfarr.bwees.dev/'
     interval: 1m
     conditions:
       - '[STATUS] == 200'

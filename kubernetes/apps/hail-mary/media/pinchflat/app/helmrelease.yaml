@@ -62,7 +62,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - pinchflat.bwees.lab
+          - pinchflat.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

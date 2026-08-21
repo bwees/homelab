@@ -13,7 +13,7 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    # tau-ceti answers bwees.io from the internal powerdns view, which holds no
+    # tau-ceti answers bwees.io from a static internal CoreDNS view, which holds no
     # _acme-challenge records, so the self check must bypass cluster DNS.
     dns01RecursiveNameservers: 1.1.1.1:53,1.0.0.1:53
     dns01RecursiveNameserversOnly: true

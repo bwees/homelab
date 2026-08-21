@@ -1,7 +1,14 @@
 ---
 # k3s's CoreDNS already imports /etc/coredns/custom/*.server from an optional
-# ConfigMap of this name. No `fallthrough` on purpose: an unknown host must get
-# NXDOMAIN, not fall back to the public wildcard that points at this node.
+# ConfigMap of this name.
+#
+# Public DNS answers *.bwees.io with this node's own address, so envoy-dfp needs a
+# split-horizon view that resolves each public hostname to the tailnet address of
+# the cluster that owns it. These are maintained by hand: adding a bwees.io route
+# to any cluster means adding it here too, or the forward proxy cannot resolve it.
+#
+# No `fallthrough` on purpose: an unknown host must get NXDOMAIN, not fall back to
+# the public wildcard that points at this node.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,5 +19,11 @@ data:
     bwees.io {
       errors
       cache 30
-      forward . 10.43.148.50
+      hosts {
+        100.83.16.72 fluxhook-tau-ceti.bwees.io stats.bwees.io
+        100.92.76.110 fluxhook-hail-mary.bwees.io photos.bwees.io jellyfin.bwees.io podcasts.bwees.io futomarket.bwees.io dropla.bwees.io
+        100.123.110.122 fluxhook-stepien.bwees.io stepien-immich.bwees.io
+        100.108.214.28 fluxhook-eridani.bwees.io album.bwees.io
+        ttl 60
+      }
     }

@@ -52,7 +52,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - dropla.bwees.lab
+          - dropla.bwees.dev
           - dropla.bwees.io
         rules:
           - backendRefs:

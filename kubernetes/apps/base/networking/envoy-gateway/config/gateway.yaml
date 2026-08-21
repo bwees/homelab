@@ -23,7 +23,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: wildcard-tls
+            name: bwees-dev-tls
     # only use bwees.io certs with its domain
     - name: https-public
       protocol: HTTPS

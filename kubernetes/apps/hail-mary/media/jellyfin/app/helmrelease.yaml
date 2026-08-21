@@ -77,7 +77,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - jellyfin.bwees.lab
+          - jellyfin.bwees.dev
           - jellyfin.bwees.io
         rules:
           - backendRefs:

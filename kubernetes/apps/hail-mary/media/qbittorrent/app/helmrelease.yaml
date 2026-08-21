@@ -96,7 +96,7 @@ spec:
           - name: envoy-ingress
             namespace: networking
         hostnames:
-          - bittorrent.bwees.lab
+          - bittorrent.bwees.dev
         rules:
           - backendRefs:
               - identifier: main

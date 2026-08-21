@@ -5,8 +5,10 @@ resources:
   - ../../../../base/networking/envoy-gateway/config
 
 patches:
-  # Tailnet IP, not the 10.0.1.2 externalIP below: the tau-ceti forward proxy has
-  # to reach this cluster too. LAN clients still get 10.0.1.2 from local powerdns.
+  # home.bwees.dev is public DNS with a single answer, so it points at the LAN IP:
+  # family devices reach it without Tailscale, and the tailnet still gets there via
+  # the 10.0.1.0/24 subnet route this node advertises. The tailnet ingress address
+  # is only used by tau-ceti's forward proxy, out of the static CoreDNS view.
   - target:
       kind: Gateway
       name: envoy-ingress
@@ -16,7 +18,7 @@ patches:
       metadata:
         name: envoy-ingress
         annotations:
-          external-dns.alpha.kubernetes.io/target: 100.108.214.28 # svc:eridani-ingress
+          external-dns.alpha.kubernetes.io/target: 10.0.1.2
   - target:
       kind: EnvoyProxy
       name: envoy-ingress

@@ -2,15 +2,6 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: bwees-ca
-spec:
-  ca:
-    secretName: bwees-ca-key-pair
-
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
   name: letsencrypt
 spec:
   acme:
@@ -27,3 +18,4 @@ spec:
         selector:
           dnsZones:
             - bwees.io
+            - bwees.dev
