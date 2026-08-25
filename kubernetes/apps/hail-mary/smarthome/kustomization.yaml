@@ -5,3 +5,4 @@ namespace: smarthome
 resources:
   - namespace.yaml
   - home-assistant/ks.yaml
+  - matter-server/ks.yaml

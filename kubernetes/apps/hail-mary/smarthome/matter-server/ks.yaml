@@ -1,0 +1,28 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: matter-server
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/hail-mary/smarthome/matter-server/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: miroir-config
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: secrets
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: matter-server
+      VOLSYNC_CLAIM: matter-server-data
+      VOLSYNC_UID: '0'
+      VOLSYNC_GID: '0'
+  targetNamespace: smarthome

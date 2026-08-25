@@ -1,0 +1,74 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: matter-server
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: matter-server
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/matter-js/python-matter-server
+              tag: '8.1.2'
+            env:
+              TZ: America/Chicago
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 5580
+                  timeoutSeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 5580
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 30
+
+    defaultPodOptions:
+      # Matter needs IPv6 multicast/mDNS on the LAN, which the flannel pod
+      # network cannot carry, so the server shares the node's network stack.
+      # That binds 5580 on the host, hence the pin and the Recreate strategy.
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: xenonite
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 5580
+
+    persistence:
+      data:
+        existingClaim: matter-server-data
+        globalMounts:
+          - path: /data
+      dbus:
+        type: hostPath
+        hostPath: /run/dbus
+        hostPathType: Directory
+        globalMounts:
+          - path: /run/dbus
+            readOnly: true
