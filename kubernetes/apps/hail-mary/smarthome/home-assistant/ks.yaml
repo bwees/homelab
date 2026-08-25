@@ -1,0 +1,28 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: home-assistant
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/hail-mary/smarthome/home-assistant/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: miroir-config
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: secrets
+  components:
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: home-assistant
+      VOLSYNC_CLAIM: home-assistant-config
+      VOLSYNC_UID: '568'
+      VOLSYNC_GID: '568'
+  targetNamespace: smarthome
