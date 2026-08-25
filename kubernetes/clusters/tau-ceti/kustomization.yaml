@@ -1,0 +1,69 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - flux-system
+  - ../base
+patches:
+  - target:
+      group: kustomize.toolkit.fluxcd.io
+      version: v1
+      kind: Kustomization
+      name: apps
+    patch: |-
+      - op: add
+        path: /spec/path
+        value: ./kubernetes/apps/tau-ceti
+      - op: add
+        path: /spec/patches/-
+        value:
+          target:
+            group: kustomize.toolkit.fluxcd.io
+            kind: Kustomization
+          patch: |
+            apiVersion: kustomize.toolkit.fluxcd.io/v1
+            kind: Kustomization
+            metadata:
+              name: _
+            spec:
+              postBuild:
+                substitute:
+                  CLUSTER: tau-ceti
+
+  - target:
+      group: kustomize.toolkit.fluxcd.io
+      version: v1
+      kind: Kustomization
+      name: apps-base
+    patch: |-
+      - op: add
+        path: /spec/patches/-
+        value:
+          target:
+            group: kustomize.toolkit.fluxcd.io
+            kind: Kustomization
+          patch: |
+            apiVersion: kustomize.toolkit.fluxcd.io/v1
+            kind: Kustomization
+            metadata:
+              name: _
+            spec:
+              postBuild:
+                substitute:
+                  CLUSTER: tau-ceti
+                  LONGHORN_DATA_REPLICAS: "1"
+                  LONGHORN_CSI_REPLICAS: "1"
+                  MIROIR_DATA_REPLICAS: '"1"'
+      - op: add
+        path: /spec/patches/-
+        value:
+          target:
+            group: kustomize.toolkit.fluxcd.io
+            kind: Kustomization
+            name: envoy-gateway
+          patch: |
+            apiVersion: kustomize.toolkit.fluxcd.io/v1
+            kind: Kustomization
+            metadata:
+              name: envoy-gateway
+            spec:
+              path: ./kubernetes/apps/tau-ceti/networking/envoy-gateway/app
