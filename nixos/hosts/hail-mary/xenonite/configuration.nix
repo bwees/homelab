@@ -28,6 +28,28 @@
   networking.networkmanager.enable = true;
   time.timeZone = "America/Chicago";
 
+  # IoT VLAN
+  networking.networkmanager.ensureProfiles.profiles.iot0 = {
+    connection = {
+      id = "iot0";
+      type = "vlan";
+      interface-name = "iot0";
+    };
+    vlan = {
+      parent = "enp7s0";
+      id = "30";
+    };
+    ipv4.method = "auto";
+    ipv6.method = "auto";
+  };
+
+  networking.firewall.interfaces."iot0" = {
+    allowedUDPPorts = [
+      5353 # mDNS service discovery
+      5540 # Matter operational traffic
+    ];
+  };
+
   services.tailscale.extraUpFlags = [
     "--advertise-tags=tag:hail-mary,tag:nixos"
   ];

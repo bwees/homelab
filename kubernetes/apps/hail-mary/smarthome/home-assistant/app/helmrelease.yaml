@@ -48,6 +48,10 @@ spec:
                   failureThreshold: 30
 
     defaultPodOptions:
+      # Needs the node's iot0 VLAN interface for mDNS discovery
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: xenonite
       securityContext:
         runAsUser: 568
         runAsGroup: 568
