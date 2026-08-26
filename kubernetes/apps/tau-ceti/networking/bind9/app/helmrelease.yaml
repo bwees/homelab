@@ -16,7 +16,7 @@ spec:
           zone-init:
             image:
               repository: internetsystemsconsortium/bind9
-              tag: '9.20'
+              tag: '9.21'
             command:
               - sh
               - -c
@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: internetsystemsconsortium/bind9
-              tag: '9.20'
+              tag: '9.21'
             # -g keeps named in the foreground and forces logging to stderr; the
             # image's default args log to a file instead.
             args:
