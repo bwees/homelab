@@ -18,6 +18,16 @@ spec:
               tag: '8.1.2'
             env:
               TZ: America/Chicago
+            # Devices advertise link-local AAAA records only, so the SDK needs a
+            # scope interface. Repeats the image's default args, which are lost
+            # once args is set.
+            args:
+              - --storage-path
+              - /data
+              - --paa-root-cert-dir
+              - /data/credentials
+              - --primary-interface
+              - iot0
             resources:
               requests:
                 cpu: 50m

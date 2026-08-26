@@ -50,6 +50,13 @@
     ];
   };
 
+  # hostNetwork pods bind on the node, so envoy arrives over the LAN (masqueraded
+  # to its node's IP) instead of the pod CIDR that k3s already accepts.
+  networking.firewall.interfaces."enp7s0".allowedTCPPorts = [
+    8123 # Home Assistant
+    5580 # Matter server websocket
+  ];
+
   services.tailscale.extraUpFlags = [
     "--advertise-tags=tag:hail-mary,tag:nixos"
   ];
