@@ -73,6 +73,7 @@ spec:
             namespace: networking
         hostnames:
           - hass.bwees.dev
+          - hass.bwees.io
         rules:
           - backendRefs:
               - identifier: main
