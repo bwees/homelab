@@ -44,6 +44,9 @@
   };
 
   networking.firewall.interfaces."iot0" = {
+    allowedTCPPorts = [
+      1883 # MQTT broker
+    ];
     allowedUDPPorts = [
       5353 # mDNS service discovery
       5540 # Matter operational traffic

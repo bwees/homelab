@@ -50,13 +50,12 @@ spec:
     service:
       main:
         controller: main
-        # NodePort + Local makes external-dns publish the internal IP of the node
-        # actually running the broker, which is the address clients reach on 1883.
-        # The allocated node port itself goes unused.
-        type: NodePort
-        externalTrafficPolicy: Local
+        # IoT devices reach the broker over xenonite's iot0 VLAN interface, which
+        # is not one of the node's Kubernetes addresses, so the record is written
+        # by hand rather than derived from the Service.
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.bwees.dev
+          external-dns.alpha.kubernetes.io/target: 192.168.30.106
         ports:
           mqtt:
             port: 1883
