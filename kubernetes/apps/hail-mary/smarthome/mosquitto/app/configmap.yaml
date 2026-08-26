@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-config
+  namespace: smarthome
+data:
+  mosquitto.conf: |
+    listener 1883
+    allow_anonymous true
+
+    persistence true
+    persistence_location /mosquitto/data/
+    autosave_interval 300
+
+    log_dest stdout

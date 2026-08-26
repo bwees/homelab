@@ -1,0 +1,14 @@
+---
+# Holds retained messages and in-flight QoS state only. Not backed up: devices
+# and Home Assistant republish everything on reconnect.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mosquitto-data
+  namespace: smarthome
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,74 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mosquitto
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: mosquitto
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: docker.io/library/eclipse-mosquitto
+              tag: '2.1.2-alpine'
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 1883
+                  timeoutSeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+
+    defaultPodOptions:
+      # IoT devices dial 1883 by IP, so the broker takes the node's own port
+      # rather than a NodePort. That pins it to one node, hence Recreate.
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: xenonite
+      securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
+        runAsNonRoot: true
+        fsGroup: 1883
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        # NodePort + Local makes external-dns publish the internal IP of the node
+        # actually running the broker, which is the address clients reach on 1883.
+        # The allocated node port itself goes unused.
+        type: NodePort
+        externalTrafficPolicy: Local
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: mqtt.bwees.dev
+        ports:
+          mqtt:
+            port: 1883
+
+    persistence:
+      data:
+        existingClaim: mosquitto-data
+        globalMounts:
+          - path: /mosquitto/data
+      config:
+        type: configMap
+        name: mosquitto-config
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
