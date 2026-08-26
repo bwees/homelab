@@ -46,6 +46,12 @@ patches:
                       group: helm.toolkit.fluxcd.io
                       kind: HelmRelease
 
+                  # `controllers` only means anything to app-template. Charts that
+                  # ship a strict values.schema.json reject it outright and their
+                  # upgrade fails, which leaves a NotReady HelmRelease silently
+                  # freezing every Kustomization that dependsOn it. Those charts
+                  # opt out with lab.bwees/probe-defaults: disabled ("!=" still
+                  # matches every release that omits the annotation).
                   - patch: |-
                       apiVersion: helm.toolkit.fluxcd.io/v2
                       kind: HelmRelease
@@ -68,6 +74,7 @@ patches:
                     target:
                       group: helm.toolkit.fluxcd.io
                       kind: HelmRelease
+                      annotationSelector: lab.bwees/probe-defaults!=disabled
 
                   - patch: |-
                       apiVersion: source.toolkit.fluxcd.io/v1
