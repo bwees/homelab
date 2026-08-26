@@ -21,7 +21,7 @@ data:
       cache 30
       hosts {
         100.83.16.72 fluxhook-tau-ceti.bwees.io stats.bwees.io
-        100.92.76.110 fluxhook-hail-mary.bwees.io photos.bwees.io jellyfin.bwees.io podcasts.bwees.io futomarket.bwees.io dropla.bwees.io
+        100.92.76.110 fluxhook-hail-mary.bwees.io photos.bwees.io jellyfin.bwees.io podcasts.bwees.io futomarket.bwees.io dropla.bwees.io hass.bwees.io
         100.123.110.122 fluxhook-stepien.bwees.io stepien-immich.bwees.io
         100.108.214.28 fluxhook-eridani.bwees.io album.bwees.io
         ttl 60
