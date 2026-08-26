@@ -1,0 +1,60 @@
+---
+# The zone seed uses $TTL, which Flux's postBuild would otherwise blank out.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bind9-config
+  namespace: networking
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+data:
+  named.conf: |
+    options {
+        directory "/var/cache/bind";
+        listen-on port 53 { any; };
+        listen-on-v6 { none; };
+
+        // envoy-dfp resolves through this server alone, so names outside bwees.io
+        // still have to be answered: cluster.local to reach its xDS control
+        // plane, and tail72746.ts.net to chase the CNAME targets below. Hand
+        // those to CoreDNS, which already resolves both.
+        recursion yes;
+        allow-recursion { 10.42.0.0/16; };
+        forwarders { 10.43.0.10; };
+        forward only;
+        // cluster.local has no delegation from the root, so validating it would
+        // SERVFAIL every in-cluster name.
+        dnssec-validation no;
+
+        allow-query { any; };
+        allow-transfer { none; };
+        version none;
+    };
+
+    // external-dns rebuilds the zone from the routes on every loop, so there is
+    // nothing to freeze/thaw by hand and no need for an rndc key.
+    controls { };
+
+    include "/etc/bind/tsig/external-dns.key";
+
+    zone "bwees.io" {
+        type primary;
+        file "/var/lib/bind/bwees.io.zone";
+        allow-update { key "external-dns"; };
+        // external-dns reads the zone back by AXFR before computing changes.
+        allow-transfer { key "external-dns"; };
+        notify no;
+    };
+
+  # Seeded once into the data volume; from then on the zone is owned by the
+  # dynamic-update journal and must not be written from here.
+  bwees.io.zone: |
+    $TTL 60
+    @   IN  SOA ns1.bwees.io. hostmaster.bwees.io. (
+            1     ; serial
+            3600  ; refresh
+            600   ; retry
+            86400 ; expire
+            60 )  ; negative TTL
+    @   IN  NS  ns1.bwees.io.
+    ns1 IN  A   10.43.148.53

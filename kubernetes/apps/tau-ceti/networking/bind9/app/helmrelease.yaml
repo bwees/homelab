@@ -1,0 +1,109 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bind9
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: bind9
+  interval: 1h
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        initContainers:
+          zone-init:
+            image:
+              repository: internetsystemsconsortium/bind9
+              tag: '9.20'
+            command:
+              - sh
+              - -c
+              - >-
+                [ -f /var/lib/bind/bwees.io.zone ] ||
+                cp /etc/bind/seed/bwees.io.zone /var/lib/bind/bwees.io.zone;
+                chown -R 53:53 /var/lib/bind
+        containers:
+          main:
+            image:
+              repository: internetsystemsconsortium/bind9
+              tag: '9.20'
+            # -g keeps named in the foreground and forces logging to stderr; the
+            # image's default args log to a file instead.
+            args:
+              - -g
+              - -c
+              - /etc/bind/named.conf
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 53
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    defaultPodOptions:
+      securityContext:
+        # named starts as root to bind :53, then drops to the image's bind user.
+        fsGroup: 53
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        # envoy-dfp names this address directly in its pod dnsConfig, so it has to
+        # be stable across reinstalls.
+        clusterIP: 10.43.148.53
+        # The other clusters' external-dns reach it here as dns.tail72746.ts.net;
+        # the operator exposes it as a dedicated tailnet device (L3 TCP/UDP DNAT).
+        annotations:
+          tailscale.com/expose: 'true'
+          tailscale.com/hostname: dns
+        ports:
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dns-udp:
+            port: 53
+            protocol: UDP
+
+    persistence:
+      data:
+        existingClaim: bind9-data
+        advancedMounts:
+          main:
+            zone-init:
+              - path: /var/lib/bind
+            main:
+              - path: /var/lib/bind
+
+      config:
+        type: configMap
+        name: bind9-config
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/bind/named.conf
+                subPath: named.conf
+            zone-init:
+              - path: /etc/bind/seed/bwees.io.zone
+                subPath: bwees.io.zone
+
+      tsig:
+        type: secret
+        name: bind9-tsig
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/bind/tsig
+                readOnly: true

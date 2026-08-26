@@ -13,8 +13,8 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    # tau-ceti answers bwees.io from a static internal CoreDNS view, which holds no
-    # _acme-challenge records, so the self check must bypass cluster DNS.
+    # bwees.io has a split-horizon view (tau-ceti's bind9) that holds no
+    # _acme-challenge records, so the self check must not follow cluster DNS.
     dns01RecursiveNameservers: 1.1.1.1:53,1.0.0.1:53
     dns01RecursiveNameserversOnly: true
     crds:

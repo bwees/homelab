@@ -11,7 +11,7 @@ spec:
   wait: false
   dependsOn:
     - name: envoy-gateway
-    - name: coredns
+    - name: bind9
     - name: cert-manager-issuers
   sourceRef:
     kind: GitRepository

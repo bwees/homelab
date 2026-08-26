@@ -8,7 +8,8 @@ patches:
   # home.bwees.dev is public DNS with a single answer, so it points at the LAN IP:
   # family devices reach it without Tailscale, and the tailnet still gets there via
   # the 10.0.1.0/24 subnet route this node advertises. The tailnet ingress address
-  # is only used by tau-ceti's forward proxy, out of the static CoreDNS view.
+  # is only used by tau-ceti's forward proxy, which resolves bwees.io out of
+  # bind9 - where external-dns-bind overrides this target with the ingress VIP.
   - target:
       kind: Gateway
       name: envoy-ingress

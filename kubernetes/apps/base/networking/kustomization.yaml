@@ -9,3 +9,4 @@ resources:
   - envoy-gateway/ks.yaml
   - tailscale-operator/ks.yaml
   - external-dns/ks.yaml
+  - external-dns-bind/ks.yaml

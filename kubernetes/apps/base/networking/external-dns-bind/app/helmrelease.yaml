@@ -1,0 +1,51 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-dns-bind
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: external-dns-bind
+  interval: 1h
+  values:
+    provider:
+      name: rfc2136
+    env:
+      - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-rfc2136
+            key: TSIG_SECRET
+    extraArgs:
+      - --gateway-name=envoy-ingress
+      - --rfc2136-host=dns.tail72746.ts.net
+      - --rfc2136-port=53
+      - --rfc2136-zone=bwees.io
+      - --rfc2136-tsig-keyname=external-dns
+      - --rfc2136-tsig-secret-alg=hmac-sha256
+      # external-dns reads the zone back by AXFR to work out what it already owns.
+      - --rfc2136-tsig-axfr
+      - --rfc2136-min-ttl=60s
+      # The Gateway's target annotation is the bwees.dev answer, which on eridani
+      # is a LAN address the forward proxy cannot reach. Override it: this view
+      # always points at the cluster's ingress VIPService, as a CNAME so no
+      # tailnet address is ever pinned in config.
+      - --default-targets=${CLUSTER}-ingress.tail72746.ts.net
+      - --force-default-targets
+    triggerLoopOnEvent: true
+    policy: sync
+    sources:
+      - gateway-httproute
+    # Every cluster writes into the one bwees.io zone, so ownership is what keeps
+    # them from pruning each other's records.
+    txtOwnerId: ${CLUSTER}
+    txtPrefix: k8s.%{record_type}-
+    domainFilters:
+      - bwees.io
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi

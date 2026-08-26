@@ -1,0 +1,15 @@
+---
+# Holds the zone file and its dynamic-update journal. Not backed up: every record
+# is derived from a Gateway route, so each cluster's external-dns rewrites the
+# whole zone within one reconcile loop of an empty volume.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bind9-data
+  namespace: networking
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 256Mi

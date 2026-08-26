@@ -23,10 +23,12 @@ spec:
     policy: sync
     sources:
       - gateway-httproute
+      # Only Services carrying an external-dns hostname annotation are picked up.
+      - service
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.%{record_type}-
     # bwees.io is deliberately absent: its public wildcard is owned by Tofu, and
-    # the internal per-host view lives in tau-ceti's CoreDNS.
+    # the internal per-host view is written by external-dns-bind instead.
     domainFilters:
       - bwees.dev
     resources:

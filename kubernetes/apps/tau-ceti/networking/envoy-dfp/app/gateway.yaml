@@ -31,6 +31,31 @@ spec:
                 - 45.137.192.163
       envoyDeployment:
         replicas: 1
+        # The dynamic resolver has to see the split-horizon view of bwees.io, so
+        # bind9 answers for these pods instead of CoreDNS. It is deliberately the
+        # only nameserver: resolv.conf falls through on timeout, and a fallback
+        # would answer from the public wildcard - which points back at this proxy,
+        # turning an outage into an SNI loop. bind9 relays cluster.local (needed
+        # for xDS) and tail72746.ts.net on to CoreDNS itself.
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  dnsPolicy: None
+                  dnsConfig:
+                    nameservers:
+                      - 10.43.148.53
+                    searches:
+                      - networking.svc.cluster.local
+                      - svc.cluster.local
+                      - cluster.local
+                    # ndots:5 would walk every search domain before trying the
+                    # hostname the client actually asked for.
+                    options:
+                      - name: ndots
+                        value: '1'
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
