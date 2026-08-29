@@ -10,7 +10,7 @@
     ../../lib/bwees.nix
     ../../lib/docker.nix
     ../../lib/garbage-collect.nix
-    ../../lib/tailscale.nix
+    ../../lib/netbird.nix
   ];
 
   system.stateVersion = "25.11";

@@ -4,11 +4,11 @@ This repository houses the infrastructure configuration for my homelab. The enti
 
 - **NixOS** provisions and configures every machine. Updates are manually applied.
 - **Kubernetes** (k3s) runs the applications, managed with Flux via GitOps.
-- **OpenTofu** manages the external services used by the homelab (Cloudflare, Tailscale, and 1Password).
+- **OpenTofu** manages the external services used by the homelab (Cloudflare, NetBird, and 1Password).
 
 ## NixOS
 
-Every node runs NixOS, defined in [nixos/](nixos/). Each host has its own directory under [nixos/hosts/](nixos/hosts/), and shared functionality lives in reusable modules under [nixos/lib/](nixos/lib/) (k3s, Tailscale, Docker, Longhorn prerequisites, backups, garbage collection, and so on). The [flake](nixos/flake.nix) wires each host configuration into a `nixosConfiguration`.
+Every node runs NixOS, defined in [nixos/](nixos/). Each host has its own directory under [nixos/hosts/](nixos/hosts/), and shared functionality lives in reusable modules under [nixos/lib/](nixos/lib/) (k3s, NetBird, Docker, Longhorn prerequisites, backups, garbage collection, and so on). The [flake](nixos/flake.nix) wires each host configuration into a `nixosConfiguration`.
 
 Nodes are partitioned with Disko and can be provisioned from scratch using nixos-anywhere. Once a machine is up, configuration changes are pushed with `nixos-rebuild switch`. Both of these are wrapped as mise tasks:
 
@@ -45,14 +45,16 @@ A few things worth calling out about the cluster setup:
 
 ## Networking
 
-Tailscale is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
+NetBird is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
+
+Unlike a Tailscale operator setup, nothing sits in front of a workload to put it on the mesh: the [netbird-operator](kubernetes/apps/base/networking/netbird-operator/) injects a NetBird client into the pod itself, so envoy, bind9 and wolf each answer on their own peer address. `SidecarProfile` publishes a stable DNS label per role (`<cluster>-ingress`, `dns`, `wolf`), and every DNS record targets that label rather than an overlay IP.
 
 I run two domains:
 
 - `bwees.io` - public services, fronted by Cloudflare.
 - `bwees.dev` - everything internal. `*.bwees.dev` is personal services and `*.home.bwees.dev` is family services.
 
-Both zones live in Cloudflare. Kubernetes external-dns writes every `bwees.dev` record straight into the zone, so the names resolve publicly even though they point at addresses that are only reachable over Tailscale or on the LAN. That keeps DNS-01 available for real Let's Encrypt certificates on internal services, so there is no private CA to distribute.
+Both zones live in Cloudflare. Kubernetes external-dns writes every `bwees.dev` record straight into the zone, so the names resolve publicly even though they point at addresses that are only reachable over NetBird or on the LAN. That keeps DNS-01 available for real Let's Encrypt certificates on internal services, so there is no private CA to distribute.
 
 `bwees.io` is the exception: its public wildcard points at `tau-ceti`, which forward-proxies by SNI to whichever cluster owns the hostname. Resolving that needs a split-horizon view, which is a static `hosts` block in `tau-ceti`'s CoreDNS - adding a `bwees.io` route means adding an entry there too.
 
@@ -61,7 +63,7 @@ Both zones live in Cloudflare. Kubernetes external-dns writes every `bwees.dev` 
 The external services that live outside of Kubernetes are managed with OpenTofu in [tofu/](tofu/). This currently covers:
 
 - **Cloudflare** - Zero Trust tunnels and the public DNS records that point at them.
-- **Tailscale** - ACLs, DNS preferences, nameservers, and split DNS configuration.
+- **NetBird** - groups, access policies, nameservers, network routes and exit nodes (including the AirVPN egress route), and the setup keys the NixOS nodes log in with.
 - **1Password** - storing generated secrets (such as tunnel tokens) back into the vault so the clusters can consume them.
 
 State is stored in a Cloudflare R2 bucket, and all provider credentials are pulled from 1Password at plan/apply time.

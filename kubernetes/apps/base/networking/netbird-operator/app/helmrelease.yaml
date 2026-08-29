@@ -1,0 +1,42 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: netbird-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: netbird-operator
+  values:
+    # Management URL defaults to https://api.netbird.io; set it here to point
+    # every client this operator injects at a self-hosted control plane.
+    cluster:
+      name: ${CLUSTER}
+    netbirdAPI:
+      keyFromSecret:
+        name: netbird-api
+        key: NB_API_KEY
+    webhook:
+      enableCertManager: true
+      # The pod webhook is cluster-wide by default with failurePolicy: Fail, which
+      # would make the operator a hard dependency of *every* pod admission - a
+      # cluster-wide reboot could then deadlock on it. Scoped to the pods that are
+      # supposed to get a client, Fail keeps its useful meaning: a pod that must be
+      # on the mesh never starts silently off it.
+      objectSelector:
+        matchExpressions:
+          - key: lab.bwees/netbird
+            operator: Exists
+    # Superseded by SidecarProfile/NetworkRouter; the annotation-driven ingress
+    # would stand up its own routing peers on top of them.
+    ingress:
+      enabled: false
+    routingClientImage: docker.io/netbirdio/netbird:0.77.1
+    operator:
+      resources:
+        requests:
+          cpu: 25m
+          memory: 128Mi
+        limits:
+          memory: 512Mi

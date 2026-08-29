@@ -9,14 +9,11 @@ spec:
     type: Kubernetes
     kubernetes:
       useListenerPortAsContainerPort: true
-      # operator exposes this at L3 (raw TCP DNAT) so envoy still terminates the
-      # wildcard TLS; ProxyGroup backing gives HA across nodes.
+      # Reached over NetBird, not through this Service: the netbird-operator
+      # injects a client into every envoy pod, so each replica answers on its own
+      # peer address and publishes the `${CLUSTER}-ingress` DNS label.
       envoyService:
         type: ClusterIP
-        annotations:
-          tailscale.com/expose: 'true'
-          tailscale.com/proxy-group: ${CLUSTER}-ingress
-          tailscale.com/hostname: ${CLUSTER}-ingress
       envoyDeployment:
         replicas: 1
         patch:
@@ -24,6 +21,9 @@ spec:
           value:
             spec:
               template:
+                metadata:
+                  labels:
+                    lab.bwees/netbird: ingress
                 spec:
                   containers:
                     - name: envoy

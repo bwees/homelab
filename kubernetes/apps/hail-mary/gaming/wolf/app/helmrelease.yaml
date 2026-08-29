@@ -52,15 +52,14 @@ spec:
               privileged: true
 
     defaultPodOptions:
+      labels:
+        lab.bwees/netbird: wolf
       nodeSelector:
         kubernetes.io/hostname: xenonite
 
     service:
       main:
         controller: main
-        annotations:
-          tailscale.com/expose: 'true'
-          tailscale.com/hostname: wolf
         ports:
           https:
             port: 47989

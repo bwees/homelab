@@ -14,8 +14,7 @@
     ../../../lib/bwees.nix
     ../../../lib/beszel.nix
     ../../../lib/garbage-collect.nix
-    ../../../lib/tailscale.nix
-    ../../../lib/tailscale-pod-nat.nix
+    ../../../lib/netbird.nix
     ./storage.nix
     ./shares.nix
     ./backups.nix
@@ -30,10 +29,6 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
-
-  services.tailscale.extraUpFlags = [
-    "--advertise-tags=tag:hail-mary,tag:nixos"
-  ];
 
   # for zfs
   networking.hostId = "9806791d";

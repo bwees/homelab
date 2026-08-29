@@ -1,0 +1,18 @@
+---
+# gluetun sets every iptables policy to DROP and rebuilds its rules on each
+# (re)connect, running this file afterwards every time. NetBird's own chains are
+# not part of that rebuild, so the mesh needs its holes punched here:
+#   - wt0 in/out: the client's overlay traffic, including DNS it serves locally
+#   - wt0 <-> tun0 forwarding: the actual exit-node path
+# Everything else stays denied, so a tunnel that drops takes the exit node with it
+# instead of leaking to the ISP.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airvpn-exit-post-rules
+data:
+  post-rules.txt: |
+    iptables -A INPUT -i wt0 -j ACCEPT
+    iptables -A OUTPUT -o wt0 -j ACCEPT
+    iptables -A FORWARD -i wt0 -o tun0 -j ACCEPT
+    iptables -A FORWARD -i tun0 -o wt0 -j ACCEPT

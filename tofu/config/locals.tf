@@ -15,6 +15,11 @@ data "onepassword_vault" "homelab_deployment" {
 }
 
 locals {
-  tailnet  = "tail72746.ts.net"
   clusters = ["tau-ceti", "hail-mary", "stepien", "eridani"]
+
+  # Clusters whose node also serves an exit node (and, for eridani, the LAN route).
+  node_exit_groups = {
+    "eridani"  = [netbird_group.exit_node_home.id]
+    "tau-ceti" = [netbird_group.exit_node_vps.id]
+  }
 }

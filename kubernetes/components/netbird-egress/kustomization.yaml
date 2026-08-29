@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+patches:
+  # Selected by kind, not by name: components are applied before postBuild, so a
+  # `${APP}` in the target would never match the rendered HelmRelease.
+  - path: ./helmrelease.yaml
+    target:
+      group: helm.toolkit.fluxcd.io
+      kind: HelmRelease

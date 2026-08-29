@@ -1,0 +1,135 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: airvpn-exit
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: airvpn-exit
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          # gluetun owns the pod's default route and its firewall. Everything else
+          # in this pod egresses through AirVPN or not at all.
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.3
+            env:
+              TZ: America/Chicago
+              VPN_SERVICE_PROVIDER: airvpn
+              VPN_TYPE: wireguard
+              SERVER_COUNTRIES: Netherlands
+              # Reaching the cluster (API, CoreDNS, the pods that route through
+              # here) must not go over AirVPN, so both cluster CIDRs stay on eth0.
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+              DOT: 'off'
+            envFrom:
+              - secretRef:
+                  name: airvpn
+            securityContext:
+              capabilities:
+                add: ['NET_ADMIN']
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+          # The routing peer. NetBird's own control plane and WireGuard traffic
+          # ride the AirVPN tunnel like everything else, so peers see it at the
+          # AirVPN exit address - which only works as a direct connection because
+          # NB_WIREGUARD_PORT is the port AirVPN forwards back to us. Without the
+          # match it still connects, but every byte goes through a NetBird relay.
+          main:
+            image:
+              repository: docker.io/netbirdio/netbird
+              tag: 0.77.1
+            env:
+              TZ: America/Chicago
+              NB_MANAGEMENT_URL: https://api.netbird.io
+              NB_HOSTNAME: ${CLUSTER}-airvpn-exit
+              NB_LOG_FILE: console
+              # The peer's key and identity live in the config file, which defaults
+              # to /etc/netbird - point both at the volume or the exit node comes
+              # back as a brand new peer on every restart.
+              NB_CONFIG: /var/lib/netbird/config.json
+              NB_STATE_DIR: /var/lib/netbird
+              NB_DISABLE_PROFILES: 'true'
+              NB_DISABLE_UPDATE_SETTINGS: 'true'
+              NB_SETUP_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: setup-key-airvpn-exit
+                    key: setup-key
+              NB_WIREGUARD_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: airvpn
+                    key: NB_WIREGUARD_PORT
+            securityContext:
+              privileged: true
+              capabilities:
+                add: ['NET_ADMIN', 'SYS_RESOURCE', 'SYS_ADMIN']
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ['netbird', 'status', '--check', 'live']
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  failureThreshold: 4
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ['netbird', 'status', '--check', 'ready']
+                  periodSeconds: 30
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+    defaultPodOptions:
+      # A single peer holds the 0.0.0.0/0 route, so it must not be scheduled onto
+      # the node that also serves the cluster's ingress bandwidth. ip_forward is
+      # left to the privileged NetBird container, which enables it per netns when
+      # it takes a route - net.ipv4.ip_forward is not a kubelet-safe sysctl.
+      nodeSelector:
+        kubernetes.io/hostname: rocky
+
+    persistence:
+      state:
+        existingClaim: airvpn-exit-state
+        advancedMounts:
+          main:
+            main:
+              - path: /var/lib/netbird
+      post-rules:
+        type: configMap
+        name: airvpn-exit-post-rules
+        advancedMounts:
+          main:
+            gluetun:
+              - path: /iptables/post-rules.txt
+                subPath: post-rules.txt
+      dev-net-tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        advancedMounts:
+          main:
+            gluetun:
+              - path: /dev/net/tun
+            main:
+              - path: /dev/net/tun

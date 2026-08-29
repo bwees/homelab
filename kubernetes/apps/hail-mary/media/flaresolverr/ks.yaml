@@ -11,5 +11,10 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: tailscale
+    - name: netbird
+  components:
+    - ../../../../../components/netbird-egress
+  postBuild:
+    substitute:
+      APP: flaresolverr
   targetNamespace: media

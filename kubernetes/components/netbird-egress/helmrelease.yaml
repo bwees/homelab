@@ -1,0 +1,41 @@
+---
+# Sends every container in the app's pod out through the NetBird exit node instead
+# of the node's ISP. The label is what a SidecarProfile matches to inject the
+# client; the account-side 0.0.0.0/0 route is what makes the client take over the
+# pod's default route (Tofu owns it, distributed to the vpn-clients group).
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: _ # replaced by the target selector
+spec:
+  values:
+    controllers:
+      main:
+        initContainers:
+          # NetBird's own ip rule (priority 105) only sends a packet back to the
+          # main table if a *specific* route matches there, and a pod's main table
+          # holds nothing but a default route - so without these two rules the
+          # exit node swallows CoreDNS, the API server and the replies to envoy.
+          # Priority has to beat 105; the rules land at 100.
+          netbird-cluster-routes:
+            image:
+              repository: docker.io/netbirdio/netbird
+              tag: 0.77.1
+            command: ['/bin/sh', '-c']
+            # No shell variables: Flux's postBuild blanks anything $-prefixed.
+            args:
+              - |
+                ip rule del to 10.42.0.0/16 lookup main priority 100 2>/dev/null || true
+                ip rule del to 10.43.0.0/16 lookup main priority 100 2>/dev/null || true
+                ip rule add to 10.42.0.0/16 lookup main priority 100
+                ip rule add to 10.43.0.0/16 lookup main priority 100
+                ip rule list | grep 100
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ['NET_ADMIN']
+
+    defaultPodOptions:
+      labels:
+        lab.bwees/netbird: airvpn-egress

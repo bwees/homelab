@@ -17,9 +17,10 @@ spec:
       namespace: storage
     - name: onepassword
       namespace: secrets
-    - name: tailscale
+    - name: netbird
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/netbird-egress
   postBuild:
     substitute:
       APP: prowlarr

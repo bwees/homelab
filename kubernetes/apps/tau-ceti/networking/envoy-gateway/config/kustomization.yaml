@@ -3,15 +3,3 @@ kind: Kustomization
 
 resources:
   - ../../../../base/networking/envoy-gateway/config
-
-patches:
-  - target:
-      kind: Gateway
-      name: envoy-ingress
-    patch: |-
-      apiVersion: gateway.networking.k8s.io/v1
-      kind: Gateway
-      metadata:
-        name: envoy-ingress
-        annotations:
-          external-dns.alpha.kubernetes.io/target: 100.83.16.72 # tau-ceti-ingress.tail72746.ts.net

@@ -1,0 +1,22 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: netbird
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/hail-mary/media/netbird/app
+  prune: true
+  # apps below select on this profile, and an injected pod that starts before it
+  # exists silently gets no client at all.
+  wait: true
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: netbird-peers
+      namespace: networking
+    - name: airvpn-exit
+      namespace: networking
+  targetNamespace: media

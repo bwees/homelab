@@ -9,15 +9,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: qbittorrent-tailscale-state
-  namespace: media
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: miroir
-  resources:
-    requests:
-      storage: 100Mi

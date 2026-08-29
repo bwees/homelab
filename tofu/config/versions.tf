@@ -10,9 +10,9 @@ terraform {
       version = "5.24.0"
     }
 
-    tailscale = {
-      source  = "tailscale/tailscale"
-      version = "0.29.2"
+    netbird = {
+      source  = "netbirdio/netbird"
+      version = "0.0.10"
     }
   }
 }

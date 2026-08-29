@@ -12,6 +12,10 @@ let
   '';
 in
 {
+  # The injected NetBird clients (ingress, dns, wolf, media egress) run as pods, and
+  # flannel's masquerade would otherwise leave every one of them relay-only.
+  imports = [ ./netbird-pod-nat.nix ];
+
   services.k3s = {
     enable = true;
     role = "server";
@@ -34,9 +38,9 @@ in
 
   services.logind.settings.Login.InhibitDelayMaxSec = 130;
 
-  # expose k3s ports to tailscale0 interface for remote access
+  # expose k3s ports to the NetBird interface for remote access
   # use k3s-multinode.nix for multi-node clusters, which exposes the same ports on the LAN interface
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
+  networking.firewall.interfaces."wt0".allowedTCPPorts = [
     6443 # kube-apiserver
     10250 # kubelet metrics
   ];

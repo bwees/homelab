@@ -11,7 +11,7 @@
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
     ../../lib/storage-backup.nix
-    ../../lib/tailscale.nix
+    ../../lib/netbird.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
   ];
@@ -30,7 +30,4 @@
 
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 
-  services.tailscale.extraSetFlags = [
-    "--advertise-exit-node"
-  ];
 }

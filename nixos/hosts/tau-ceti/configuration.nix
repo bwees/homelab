@@ -10,7 +10,7 @@
     ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
-    ../../lib/tailscale.nix
+    ../../lib/netbird.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
   ];
@@ -24,20 +24,10 @@
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
 
-  services.tailscale.extraUpFlags = [
-    "--advertise-tags=tag:tau-ceti,tag:nixos"
-  ];
-
-  services.tailscale.extraSetFlags = [
-    "--advertise-exit-node"
-    "--accept-routes"
-  ];
-
   services.k3s.extraFlags = [
-    # Expose the public IP as the node's ExternalIP so the Tailscale operator can
-    # advertise it as a static endpoint for direct ingress connections.
-    # --node-ip must be pinned: otherwise k3s auto-detects a dual-stack node and
-    # silently drops the IPv4-only --node-external-ip, leaving no ExternalIP.
+    # Pins the node's addresses to the public IPv4. --node-ip has to be explicit:
+    # otherwise k3s auto-detects a dual-stack node and silently drops the
+    # IPv4-only --node-external-ip, leaving no ExternalIP at all.
     "--node-ip=45.137.192.163"
     "--node-external-ip=45.137.192.163"
   ];
@@ -47,16 +37,6 @@
   networking.firewall.allowedTCPPorts = [
     80
     443
-  ];
-
-  # Allow inbound UDP to the Tailscale ingress static-endpoint NodePorts on the
-  # public interface. Must match spec.staticEndpoints.nodePort.ports of the
-  # `tau-ceti-static-endpoints` ProxyClass.
-  networking.firewall.allowedUDPPortRanges = [
-    {
-      from = 31670;
-      to = 31690;
-    }
   ];
 
   services.fail2ban.enable = true;

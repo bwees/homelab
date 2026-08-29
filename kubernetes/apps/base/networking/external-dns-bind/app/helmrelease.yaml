@@ -19,7 +19,7 @@ spec:
             key: TSIG_SECRET
     extraArgs:
       - --gateway-name=envoy-ingress
-      - --rfc2136-host=dns.tail72746.ts.net
+      - --rfc2136-host=dns.netbird.cloud
       - --rfc2136-port=53
       - --rfc2136-zone=bwees.io
       - --rfc2136-tsig-keyname=external-dns
@@ -29,9 +29,9 @@ spec:
       - --rfc2136-min-ttl=60s
       # The Gateway's target annotation is the bwees.dev answer, which on eridani
       # is a LAN address the forward proxy cannot reach. Override it: this view
-      # always points at the cluster's ingress VIPService, as a CNAME so no
-      # tailnet address is ever pinned in config.
-      - --default-targets=${CLUSTER}-ingress.tail72746.ts.net
+      # always points at the cluster's ingress DNS label, as a CNAME so no overlay
+      # address is ever pinned in config.
+      - --default-targets=${CLUSTER}-ingress.netbird.cloud
       - --force-default-targets
     triggerLoopOnEvent: true
     policy: sync

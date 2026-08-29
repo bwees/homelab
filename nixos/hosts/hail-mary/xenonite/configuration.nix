@@ -15,8 +15,7 @@
     ../../../lib/miroir.nix
     ../../../lib/miroir-drbd.nix
     ../../../lib/garbage-collect.nix
-    ../../../lib/tailscale.nix
-    ../../../lib/tailscale-pod-nat.nix
+    ../../../lib/netbird.nix
     ../../../lib/docker.nix
     ../../../lib/amd-gpu.nix
   ];
@@ -58,10 +57,6 @@
   networking.firewall.interfaces."enp7s0".allowedTCPPorts = [
     8123 # Home Assistant
     5580 # Matter server websocket
-  ];
-
-  services.tailscale.extraUpFlags = [
-    "--advertise-tags=tag:hail-mary,tag:nixos"
   ];
 
   # Fix GPU conflicts with the i915 driver

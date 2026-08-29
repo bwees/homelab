@@ -17,5 +17,6 @@ Used to manage third-party services with IaC.
   - Permissions
     - Read and write access to the "Homelab Deployment" vault
 
-- Tailscale OAuth Client
-  - Permissions: all
+- NetBird Access Token
+  - An admin PAT, stored in the `netbird` section of the `tofu-credentials` item.
+  - The operator in each cluster uses a separate PAT (1Password `netbird-operator`).

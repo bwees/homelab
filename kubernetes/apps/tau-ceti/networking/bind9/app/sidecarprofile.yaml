@@ -1,0 +1,16 @@
+---
+# named is only reachable over the mesh, so the client goes in the pod rather than
+# in front of it: `dns.netbird.cloud` is what every cluster's external-dns talks
+# RFC2136 to, and UDP/53 needs to arrive unproxied.
+apiVersion: netbird.io/v1alpha1
+kind: SidecarProfile
+metadata:
+  name: bind9
+spec:
+  setupKeyRef:
+    name: networking
+  podSelector:
+    matchLabels:
+      lab.bwees/netbird: dns
+  extraDNSLabels:
+    - dns

@@ -11,6 +11,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: tailscale-operator
+    - name: netbird-peers
       namespace: networking
   targetNamespace: gaming

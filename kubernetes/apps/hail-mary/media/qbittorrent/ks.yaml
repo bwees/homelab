@@ -18,8 +18,10 @@ spec:
     - name: onepassword
       namespace: secrets
     - name: media-library
+    - name: netbird
   components:
     - ../../../../../components/volsync
+    - ../../../../../components/netbird-egress
   postBuild:
     substitute:
       APP: qbittorrent

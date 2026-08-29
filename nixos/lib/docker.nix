@@ -10,7 +10,7 @@
     "unix:///var/run/docker.sock"
   ];
 
-  # Trust Docker bridge interfaces to allow containers to reach Tailscale IPs
+  # Trust Docker bridge interfaces to allow containers to reach NetBird IPs
   networking.firewall.trustedInterfaces = [
     "docker0"
     "br-+"

@@ -1,0 +1,20 @@
+---
+# Replaces the Tailscale ProxyGroup + `tailscale.com/expose` Service annotation:
+# instead of a separate proxy device DNAT-ing into the cluster, every envoy pod
+# joins the NetBird network itself and answers on its own peer address.
+#
+# Each replica publishes the same extra DNS label, so `<cluster>-ingress` resolves
+# to one A record per live envoy pod - the HA that ProxyGroup replicas used to
+# provide, without a second hop.
+apiVersion: netbird.io/v1alpha1
+kind: SidecarProfile
+metadata:
+  name: envoy-ingress
+spec:
+  setupKeyRef:
+    name: networking
+  podSelector:
+    matchLabels:
+      lab.bwees/netbird: ingress
+  extraDNSLabels:
+    - ${CLUSTER}-ingress

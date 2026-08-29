@@ -1,0 +1,15 @@
+---
+# One egress path for the whole stack, replacing the userspace SOCKS5 pod nothing
+# ever pointed at and qbittorrent's private Tailscale/Mullvad sidecar: apps opt in
+# with the components/netbird-egress component, which stamps this label and adds
+# the cluster-CIDR bypass the injected client needs.
+apiVersion: netbird.io/v1alpha1
+kind: SidecarProfile
+metadata:
+  name: airvpn-egress
+spec:
+  setupKeyRef:
+    name: media
+  podSelector:
+    matchLabels:
+      lab.bwees/netbird: airvpn-egress

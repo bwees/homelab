@@ -1,0 +1,15 @@
+---
+# Not injected by a SidecarProfile: this peer's WireGuard port has to match the
+# port AirVPN forwards, and its state is persisted so the exit node keeps one
+# identity across restarts. Both need container fields the profile cannot set.
+apiVersion: netbird.io/v1alpha1
+kind: SetupKey
+metadata:
+  name: airvpn-exit
+spec:
+  name: ${CLUSTER}-airvpn-exit
+  ephemeral: false
+  allowExtraDnsLabels: false
+  autoGroups:
+    - name: ${CLUSTER}
+    - name: exit-node-airvpn

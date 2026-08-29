@@ -4,6 +4,12 @@ kind: Gateway
 metadata:
   name: envoy-ingress
   namespace: networking
+  annotations:
+    # Every HTTPRoute on this Gateway resolves to the envoy pods' NetBird DNS
+    # label rather than to a pinned overlay address, so a replica coming back with
+    # a new peer IP never leaves a stale record behind. Clusters whose ingress is
+    # also reachable off-mesh override this with an address (see eridani).
+    external-dns.alpha.kubernetes.io/target: ${CLUSTER}-ingress.netbird.cloud
 spec:
   gatewayClassName: envoy-ingress
   listeners:

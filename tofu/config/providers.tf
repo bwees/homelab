@@ -9,9 +9,7 @@ provider "cloudflare" {
   api_token = data.onepassword_item.cloudflare.section_map["cloudflare"].field_map["api_token"].value
 }
 
-provider "tailscale" {
-  oauth_client_id     = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_id"].value
-  oauth_client_secret = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_secret"].value
-  tailnet             = local.tailnet
+provider "netbird" {
+  token = data.onepassword_item.cloudflare.section_map["netbird"].field_map["token"].value
 }
 

@@ -5,7 +5,7 @@ namespace: media
 resources:
   - namespace.yaml
   - media-library/ks.yaml
-  - tailscale/ks.yaml
+  - netbird/ks.yaml
   - qbittorrent/ks.yaml
   - jellyfin/ks.yaml
   - sonarr/ks.yaml

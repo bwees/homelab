@@ -53,6 +53,12 @@ spec:
                 memory: 256Mi
 
     defaultPodOptions:
+      # The other clusters' external-dns reach named as dns.netbird.cloud: the
+      # netbird-operator's SidecarProfile matches this label and injects a client
+      # that publishes the `dns` label from inside the pod, so :53 answers on the
+      # peer address over both TCP and UDP.
+      labels:
+        lab.bwees/netbird: dns
       securityContext:
         # named starts as root to bind :53, then drops to the image's bind user.
         fsGroup: 53
@@ -64,11 +70,6 @@ spec:
         # envoy-dfp names this address directly in its pod dnsConfig, so it has to
         # be stable across reinstalls.
         clusterIP: 10.43.148.53
-        # The other clusters' external-dns reach it here as dns.tail72746.ts.net;
-        # the operator exposes it as a dedicated tailnet device (L3 TCP/UDP DNAT).
-        annotations:
-          tailscale.com/expose: 'true'
-          tailscale.com/hostname: dns
         ports:
           dns-tcp:
             port: 53

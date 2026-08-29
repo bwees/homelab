@@ -22,6 +22,6 @@ spec:
       namespace: storage
     - name: onepassword
       namespace: secrets
-    - name: tailscale-operator
+    - name: netbird-peers
       namespace: networking
   targetNamespace: networking

@@ -36,7 +36,7 @@ spec:
         # only nameserver: resolv.conf falls through on timeout, and a fallback
         # would answer from the public wildcard - which points back at this proxy,
         # turning an outage into an SNI loop. bind9 relays cluster.local (needed
-        # for xDS) and tail72746.ts.net on to CoreDNS itself.
+        # for xDS) and netbird.cloud on to CoreDNS itself.
         patch:
           type: StrategicMerge
           value:

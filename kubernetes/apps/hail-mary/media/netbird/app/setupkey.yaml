@@ -1,0 +1,13 @@
+---
+apiVersion: netbird.io/v1alpha1
+kind: SetupKey
+metadata:
+  name: media
+spec:
+  name: ${CLUSTER}-media
+  ephemeral: true
+  allowExtraDnsLabels: false
+  autoGroups:
+    - name: ${CLUSTER}
+    # the group the 0.0.0.0/0 AirVPN route is distributed to
+    - name: vpn-clients

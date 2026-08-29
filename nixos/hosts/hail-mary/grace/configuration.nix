@@ -14,8 +14,7 @@
     ../../../lib/miroir.nix
     ../../../lib/miroir-drbd.nix
     ../../../lib/garbage-collect.nix
-    ../../../lib/tailscale.nix
-    ../../../lib/tailscale-pod-nat.nix
+    ../../../lib/netbird.nix
   ];
 
   system.stateVersion = "25.05";
@@ -24,10 +23,6 @@
   networking.hostName = "grace";
   networking.networkmanager.enable = true;
   time.timeZone = "America/Chicago";
-
-  services.tailscale.extraUpFlags = [
-    "--advertise-tags=tag:hail-mary,tag:nixos"
-  ];
 
   # Fix GPU conflicts with the i915 driver
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];

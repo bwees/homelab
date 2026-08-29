@@ -16,8 +16,9 @@ data:
 
         // envoy-dfp resolves through this server alone, so names outside bwees.io
         // still have to be answered: cluster.local to reach its xDS control
-        // plane, and tail72746.ts.net to chase the CNAME targets below. Hand
-        // those to CoreDNS, which already resolves both.
+        // plane, and netbird.cloud to chase the CNAME targets below. Hand those to
+        // CoreDNS, which already resolves both (the node's NetBird client owns
+        // netbird.cloud in the host resolver CoreDNS forwards to).
         recursion yes;
         allow-recursion { 10.42.0.0/16; };
         forwarders { 10.43.0.10; };

@@ -10,7 +10,7 @@ resource "cloudflare_dns_record" "bwees_io_wildcard" {
 
 // Hosts that are not fronted by a cluster Gateway, so external-dns never sees
 // them. Public records holding LAN addresses: only reachable from that LAN or
-// over the tailnet subnet router.
+// through the NetBird network route that serves it.
 locals {
   bwees_dev_static_records = {
     nas = "192.168.50.4"

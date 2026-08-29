@@ -8,3 +8,4 @@ resources:
   - ./configmap.yaml
   - ./externalsecret.yaml
   - ./pvc.yaml
+  - ./sidecarprofile.yaml

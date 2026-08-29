@@ -11,7 +11,7 @@
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
     ../../lib/storage-backup.nix
-    ../../lib/tailscale.nix
+    ../../lib/netbird.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
   ];
@@ -23,11 +23,6 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
-
-  services.tailscale.extraSetFlags = [
-    "--advertise-exit-node"
-    "--advertise-routes=10.0.1.0/24"
-  ];
 
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 

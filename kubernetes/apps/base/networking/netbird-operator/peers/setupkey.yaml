@@ -1,0 +1,20 @@
+---
+# One reusable key per namespace that gets clients injected; the operator creates
+# it in NetBird and mirrors it into the `setup-key-<name>` Secret the injected
+# containers read. Groups must already exist in the account (Tofu owns them).
+#
+# Peers are ephemeral: an injected client keeps its state in an emptyDir, so every
+# pod restart registers a new peer. Ephemeral peers are reaped after 10 minutes
+# offline, which keeps the account free of dead ingress replicas. The DNS labels
+# below are what stays stable, so nothing should ever target a peer IP.
+apiVersion: netbird.io/v1alpha1
+kind: SetupKey
+metadata:
+  name: networking
+spec:
+  name: ${CLUSTER}-networking
+  ephemeral: true
+  allowExtraDnsLabels: true
+  autoGroups:
+    - name: ${CLUSTER}
+    - name: k8s-ingress

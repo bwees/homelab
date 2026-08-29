@@ -1,0 +1,31 @@
+---
+# Setup keys are read by the injected container out of a Secret, so every
+# namespace with injected pods needs its own. Groups are account-wide (Tofu).
+apiVersion: netbird.io/v1alpha1
+kind: SetupKey
+metadata:
+  name: gaming
+spec:
+  name: ${CLUSTER}-gaming
+  ephemeral: true
+  allowExtraDnsLabels: true
+  autoGroups:
+    - name: ${CLUSTER}
+    - name: k8s-service
+
+---
+# Moonlight pairs and streams straight to the pod: the client in here keeps
+# wolf's UDP video/audio/control ports on a single peer address, which the L3
+# tailnet device used to provide.
+apiVersion: netbird.io/v1alpha1
+kind: SidecarProfile
+metadata:
+  name: wolf
+spec:
+  setupKeyRef:
+    name: gaming
+  podSelector:
+    matchLabels:
+      lab.bwees/netbird: wolf
+  extraDNSLabels:
+    - wolf

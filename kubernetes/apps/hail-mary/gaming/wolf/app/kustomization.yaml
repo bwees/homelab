@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ocirepository.yaml
   - helmrelease.yaml
+  - netbird.yaml
 
 configMapGenerator:
   - name: wolf-config
