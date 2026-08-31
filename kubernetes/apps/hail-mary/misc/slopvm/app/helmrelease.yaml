@@ -1,0 +1,62 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: slopvm
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: slopvm
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: registry.raccoon.sh/slop/vm
+              tag: latest
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 34343
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - slop.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 34343
+
+    persistence:
+      data:
+        existingClaim: slopvm-data
+        advancedMounts:
+          main:
+            main:
+              - path: /var/lib/slopvm
+                subPath: vm
+              - path: /home/node/.claude
+                subPath: claude

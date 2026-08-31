@@ -6,3 +6,4 @@ resources:
   - namespace.yaml
   - crosshatch/ks.yaml
   - futomarket/ks.yaml
+  - slopvm/ks.yaml
