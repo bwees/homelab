@@ -19,6 +19,8 @@ in
       "--disable=traefik"
       "--disable=local-storage"
       "--disable=metrics-server"
+      "--disable=servicelb"
+      "--disable-helm-controller"
       "--write-kubeconfig-mode=0640"
       "--write-kubeconfig-group=k3s"
       "--kube-apiserver-arg=feature-gates=ImageVolume=true"
