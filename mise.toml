@@ -1,5 +1,6 @@
 [tools]
 opentofu = "1.12.6"
+helm = "3.19.4"
 
 [task_config]
 includes = ["nixos/mise.toml"]
@@ -7,21 +8,32 @@ includes = ["nixos/mise.toml"]
 [tasks.bootstrap]
 usage = '''
 arg "host"
+arg "cluster" default=""
 arg "user" default="bwees"
 '''
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure the secrets namespace exists
-ssh "$usage_user@$usage_host" 'sudo k3s kubectl create namespace secrets \
-  --dry-run=client -o yaml | sudo k3s kubectl apply -f -'
+cluster="${usage_cluster:-$usage_host}"
+remote="$usage_user@$usage_host"
+instance=kubernetes/apps/base/flux-system/flux-instance/app/fluxinstance.yaml
+chart=kubernetes/apps/base/flux-system/flux-operator/app/ocirepository.yaml
 
-# 1Password Connect credentials + access token -> secrets secret on the host
+apply() { ssh "$remote" 'sudo k3s kubectl apply --server-side --force-conflicts -f -'; }
+apply_in() { ssh "$remote" "sudo k3s kubectl apply --server-side --force-conflicts -n $1 -f -"; }
+ensure_ns() { ssh "$remote" "sudo k3s kubectl create namespace $1 \
+  --dry-run=client -o yaml | sudo k3s kubectl apply -f -"; }
+
+echo "==> Creating namespaces"
+ensure_ns secrets
+ensure_ns flux-system
+
+echo "==> Seeding 1Password Connect credentials"
 token=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/access_token" | base64 | tr -d '\n')
 creds=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/1password-credentials.json" | base64 | tr -d '\n')
 
-cat <<EOF | ssh "$usage_user@$usage_host" 'sudo k3s kubectl apply -f -'
+cat <<EOF | apply
 apiVersion: v1
 kind: Secret
 metadata:
@@ -32,6 +44,37 @@ data:
   token: $token
   1password-credentials.json: $creds
 EOF
+
+echo "==> Creating the Flux git deploy key"
+keydir=$(mktemp -d)
+trap 'rm -rf "$keydir"' EXIT
+ssh-keygen -t ed25519 -N "" -C "flux-$cluster" -f "$keydir/identity" -q
+gh repo deploy-key add "$keydir/identity.pub" --repo bwees/homelab --title "flux-$cluster"
+
+cat <<EOF | apply
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-system
+  namespace: flux-system
+type: Opaque
+data:
+  identity: $(base64 < "$keydir/identity" | tr -d '\n')
+  identity.pub: $(base64 < "$keydir/identity.pub" | tr -d '\n')
+  known_hosts: $(ssh-keyscan github.com 2>/dev/null | base64 | tr -d '\n')
+EOF
+
+echo "==> Installing flux-operator"
+version=$(awk '/^    tag:/ {print $2}' "$chart")
+helm template flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator \
+  --version "$version" --namespace flux-system | apply_in flux-system
+
+echo "==> Applying the FluxInstance for $cluster"
+ssh "$remote" 'sudo k3s kubectl wait --for=condition=Available \
+  deploy/flux-operator -n flux-system --timeout=5m'
+sed "s|\${CLUSTER}|$cluster|g" "$instance" | apply_in flux-system
+
+echo "==> $cluster bootstrapped; Flux will now reconcile kubernetes/clusters/$cluster"
 '''
 
 [tasks."cluster:shutdown"]

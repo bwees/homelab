@@ -1,7 +1,6 @@
 apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
-  # The operator only adopts an existing bootstrap install when named `flux`.
   name: flux
 spec:
   distribution:
