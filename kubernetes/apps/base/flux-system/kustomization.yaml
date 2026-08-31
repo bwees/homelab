@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: flux-system
 
 resources:
+  - flux-operator/ks.yaml
+  - flux-instance/ks.yaml
   - github-webhook/ks.yaml

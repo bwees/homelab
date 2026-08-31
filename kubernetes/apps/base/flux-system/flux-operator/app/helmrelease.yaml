@@ -1,0 +1,12 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-operator
+  annotations:
+    # Not an app-template chart; its values.schema.json rejects `controllers`.
+    lab.bwees/probe-defaults: disabled
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: flux-operator

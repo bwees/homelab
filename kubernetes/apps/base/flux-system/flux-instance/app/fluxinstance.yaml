@@ -1,0 +1,23 @@
+apiVersion: fluxcd.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  # The operator only adopts an existing bootstrap install when named `flux`.
+  name: flux
+spec:
+  distribution:
+    version: 2.9.x
+    registry: ghcr.io/fluxcd
+  cluster:
+    type: kubernetes
+    size: small
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  sync:
+    kind: GitRepository
+    url: ssh://git@github.com/bwees/homelab
+    ref: refs/heads/main
+    path: ./kubernetes/clusters/${CLUSTER}
+    pullSecret: flux-system
