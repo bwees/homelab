@@ -1,0 +1,56 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: github-status
+spec:
+  providerRef:
+    name: github-status
+  eventSeverity: info
+  # A HelmRelease event's revision is the chart version, which never resolves to
+  # a commit, so Kustomizations are the only kind worth pointing at GitHub.
+  #
+  # eventSources matches namespaces exactly -- the '*' wildcard only applies to
+  # name -- so a new app namespace has to be added here to get statuses.
+  eventSources:
+    - kind: Kustomization
+      name: "*"
+      namespace: automation
+    - kind: Kustomization
+      name: "*"
+      namespace: dev
+    - kind: Kustomization
+      name: "*"
+      namespace: discord-bots
+    - kind: Kustomization
+      name: "*"
+      namespace: flux-system
+    - kind: Kustomization
+      name: "*"
+      namespace: gaming
+    - kind: Kustomization
+      name: "*"
+      namespace: immich
+    - kind: Kustomization
+      name: "*"
+      namespace: media
+    - kind: Kustomization
+      name: "*"
+      namespace: misc
+    - kind: Kustomization
+      name: "*"
+      namespace: monitoring
+    - kind: Kustomization
+      name: "*"
+      namespace: networking
+    - kind: Kustomization
+      name: "*"
+      namespace: operators
+    - kind: Kustomization
+      name: "*"
+      namespace: secrets
+    - kind: Kustomization
+      name: "*"
+      namespace: smarthome
+    - kind: Kustomization
+      name: "*"
+      namespace: storage

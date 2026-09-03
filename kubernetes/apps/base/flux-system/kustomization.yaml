@@ -7,3 +7,4 @@ resources:
   - flux-operator/ks.yaml
   - flux-instance/ks.yaml
   - github-webhook/ks.yaml
+  - github-status/ks.yaml
