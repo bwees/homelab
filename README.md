@@ -40,7 +40,6 @@ A few things worth calling out about the cluster setup:
 
 - **Storage** is handled by Longhorn, with volsync taking scheduled backups of persistent volumes.
 - **Secrets** come from 1Password through External Secrets.
-- **Flux** is installed by flux-operator from a `FluxInstance`, not by `flux bootstrap`. The `mise run bootstrap <host> [cluster]` task seeds the 1Password service account token, registers a git deploy key, installs the operator and applies the cluster's `FluxInstance`.
 - **Databases** run on CloudNative-PG.
 - **Ingress** is served through Envoy Gateway, with cert-manager issuing certificates.
 
