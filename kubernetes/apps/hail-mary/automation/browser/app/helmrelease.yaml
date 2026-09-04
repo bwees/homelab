@@ -1,0 +1,91 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: browser
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: browser
+  values:
+    controllers:
+      main:
+        # One Chromium owns /config/agent-profile, so a second replica during a
+        # rollout would find the profile locked.
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/linuxserver/chromium
+              tag: '6edd71b2-ls16'
+            env:
+              PUID: 1000
+              PGID: 1000
+              TZ: America/Chicago
+              TITLE: browser
+              # Chromium 136+ silently declines to open the debugging port when
+              # it is paired with the profile's default user-data-dir.
+              CHROME_CLI: >-
+                --remote-debugging-port=9222
+                --remote-debugging-address=0.0.0.0
+                --user-data-dir=/config/agent-profile
+            envFrom:
+              - secretRef:
+                  name: browser-secret
+            probes:
+              # 9222 is the contract the other apps depend on; the Selkies web
+              # UI on 3000 comes up long after it.
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9222
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 250m
+                memory: 1Gi
+              limits:
+                memory: 6Gi
+
+    service:
+      main:
+        controller: main
+        # Chromium serves the /json endpoints and the websocket upgrade only
+        # when the Host header is an IP or localhost (RequestIsSafeToServe in
+        # devtools_http_handler.cc), which no Service DNS name can satisfy and
+        # no Chromium flag relaxes. Pinning the IP is what lets both hermes and
+        # changedetection reach this one browser.
+        clusterIP: 10.43.0.100
+        ports:
+          http:
+            port: 3000
+          cdp:
+            port: 9222
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - browser.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 3000
+
+    persistence:
+      config:
+        existingClaim: browser-config
+        globalMounts:
+          - path: /config
+      dshm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /dev/shm

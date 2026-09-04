@@ -1,10 +1,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: changedetection
+  name: browser
 spec:
   interval: 1h
-  path: ./kubernetes/apps/hail-mary/automation/changedetection/app
+  path: ./kubernetes/apps/hail-mary/automation/browser/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -17,11 +17,10 @@ spec:
       namespace: storage
     - name: onepassword
       namespace: secrets
-    - name: browser
   components:
     - ../../../../../components/volsync
   postBuild:
     substitute:
-      APP: changedetection
-      VOLSYNC_CLAIM: changedetection-datastore
+      APP: browser
+      VOLSYNC_CLAIM: browser-config
   targetNamespace: automation

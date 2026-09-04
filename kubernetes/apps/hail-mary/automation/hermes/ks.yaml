@@ -1,10 +1,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: changedetection
+  name: hermes
 spec:
   interval: 1h
-  path: ./kubernetes/apps/hail-mary/automation/changedetection/app
+  path: ./kubernetes/apps/hail-mary/automation/hermes/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,6 +22,10 @@ spec:
     - ../../../../../components/volsync
   postBuild:
     substitute:
-      APP: changedetection
-      VOLSYNC_CLAIM: changedetection-datastore
+      APP: hermes
+      VOLSYNC_CLAIM: hermes-data
+      # /opt/data is owned by the image's hermes user; the restic mover has to
+      # match it to read the 0600 files (.env, auth.json).
+      VOLSYNC_UID: '10000'
+      VOLSYNC_GID: '10000'
   targetNamespace: automation

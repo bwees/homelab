@@ -16,7 +16,10 @@ spec:
               repository: ghcr.io/dgtlmoon/changedetection.io
               tag: '0.60.3'
             env:
-              PLAYWRIGHT_DRIVER_URL: ws://localhost:3000
+              # The IP, not the Service name: Chromium rejects a Host header
+              # that is neither an IP nor localhost. Playwright discovers the
+              # browser websocket from the /json endpoints behind it.
+              PLAYWRIGHT_DRIVER_URL: http://10.43.0.100:9222
             resources:
               requests:
                 cpu: 50m
@@ -27,25 +30,6 @@ spec:
               liveness: &probes
                 enabled: true
               readiness: *probes
-          sockpuppetbrowser:
-            image:
-              repository: dgtlmoon/sockpuppetbrowser
-              tag: '0.0.3'
-            env:
-              DEFAULT_LAUNCH_ARGS: '["--window-size=1920,1080"]'
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
 
     service:
       main:
@@ -70,17 +54,5 @@ spec:
     persistence:
       datastore:
         existingClaim: changedetection-datastore
-        advancedMounts:
-          main:
-            main:
-              - path: /datastore
-      # sockpuppetbrowser needs a large /dev/shm (compose set shm_size: 2g) or
-      # Chromium crashes on bigger pages.
-      dshm:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 2Gi
-        advancedMounts:
-          main:
-            sockpuppetbrowser:
-              - path: /dev/shm
+        globalMounts:
+          - path: /datastore

@@ -1,0 +1,71 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hermes
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: hermes
+  values:
+    controllers:
+      main:
+        # /opt/data holds a sqlite session store; two replicas would corrupt it.
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: nousresearch/hermes-agent
+              tag: 'v2026.8.31'
+            # s6-overlay refuses to run unless it is pid 1, so the image
+            # entrypoint stays and this is only the supervised main program.
+            args: ['gateway', 'run']
+            env:
+              HERMES_DASHBOARD: 1
+              HERMES_DASHBOARD_HOST: 0.0.0.0
+              HERMES_DASHBOARD_PORT: 9119
+              TZ: America/Chicago
+            envFrom:
+              - secretRef:
+                  name: hermes-secret
+            probes:
+              # The dashboard answers 401 until basic auth is satisfied, so an
+              # httpGet probe would fail a healthy pod.
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9119
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 250m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 9119
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - hermes.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 9119
+
+    persistence:
+      data:
+        existingClaim: hermes-data
+        globalMounts:
+          - path: /opt/data
