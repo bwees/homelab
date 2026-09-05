@@ -74,21 +74,3 @@ cluster token. The token is a secret and is **not** in the repo — it lives at
 mise run cluster:shutdown hail-mary
 mise run cluster:startup  hail-mary
 ```
-
-## Longhorn default disk
-
-Nodes providing storage carry `--node-label=node.longhorn.io/create-default-disk=true`
-(see the host `configuration.nix`) and a dedicated `@longhorn` btrfs subvolume mounted at
-`/var/lib/longhorn`. With `create-default-disk-labeled-nodes=true` set in Longhorn, a
-default disk on that path is created automatically.
-
-There is a race on a fresh join: if longhorn-manager creates the Longhorn `Node` resource
-before k3s's registration label is visible, no default disk is created and the node has no
-storage. If `spec.disks` is empty after the node is `Ready`, re-apply the label to trigger
-creation:
-
-```bash
-sudo k3s kubectl label node <host> node.longhorn.io/create-default-disk=true --overwrite
-sudo k3s kubectl get nodes.longhorn.io -n storage <host> \
-  -o jsonpath='{.spec.disks}'   # should no longer be {}
-```
