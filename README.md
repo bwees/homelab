@@ -68,4 +68,4 @@ State is stored in a Cloudflare R2 bucket, and all provider credentials are pull
 
 ## CI/CD
 
-The [deploy workflow](.github/workflows/deploy.yml) runs on every push to `main` and applies the changes from OpenTofu.
+The [deploy workflow](.github/workflows/tofu.yml) runs on every push to `main` and applies the changes from OpenTofu. Flux automatically reconciles via webhooks from GitHub on push.
