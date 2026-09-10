@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: automation
 resources:
   - namespace.yaml
+  - browser/ks.yaml
   - changedetection/ks.yaml
+  - hermes/ks.yaml
