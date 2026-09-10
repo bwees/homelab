@@ -27,20 +27,18 @@ spec:
               # it is paired with the profile's default user-data-dir.
               CHROME_CLI: >-
                 --remote-debugging-port=9222
-                --remote-debugging-address=0.0.0.0
                 --user-data-dir=/config/agent-profile
             envFrom:
               - secretRef:
                   name: browser-secret
             probes:
-              # 9222 is the contract the other apps depend on; the Selkies web
-              # UI on 3000 comes up long after it.
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
-                  tcpSocket:
-                    port: 9222
+                  httpGet:
+                    port: 9223
+                    path: /json/version
                   initialDelaySeconds: 60
                   periodSeconds: 30
               readiness: *probes
@@ -51,20 +49,43 @@ spec:
               limits:
                 memory: 6Gi
 
+          # cdp is only available on loopback so this allows other containers to access it
+          cdp:
+            image:
+              repository: alpine/socat
+              tag: '1.8.0.3'
+            args:
+              - TCP-LISTEN:9223,fork,reuseaddr
+              - TCP:127.0.0.1:9222
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                memory: 64Mi
+
     service:
       main:
         controller: main
         # Chromium serves the /json endpoints and the websocket upgrade only
         # when the Host header is an IP or localhost (RequestIsSafeToServe in
         # devtools_http_handler.cc), which no Service DNS name can satisfy and
-        # no Chromium flag relaxes. Pinning the IP is what lets both hermes and
-        # changedetection reach this one browser.
+        # no Chromium flag relaxes. Pinning the IP is what lets hermes reach
+        # this browser, and keeps the webSocketDebuggerUrl it hands back usable.
         clusterIP: 10.43.0.100
         ports:
           http:
             port: 3000
           cdp:
             port: 9222
+            targetPort: 9223
 
     route:
       main:
