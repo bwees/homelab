@@ -24,8 +24,9 @@ spec:
               HERMES_DASHBOARD: 1
               HERMES_DASHBOARD_HOST: 0.0.0.0
               HERMES_DASHBOARD_PORT: 9119
-              DISCORD_ALLOWED_USERS: 'bwees'
               HERMES_DASHBOARD_BASIC_AUTH_USERNAME: 'bwees'
+              DISCORD_ALLOWED_USERS: 'bwees'
+              DISCORD_FREE_RESPONSE_CHANNELS: '1547427024585363566'
               TZ: America/Chicago
             envFrom:
               - secretRef:
