@@ -17,7 +17,6 @@ spec:
       namespace: storage
     - name: onepassword
       namespace: secrets
-    - name: browser
   components:
     - ../../../../../components/volsync
   postBuild:
