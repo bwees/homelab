@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: registry.raccoon.sh/slop/vm
-              tag: v1.6.0
+              tag: v1.7.0
             resources:
               requests:
                 cpu: 100m
