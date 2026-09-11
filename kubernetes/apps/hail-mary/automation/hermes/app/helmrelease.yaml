@@ -16,7 +16,7 @@ spec:
           main:
             image:
               repository: nousresearch/hermes-agent
-              tag: 'v2026.9.7'
+              tag: 'v2026.9.11'
             # s6-overlay refuses to run unless it is pid 1, so the image
             # entrypoint stays and this is only the supervised main program.
             args: ['gateway', 'run']
