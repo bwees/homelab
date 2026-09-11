@@ -10,6 +10,16 @@
       "matchUpdateTypes": ["major", "minor", "patch"],
       "semanticCommitType": "chore"
     },
+    // External-DNS maintainers seem to love https://0ver.org/ and enjoy
+    // releasing large breaking changes in a minor release. This shit is
+    // required to keep their updates from taking everything down.
+    {
+      "matchPackageNames": [
+        "ghcr.io/home-operations/charts-mirror/external-dns"
+      ],
+      "matchUpdateTypes": ["minor"],
+      "automerge": false
+    },
 
     // Groups
     {
