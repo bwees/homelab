@@ -19,7 +19,7 @@ patches:
       metadata:
         name: envoy-ingress
         annotations:
-          external-dns.alpha.kubernetes.io/target: 10.0.1.2
+          external-dns.kubernetes.io/target: 10.0.1.2
   - target:
       kind: EnvoyProxy
       name: envoy-ingress

@@ -6,7 +6,7 @@ metadata:
   namespace: networking
   annotations:
     # disable wildcard route from external-dns
-    external-dns.alpha.kubernetes.io/controller: none
+    external-dns.kubernetes.io/controller: none
 spec:
   parentRefs:
     - name: envoy-ingress
