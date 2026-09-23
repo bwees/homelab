@@ -1,0 +1,90 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zulu-notifyd
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: zulu-notifyd
+  values:
+    controllers:
+      main:
+        # SQLite on an RWO volume: two pods would fight over the file.
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/slop-place/zulu-notifyd
+              tag: 'v1.0.0'
+            env:
+              ZULU_DATABASE_PATH: /data/zulu.db
+              ZULU_HTTP_ADDR: ':8080'
+              ZULU_LOG_LEVEL: info
+              ZULU_APNS_KEY_FILE: /run/secrets/apns.p8
+              ZULU_APNS_TEAM_ID: 65AMD2STXG
+              ZULU_APNS_BUNDLE_ID: com.bwees.zulu
+            envFrom:
+              - secretRef:
+                  name: zulu-notifyd-secret
+            securityContext:
+              runAsUser: 65532
+              runAsGroup: 65532
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 256Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8080
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - zulu-notify.bwees.dev
+          - zulu-notify.bwees.io
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8080
+
+    persistence:
+      data:
+        existingClaim: zulu-notifyd-data
+        globalMounts:
+          - path: /data
+      apns:
+        type: secret
+        name: zulu-notifyd-apns
+        globalMounts:
+          - path: /run/secrets/apns.p8
+            subPath: apns.p8
+            readOnly: true
