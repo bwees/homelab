@@ -16,7 +16,7 @@ spec:
           main:
             image:
               repository: ghcr.io/slop-place/zulu-notifyd
-              tag: 'v1.0.0'
+              tag: 'v1.1.0'
             env:
               ZULU_DATABASE_PATH: /data/zulu.db
               ZULU_HTTP_ADDR: ':8080'
