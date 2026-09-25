@@ -114,8 +114,8 @@ spec:
                   memory: 2Gi
                 limits:
                   memory: 6Gi
+                  amd.com/gpu: '1'
 
-      # immich-ml.tail72746.ts.net:3003.
       service:
         main:
           annotations:
@@ -126,20 +126,3 @@ spec:
         cache:
           type: persistentVolumeClaim
           existingClaim: immich-ml-cache
-
-        kfd:
-          type: hostPath
-          hostPath: /dev/kfd
-          hostPathType: CharDevice
-          advancedMounts:
-            main:
-              main:
-                - path: /dev/kfd
-        dri:
-          type: hostPath
-          hostPath: /dev/dri
-          hostPathType: Directory
-          advancedMounts:
-            main:
-              main:
-                - path: /dev/dri

@@ -100,6 +100,5 @@ spec:
                 - identifier: main
                   port: 2283
 
-    # Served by hail-mary instead, via IMMICH_MACHINE_LEARNING_URL above.
     machine-learning:
       enabled: false

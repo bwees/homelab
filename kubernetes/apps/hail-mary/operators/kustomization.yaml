@@ -9,3 +9,4 @@ resources:
 
 components:
   - ../../../components/intel-gpu
+  - ../../../components/amd-gpu

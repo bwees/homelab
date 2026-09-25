@@ -20,6 +20,8 @@ spec:
       namespace: storage
     - name: intel-device-plugins
       namespace: operators
+    - name: amd-device-plugin
+      namespace: operators
     - name: tailscale-operator
       namespace: networking
   postBuild:
