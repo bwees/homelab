@@ -110,12 +110,16 @@ spec:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
                 # Without this, MIGraphX recompiles every model on every start.
                 ORT_MIGRAPHX_MODEL_CACHE_PATH: /cache
+              # Compiling a model blocks the single gunicorn worker, so /ping
+              # goes unanswered for a minute or more. At the default 3 failures
+              # that restarts the pod mid-compile, and drops it out of the
+              # Service, which the other clusters see as a refused connection.
               probes:
                 liveness:
                   spec:
-                    # Compiling a model blocks the single gunicorn worker, so
-                    # /ping goes unanswered for a minute or more and the default
-                    # 3 failures restart the pod mid-compile.
+                    failureThreshold: 120
+                readiness:
+                  spec:
                     failureThreshold: 120
               resources:
                 requests:
