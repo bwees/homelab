@@ -109,7 +109,7 @@ spec:
               env:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
                 # Without this, MIGraphX recompiles every model on every start.
-                ORT_MIGRAPHX_MODEL_CACHE_PATH: /cache/migraphx
+                ORT_MIGRAPHX_MODEL_CACHE_PATH: /cache
               probes:
                 liveness:
                   spec:
