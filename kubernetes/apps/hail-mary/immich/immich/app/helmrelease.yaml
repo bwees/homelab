@@ -48,7 +48,6 @@ spec:
                 drop:
                   - NET_RAW
             env:
-              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: 'ViT-B-32__openai'
               DB_HOSTNAME:
                 valueFrom:
                   secretKeyRef:
@@ -110,6 +109,15 @@ spec:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
                 # Without this, MIGraphX recompiles every model on every start.
                 ORT_MIGRAPHX_MODEL_CACHE_PATH: /cache/migraphx
+                MACHINE_LEARNING_REQUEST_THREADS: '1'
+                MACHINE_LEARNING_MODEL_TTL: '0'
+                MACHINE_LEARNING_MAX_BATCH_SIZE__OCR: '1'
+                MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: 'ViT-B-32__openai'
+                MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: 'ViT-B-32__openai'
+                MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__DETECTION: 'buffalo_l'
+                MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__RECOGNITION: 'buffalo_l'
+                MACHINE_LEARNING_PRELOAD__OCR__DETECTION: 'PP-OCRv5_mobile'
+                MACHINE_LEARNING_PRELOAD__OCR__RECOGNITION: 'PP-OCRv5_mobile'
               probes:
                 liveness:
                   spec:
@@ -120,9 +128,9 @@ spec:
               resources:
                 requests:
                   cpu: 100m
-                  memory: 2Gi
+                  memory: 4Gi
                 limits:
-                  memory: 8Gi
+                  memory: 12Gi
                   amd.com/gpu: '1'
 
       service:
