@@ -1,18 +1,4 @@
 ---
-# Regenerable ML model cache — miroir PVC, intentionally NOT backed up
-# (no components/volsync). Safe to delete; immich re-downloads models.
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-ml-cache
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: miroir
-  resources:
-    requests:
-      storage: 8Gi
-
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

@@ -98,11 +98,14 @@ spec:
       controllers:
         main:
           strategy: Recreate
+          pod:
+            nodeSelector:
+              kubernetes.io/hostname: xenonite
           containers:
             main:
               image:
                 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: 'v3.2.2-openvino'
+                tag: 'v3.2.2-rocm'
               env:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
               resources:
@@ -110,10 +113,33 @@ spec:
                   cpu: 100m
                   memory: 2Gi
                 limits:
-                  memory: 4Gi
-                  gpu.intel.com/i915: '1'
+                  memory: 6Gi
+
+      # immich-ml.tail72746.ts.net:3003.
+      service:
+        main:
+          annotations:
+            tailscale.com/expose: 'true'
+            tailscale.com/hostname: immich-ml
 
       persistence:
         cache:
           type: persistentVolumeClaim
           existingClaim: immich-ml-cache
+
+        kfd:
+          type: hostPath
+          hostPath: /dev/kfd
+          hostPathType: CharDevice
+          advancedMounts:
+            main:
+              main:
+                - path: /dev/kfd
+        dri:
+          type: hostPath
+          hostPath: /dev/dri
+          hostPathType: Directory
+          advancedMounts:
+            main:
+              main:
+                - path: /dev/dri

@@ -48,7 +48,7 @@ spec:
                 drop:
                   - NET_RAW
             env:
-              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: 'ViT-B-32__openai'
+              IMMICH_MACHINE_LEARNING_URL: http://immich-ml.tail72746.ts.net:3003
               DB_HOSTNAME:
                 valueFrom:
                   secretKeyRef:
@@ -100,26 +100,6 @@ spec:
                 - identifier: main
                   port: 2283
 
+    # Served by hail-mary instead, via IMMICH_MACHINE_LEARNING_URL above.
     machine-learning:
-      controllers:
-        main:
-          strategy: Recreate
-          containers:
-            main:
-              image:
-                # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: 'v3.2.2-openvino'
-              env:
-                GUNICORN_CMD_ARGS: '--no-control-socket'
-              resources:
-                requests:
-                  cpu: 100m
-                  memory: 1Gi
-                limits:
-                  memory: 4Gi
-                  gpu.intel.com/i915: '1'
-
-      persistence:
-        cache:
-          type: persistentVolumeClaim
-          existingClaim: immich-ml-cache
+      enabled: false
