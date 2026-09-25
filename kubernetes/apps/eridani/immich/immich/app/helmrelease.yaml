@@ -74,6 +74,8 @@ spec:
         main:
           containers:
             main:
+              env:
+                NODE_OPTIONS: '--max-old-space-size=512'
               probes:
                 liveness:
                   spec:
@@ -88,7 +90,7 @@ spec:
                   cpu: 100m
                   memory: 512Mi
                 limits:
-                  memory: 3Gi
+                  memory: 1536Mi
                   gpu.intel.com/i915: '1'
       persistence:
         nas-media:
