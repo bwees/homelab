@@ -122,7 +122,7 @@ spec:
                   cpu: 100m
                   memory: 2Gi
                 limits:
-                  memory: 6Gi
+                  memory: 8Gi
                   amd.com/gpu: '1'
 
       service:
