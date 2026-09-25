@@ -74,6 +74,15 @@ spec:
         main:
           containers:
             main:
+              probes:
+                liveness:
+                  spec:
+                    timeoutSeconds: 15
+                    failureThreshold: 10
+                readiness:
+                  spec:
+                    timeoutSeconds: 15
+                    failureThreshold: 10
               resources:
                 requests:
                   cpu: 100m

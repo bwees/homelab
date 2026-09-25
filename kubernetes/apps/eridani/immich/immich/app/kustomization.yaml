@@ -39,3 +39,12 @@ patches:
       - op: replace
         path: /spec/storage/storageClass
         value: miroir
+      - op: add
+        path: /spec/probes
+        value:
+          liveness:
+            timeoutSeconds: 15
+            failureThreshold: 10
+          readiness:
+            timeoutSeconds: 15
+            failureThreshold: 10
