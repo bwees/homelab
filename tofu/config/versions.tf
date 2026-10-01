@@ -20,6 +20,11 @@ terraform {
       version = "6.13.0"
     }
 
+    contabo = {
+      source  = "contabo/contabo"
+      version = "0.1.44"
+    }
+
     random = {
       source  = "hashicorp/random"
       version = "3.9.1"

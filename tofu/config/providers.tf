@@ -14,6 +14,13 @@ provider "github" {
   token = data.onepassword_item.cloudflare.section_map["github"].field_map["token"].value
 }
 
+provider "contabo" {
+  oauth2_client_id     = data.onepassword_item.cloudflare.section_map["contabo"].field_map["client_id"].value
+  oauth2_client_secret = data.onepassword_item.cloudflare.section_map["contabo"].field_map["client_secret"].value
+  oauth2_user          = data.onepassword_item.cloudflare.section_map["contabo"].field_map["user"].value
+  oauth2_pass          = data.onepassword_item.cloudflare.section_map["contabo"].field_map["password"].value
+}
+
 provider "tailscale" {
   oauth_client_id     = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_id"].value
   oauth_client_secret = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_secret"].value
