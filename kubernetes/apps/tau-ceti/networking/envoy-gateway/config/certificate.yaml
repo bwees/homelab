@@ -1,0 +1,18 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maroonrides-app-tls
+  namespace: networking
+spec:
+  secretName: maroonrides-app-tls
+  dnsNames:
+    - '*.maroonrides.app'
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+    group: cert-manager.io

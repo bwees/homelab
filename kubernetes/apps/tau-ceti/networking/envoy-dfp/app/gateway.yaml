@@ -87,3 +87,19 @@ spec:
           from: Same
       tls:
         mode: Passthrough
+    - name: http-maroonrides
+      protocol: HTTP
+      port: 80
+      hostname: '*.maroonrides.app'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: tls-maroonrides
+      protocol: TLS
+      port: 443
+      hostname: '*.maroonrides.app'
+      allowedRoutes:
+        namespaces:
+          from: Same
+      tls:
+        mode: Passthrough

@@ -29,3 +29,13 @@ resource "cloudflare_dns_record" "bwees_dev_static" {
   proxied = false
   ttl     = 300
 }
+
+resource "cloudflare_dns_record" "maroonrides_app_api" {
+  zone_id = data.cloudflare_zone.maroonrides_app.zone_id
+  name    = "api"
+  type    = "A"
+  content = cloudflare_dns_record.bwees_io_wildcard.content
+  comment = "Public ingress on tau-ceti. Managed by Tofu."
+  proxied = false
+  ttl     = 300
+}

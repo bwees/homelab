@@ -46,6 +46,14 @@ data:
         notify no;
     };
 
+    zone "maroonrides.app" {
+        type primary;
+        file "/var/lib/bind/maroonrides.app.zone";
+        allow-update { key "external-dns"; };
+        allow-transfer { key "external-dns"; };
+        notify no;
+    };
+
   # Seeded once into the data volume; from then on the zone is owned by the
   # dynamic-update journal and must not be written from here.
   bwees.io.zone: |
@@ -58,3 +66,13 @@ data:
             60 )  ; negative TTL
     @   IN  NS  ns1.bwees.io.
     ns1 IN  A   10.43.148.53
+
+  maroonrides.app.zone: |
+    $TTL 60
+    @   IN  SOA ns1.bwees.io. hostmaster.bwees.io. (
+            1     ; serial
+            3600  ; refresh
+            600   ; retry
+            86400 ; expire
+            60 )  ; negative TTL
+    @   IN  NS  ns1.bwees.io.

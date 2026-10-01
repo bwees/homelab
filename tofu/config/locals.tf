@@ -10,6 +10,10 @@ data "cloudflare_zone" "bwees_dev" {
   zone_id = "16abc0a51d3df8322d69e9b3a5928776"
 }
 
+data "cloudflare_zone" "maroonrides_app" {
+  zone_id = "175406438fa84e48253239087ff86325"
+}
+
 data "onepassword_vault" "homelab_deployment" {
   name = "Homelab Deployment"
 }

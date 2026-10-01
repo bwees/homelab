@@ -1,6 +1,3 @@
-// cert-manager DNS-01 for the bwees.io and bwees.dev wildcards. Zone Read is
-// required alongside DNS Write so it can look the zone up before writing the
-// challenge.
 resource "cloudflare_account_token" "cert_manager" {
   account_id = data.cloudflare_account.main.id
   name       = "k3s cert-manager DNS01"
@@ -13,8 +10,9 @@ resource "cloudflare_account_token" "cert_manager" {
         { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}"  = "*"
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}" = "*"
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}"        = "*"
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}"       = "*"
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.maroonrides_app.zone_id}" = "*"
       })
     }
   ]
@@ -37,8 +35,6 @@ resource "onepassword_item" "cf_cert_manager" {
   }
 }
 
-// Kubernetes external-dns publishes every internal record into bwees.dev. Scoped
-// to that zone alone so it can never touch the public bwees.io wildcard.
 resource "cloudflare_account_token" "external_dns" {
   account_id = data.cloudflare_account.main.id
   name       = "k3s external-dns"
@@ -51,7 +47,8 @@ resource "cloudflare_account_token" "external_dns" {
         { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}" = "*"
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}"       = "*"
+        "com.cloudflare.api.account.zone.${data.cloudflare_zone.maroonrides_app.zone_id}" = "*"
       })
     }
   ]

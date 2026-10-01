@@ -3,8 +3,28 @@ kind: Kustomization
 
 resources:
   - ../../../../base/networking/envoy-gateway/config
+  - certificate.yaml
 
 patches:
+  - target:
+      kind: Gateway
+      name: envoy-ingress
+    patch: |-
+      - op: add
+        path: /spec/listeners/-
+        value:
+          name: https-maroonrides
+          protocol: HTTPS
+          port: 443
+          hostname: '*.maroonrides.app'
+          allowedRoutes:
+            namespaces:
+              from: All
+          tls:
+            mode: Terminate
+            certificateRefs:
+              - kind: Secret
+                name: maroonrides-app-tls
   - target:
       kind: Gateway
       name: envoy-ingress

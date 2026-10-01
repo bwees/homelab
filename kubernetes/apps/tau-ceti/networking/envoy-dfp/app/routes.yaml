@@ -1,8 +1,8 @@
 ---
 # The route's hostnames are the access control: anything whose SNI does not match
-# *.bwees.io is rejected before the resolver sees it, so this cannot be aimed at
-# bwees.dev or at arbitrary internet hosts. Envoy Gateway additionally refuses
-# loopback SNIs, and the upstream port is fixed at 443.
+# *.bwees.io or *.maroonrides.app is rejected before the resolver sees it, so this
+# cannot be aimed at bwees.dev or at arbitrary internet hosts. Envoy Gateway
+# additionally refuses loopback SNIs, and the upstream port is fixed at 443.
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
 metadata:
@@ -23,8 +23,11 @@ spec:
   parentRefs:
     - name: envoy-dfp
       sectionName: tls
+    - name: envoy-dfp
+      sectionName: tls-maroonrides
   hostnames:
     - '*.bwees.io'
+    - '*.maroonrides.app'
   rules:
     - backendRefs:
         - group: gateway.envoyproxy.io
@@ -43,6 +46,8 @@ spec:
   parentRefs:
     - name: envoy-dfp
       sectionName: http
+    - name: envoy-dfp
+      sectionName: http-maroonrides
   rules:
     - filters:
         - type: RequestRedirect

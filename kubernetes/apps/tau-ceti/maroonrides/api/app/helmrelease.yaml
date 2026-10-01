@@ -1,0 +1,164 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: maroonrides-api
+  annotations:
+    # No controller is named main, so the default probe patch would invent one.
+    lab.bwees/probe-defaults: disabled
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: maroonrides-api
+  values:
+    controllers:
+      gateway:
+        replicas: 3
+        strategy: RollingUpdate
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/controller: gateway
+        containers:
+          main:
+            image:
+              repository: ghcr.io/maroon-rides/api-gateway
+              tag: '1.0.0'
+            env:
+              PORT: '3000'
+              DATABASE_URL: &databaseUrl
+                valueFrom:
+                  secretKeyRef:
+                    name: maroonrides-db-app
+                    key: uri
+              # Leaves room under max_connections for a surge pod during rollouts.
+              DATABASE_MAX_CONNS: '15'
+            securityContext: &securityContext
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version/supported
+                    port: 3000
+                  timeoutSeconds: 5
+              readiness: *probes
+
+      requester:
+        # Owns migrations and polling; a second replica would double every job.
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/maroon-rides/api-requester
+              tag: '1.0.0'
+            env:
+              DATABASE_URL: *databaseUrl
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            probes: &noProbes
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
+      db-dump:
+        type: cronjob
+        cronjob:
+          # Lands before the volsync runs at 02:00, 03:30 and 04:00.
+          schedule: '30 1 * * *'
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        pod:
+          restartPolicy: OnFailure
+        containers:
+          main:
+            image:
+              repository: ghcr.io/cloudnative-pg/postgresql
+              tag: '18.4-standard-trixie'
+            command:
+              - sh
+              - -c
+              # Plain SQL so restic can dedupe night to night.
+              - >-
+                pg_dump --no-owner --file=/dumps/maroonrides.sql.tmp &&
+                mv /dumps/maroonrides.sql.tmp /dumps/maroonrides.sql
+            env:
+              PGHOST: maroonrides-db-r
+              PGDATABASE: maroonrides
+              PGUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: maroonrides-db-app
+                    key: username
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: maroonrides-db-app
+                    key: password
+            securityContext: *securityContext
+            probes: *noProbes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      gateway:
+        controller: gateway
+        ports:
+          http:
+            port: &port 3000
+
+    route:
+      gateway:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - api.maroonrides.app
+        rules:
+          - backendRefs:
+              - identifier: gateway
+                port: *port
+
+    persistence:
+      dumps:
+        existingClaim: maroonrides-db-dumps
+        advancedMounts:
+          db-dump:
+            main:
+              - path: /dumps

@@ -1,0 +1,29 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: maroonrides-api
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/tau-ceti/maroonrides/api/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: operators
+    - name: miroir-config
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: onepassword
+      namespace: secrets
+  components:
+    - ../../../../../components/postgres
+    - ../../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: maroonrides
+      VOLSYNC_CLAIM: maroonrides-db-dumps
+  targetNamespace: maroonrides

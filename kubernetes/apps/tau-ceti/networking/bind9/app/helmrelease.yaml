@@ -23,6 +23,8 @@ spec:
               - >-
                 [ -f /var/lib/bind/bwees.io.zone ] ||
                 cp /etc/bind/seed/bwees.io.zone /var/lib/bind/bwees.io.zone;
+                [ -f /var/lib/bind/maroonrides.app.zone ] ||
+                cp /etc/bind/seed/maroonrides.app.zone /var/lib/bind/maroonrides.app.zone;
                 chown -R 53:53 /var/lib/bind
         containers:
           main:
@@ -98,6 +100,8 @@ spec:
             zone-init:
               - path: /etc/bind/seed/bwees.io.zone
                 subPath: bwees.io.zone
+              - path: /etc/bind/seed/maroonrides.app.zone
+                subPath: maroonrides.app.zone
 
       tsig:
         type: secret

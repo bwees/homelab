@@ -22,6 +22,7 @@ spec:
       - --rfc2136-host=dns.tail72746.ts.net
       - --rfc2136-port=53
       - --rfc2136-zone=bwees.io
+      - --rfc2136-zone=maroonrides.app
       - --rfc2136-tsig-keyname=external-dns
       - --rfc2136-tsig-secret-alg=hmac-sha256
       # external-dns reads the zone back by AXFR to work out what it already owns.
@@ -43,6 +44,7 @@ spec:
     txtPrefix: k8s.%{record_type}-
     domainFilters:
       - bwees.io
+      - maroonrides.app
     resources:
       requests:
         cpu: 10m

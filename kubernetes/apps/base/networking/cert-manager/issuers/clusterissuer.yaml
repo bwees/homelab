@@ -19,3 +19,4 @@ spec:
           dnsZones:
             - bwees.io
             - bwees.dev
+            - maroonrides.app
