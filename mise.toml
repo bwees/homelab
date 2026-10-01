@@ -1,5 +1,5 @@
 [tools]
-opentofu = "1.12.6"
+opentofu = "1.13.1"
 helm = "4.3.0"
 
 [task_config]
