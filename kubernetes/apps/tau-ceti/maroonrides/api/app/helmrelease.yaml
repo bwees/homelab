@@ -45,8 +45,8 @@ spec:
                 drop: [ALL]
             resources:
               requests:
-                cpu: 25m
-                memory: 64Mi
+                cpu: 100m
+                memory: 256Mi
               limits:
                 memory: 512Mi
             probes:
@@ -74,7 +74,7 @@ spec:
             resources:
               requests:
                 cpu: 25m
-                memory: 64Mi
+                memory: 256Mi
               limits:
                 memory: 512Mi
             probes: &noProbes
