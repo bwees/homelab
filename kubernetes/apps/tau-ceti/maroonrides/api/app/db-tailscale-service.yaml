@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maroonrides-db-tailscale
+  namespace: maroonrides
+  annotations:
+    tailscale.com/expose: 'true'
+    tailscale.com/hostname: maroonrides-db
+spec:
+  type: ClusterIP
+  selector:
+    cnpg.io/cluster: maroonrides-db
+    cnpg.io/instanceRole: primary
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
