@@ -14,3 +14,7 @@ spec:
       requestTimeout: 0s
   connection:
     bufferLimit: 8Mi
+  circuitBreaker:
+    maxConnections: 10000
+    maxPendingRequests: 10000
+    maxParallelRequests: 10000

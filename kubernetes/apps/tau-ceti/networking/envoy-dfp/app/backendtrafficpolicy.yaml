@@ -11,3 +11,5 @@ spec:
       name: envoy-dfp
   connection:
     bufferLimit: 1Mi
+  circuitBreaker:
+    maxConnections: 10000
