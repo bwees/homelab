@@ -6,11 +6,12 @@ metadata:
   namespace: networking
 spec:
   secretName: bwees-dev-tls
-  # *.bwees.dev does not cover the home.bwees.dev label, so both are listed
+  # *.bwees.dev does not cover the home.bwees.dev or stepien.bwees.dev labels, so they are listed
   dnsNames:
     - 'bwees.dev'
     - '*.bwees.dev'
     - '*.home.bwees.dev'
+    - '*.stepien.bwees.dev'
   privateKey:
     algorithm: ECDSA
     size: 256

@@ -92,6 +92,7 @@ spec:
               namespace: networking
           hostnames:
             - stepien-immich.bwees.io
+            - immich.stepien.bwees.dev
           rules:
             - backendRefs:
                 - identifier: main
