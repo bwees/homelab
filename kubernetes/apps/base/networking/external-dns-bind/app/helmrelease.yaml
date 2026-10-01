@@ -26,7 +26,7 @@ spec:
       - --rfc2136-tsig-keyname=external-dns
       - --rfc2136-tsig-secret-alg=hmac-sha256
       # external-dns reads the zone back by AXFR to work out what it already owns.
-      - --rfc2136-tsig-axfr
+      - --rfc2136-axfr
       - --rfc2136-min-ttl=60s
       # The Gateway's target annotation is the bwees.dev answer, which on eridani
       # is a LAN address the forward proxy cannot reach. Override it: this view
