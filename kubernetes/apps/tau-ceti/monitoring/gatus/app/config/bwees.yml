@@ -109,6 +109,15 @@ endpoints:
     alerts:
       - type: discord
 
+  - name: bazarr
+    group: lab-media
+    url: 'https://bazarr.bwees.dev/'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
   - name: sonarr
     group: lab-media
     url: 'https://sonarr.bwees.dev/'

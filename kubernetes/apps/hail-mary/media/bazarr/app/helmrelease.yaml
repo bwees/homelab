@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bazarr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bazarr
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-operations/bazarr
+              tag: '1.6.2'
+            env:
+              TZ: America/Chicago
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 6767
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 6767
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - bazarr.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 6767
+
+    persistence:
+      config:
+        existingClaim: bazarr-config
+        globalMounts:
+          - path: /config
+      media:
+        existingClaim: media-library
+        globalMounts:
+          - path: /tv
+            subPath: tv
+          - path: /movies
+            subPath: movies

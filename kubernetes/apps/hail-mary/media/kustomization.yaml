@@ -9,6 +9,7 @@ resources:
   - qbittorrent/ks.yaml
   - jellyfin/ks.yaml
   - sonarr/ks.yaml
+  - bazarr/ks.yaml
   - radarr/ks.yaml
   - prowlarr/ks.yaml
   - pinchflat/ks.yaml
