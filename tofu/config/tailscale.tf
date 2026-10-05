@@ -76,3 +76,35 @@ data "tailscale_device" "mullvad_nodes" {
   name     = "${each.value}.${local.tailnet}"
   wait_for = "60s"
 }
+
+resource "tailscale_oauth_client" "kube_operator" {
+  description = "kubernetes operator"
+  scopes      = ["devices:core", "auth_keys", "services"]
+  tags        = ["tag:kube-operator"]
+}
+
+resource "onepassword_item" "tailscale_kube_operator" {
+  vault    = data.onepassword_vault.homelab_deployment.uuid
+  title    = "tailscale-operator"
+  category = "password"
+
+  section_map = {
+    "credentials" = {
+      field_map = {
+        "client_id" = {
+          type  = "STRING"
+          value = tailscale_oauth_client.kube_operator.id
+        }
+        "client_secret" = {
+          type  = "CONCEALED"
+          value = tailscale_oauth_client.kube_operator.key
+        }
+      }
+    }
+  }
+}
+
+import {
+  to = onepassword_item.tailscale_kube_operator
+  id = "vaults/7bnwnvda73bz3n634nb5bzoz3y/items/pidamurwg6gq7sjs55si6myqia"
+}
