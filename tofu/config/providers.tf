@@ -21,6 +21,11 @@ provider "contabo" {
   oauth2_pass          = data.onepassword_item.cloudflare.section_map["contabo"].field_map["password"].value
 }
 
+provider "b2" {
+  application_key_id = data.onepassword_item.cloudflare.section_map["backblaze"].field_map["key_id"].value
+  application_key    = data.onepassword_item.cloudflare.section_map["backblaze"].field_map["application_key"].value
+}
+
 provider "tailscale" {
   oauth_client_id     = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_id"].value
   oauth_client_secret = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_secret"].value

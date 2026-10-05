@@ -17,5 +17,12 @@ Used to manage third-party services with IaC.
   - Permissions
     - Read and write access to the "Homelab Deployment" vault
 
+- Backblaze B2 Application Key
+  - Permissions
+    - all buckets, with `writeKeys` and `writeBuckets`
+
+- Contabo
+  - Account API key
+
 - Tailscale OAuth Client
   - Permissions: all
