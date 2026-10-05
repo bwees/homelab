@@ -26,7 +26,9 @@ in
       "--kube-apiserver-arg=feature-gates=ImageVolume=true"
       "--kubelet-arg=feature-gates=ImageVolume=true"
       "--kubelet-arg=config=${kubeletConfig}"
-      "--etcd-snapshot-schedule-cron=0 */6 * * *"
+      # Quoted: systemd splits ExecStart on spaces, and k3s ignores every flag
+      # after the first stray word.
+      ''--etcd-snapshot-schedule-cron="0 */6 * * *"''
       "--etcd-snapshot-retention=14"
     ];
   };
