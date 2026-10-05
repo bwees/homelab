@@ -27,7 +27,7 @@ spec:
           main:
             image:
               repository: ghcr.io/maroon-rides/api-gateway
-              tag: '1.2.1'
+              tag: '1.2.2'
             env:
               PORT: '3000'
               DATABASE_URL: &databaseUrl
