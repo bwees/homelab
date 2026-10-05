@@ -67,7 +67,7 @@ spec:
           main:
             image:
               repository: ghcr.io/maroon-rides/api-requester
-              tag: '1.2.1'
+              tag: '1.2.2'
             env:
               DATABASE_URL: *databaseUrl
             securityContext: *securityContext
