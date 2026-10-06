@@ -1,0 +1,37 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: misdirected-request
+  namespace: networking
+spec:
+  directResponse:
+    statusCode: 421
+
+---
+# Every cluster serves the same wildcard cert behind one public IP, so browsers
+# reuse an HTTP/2 connection for hosts that live on another cluster. A 421 makes
+# them retry on a fresh connection instead of showing an empty 404.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: misdirected-request
+  namespace: networking
+  annotations:
+    # disable wildcard route from external-dns
+    external-dns.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: envoy-ingress
+      namespace: networking
+      sectionName: https
+    - name: envoy-ingress
+      namespace: networking
+      sectionName: https-public
+  rules:
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.envoyproxy.io
+            kind: HTTPRouteFilter
+            name: misdirected-request
