@@ -49,6 +49,5 @@
   services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
   services.k3s.extraFlags = [
     "--node-label=lab.bwees/role=nas"
-    "--node-label=storage.miroir.home-operations.com/class=std"
   ];
 }
