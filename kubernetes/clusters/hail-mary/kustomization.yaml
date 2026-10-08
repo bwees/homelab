@@ -52,35 +52,3 @@ patches:
                   LONGHORN_DATA_REPLICAS: "2"
                   LONGHORN_CSI_REPLICAS: "2"
                   MIROIR_DATA_REPLICAS: '"2"'
-      - op: add
-        path: /spec/patches/-
-        value:
-          target:
-            group: kustomize.toolkit.fluxcd.io
-            kind: Kustomization
-            name: futo-backups
-          patch: |
-            - op: add
-              path: /spec/patches/-
-              value:
-                target:
-                  group: helm.toolkit.fluxcd.io
-                  kind: HelmRelease
-                  name: futo-backups
-                patch: |
-                  apiVersion: helm.toolkit.fluxcd.io/v2
-                  kind: HelmRelease
-                  metadata:
-                    name: futo-backups
-                  spec:
-                    values:
-                      defaultPodOptions:
-                        nodeSelector:
-                          kubernetes.io/hostname: astrophage
-                      persistence:
-                        nas:
-                          type: hostPath
-                          hostPath: /mnt/main
-                          globalMounts:
-                            - path: /media/nas
-                              readOnly: true
