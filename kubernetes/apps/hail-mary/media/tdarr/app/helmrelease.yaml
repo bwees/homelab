@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/haveagitgat/tdarr
-              tag: '2.96.01'
+              tag: '3.00.00'
             env:
               TZ: America/Chicago
               PUID: '1000'
