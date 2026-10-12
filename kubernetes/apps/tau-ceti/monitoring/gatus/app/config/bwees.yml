@@ -136,6 +136,15 @@ endpoints:
     alerts:
       - type: discord
 
+  - name: magpie
+    group: lab-media
+    url: 'https://magpie.bwees.dev/api/health'
+    interval: 1m
+    conditions:
+      - '[STATUS] == 200'
+    alerts:
+      - type: discord
+
   - name: exit-node
     group: lab-media
     url: 'icmp://100.107.103.20'

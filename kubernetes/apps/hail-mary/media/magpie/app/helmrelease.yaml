@@ -1,0 +1,150 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: magpie
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: magpie
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bwees/magpie
+              tag: 'v0.1.0'
+            env:
+              TZ: America/Chicago
+              MAGPIE_BASE_URL: https://magpie.bwees.dev
+            envFrom:
+              - secretRef:
+                  name: magpie-secret
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 3000
+              readiness: *probes
+
+      agent-intel:
+        type: daemonset
+        pod:
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_8086.present: 'true'
+        containers:
+          main:
+            image: &agentImage
+              repository: ghcr.io/bwees/magpie-agent
+              tag: 'v0.1.0'
+            env: &agentEnv
+              TZ: America/Chicago
+              MAGPIE_URL: http://magpie.media.svc.cluster.local:3000
+              MAGPIE_AGENT_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+            envFrom: &agentEnvFrom
+              - secretRef:
+                  name: magpie-secret
+            securityContext: &agentSecurityContext
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 8Gi
+                gpu.intel.com/i915: '1'
+            probes: &agentProbes
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
+      agent-amd:
+        type: daemonset
+        pod:
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_1002.present: 'true'
+        containers:
+          main:
+            image: *agentImage
+            env: *agentEnv
+            envFrom: *agentEnvFrom
+            securityContext: *agentSecurityContext
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 8Gi
+                amd.com/gpu: '1'
+            probes: *agentProbes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
+
+    service:
+      main:
+        controller: main
+        forceRename: magpie
+        ports:
+          http:
+            port: 3000
+            appProtocol: kubernetes.io/ws
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - magpie.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 3000
+
+    persistence:
+      config:
+        existingClaim: magpie-config
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+      media:
+        existingClaim: media-library
+        advancedMounts:
+          main:
+            main:
+              - path: /media
+          agent-intel:
+            main: &agentScratch
+              - path: /scratch
+                subPathExpr: magpie-scratch/$(MAGPIE_AGENT_NAME)
+          agent-amd:
+            main: *agentScratch

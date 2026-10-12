@@ -16,3 +16,4 @@ resources:
   - seerr/ks.yaml
   - tdarr/ks.yaml
   - flaresolverr/ks.yaml
+  - magpie/ks.yaml
