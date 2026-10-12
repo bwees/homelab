@@ -12,6 +12,18 @@ spec:
   chartRef:
     kind: OCIRepository
     name: immich
+  # The chart can't set this, and the 10 minute default marks the compile as a
+  # failed rollout.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: immich-machine-learning
+            patch: |-
+              - op: add
+                path: /spec/progressDeadlineSeconds
+                value: 3600
   values:
     valkey:
       enabled: true
