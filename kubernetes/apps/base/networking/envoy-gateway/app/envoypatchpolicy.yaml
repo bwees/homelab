@@ -1,0 +1,40 @@
+---
+# The hosts enable rx-udp-gro-forwarding for Tailscale, so QUIC packets forwarded
+# to this pod can arrive merged into one oversized datagram. Without GRO on the
+# socket Envoy drops them, which stalls handshakes and makes browsers fall back
+# to HTTP/2.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyPatchPolicy
+metadata:
+  name: quic-listener-gro
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy-ingress
+  type: JSONPatch
+  jsonPatches:
+    - type: type.googleapis.com/envoy.config.listener.v3.Listener
+      name: networking/envoy-ingress/https-quic
+      operation:
+        op: add
+        path: /udp_listener_config/downstream_socket_config/prefer_gro
+        value: true
+    # UDP sockets get no buffer autotuning, and the 208Ki kernel default drops
+    # packets on uploads. 8Mi absorbs about 65ms of a gigabit stream.
+    - type: type.googleapis.com/envoy.config.listener.v3.Listener
+      name: networking/envoy-ingress/https-quic
+      operation:
+        op: add
+        path: /socket_options
+        value:
+          - description: SO_RCVBUF
+            level: 1
+            name: 8
+            int_value: 8388608
+            state: STATE_PREBIND
+          - description: SO_SNDBUF
+            level: 1
+            name: 7
+            int_value: 8388608
+            state: STATE_PREBIND

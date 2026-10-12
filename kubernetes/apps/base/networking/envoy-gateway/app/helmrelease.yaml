@@ -37,6 +37,8 @@ spec:
         extensionApis:
           # required for the DynamicResolver Backend on tau-ceti
           enableBackend: true
+          # required for the QUIC listener socket settings
+          enableEnvoyPatchPolicy: true
     deployment:
       # the controller reads envoy-gateway-config only at startup
       annotations:
