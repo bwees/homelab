@@ -46,6 +46,21 @@ spec:
         pod:
           nodeSelector:
             feature.node.kubernetes.io/pci-0300_8086.present: 'true'
+        # The kubelet creates the per-node scratch subpath as root.
+        initContainers: &agentInit
+          scratch-owner:
+            image:
+              repository: ghcr.io/bwees/magpie-agent
+              tag: 'v0.1.0'
+            command: ['chown', '1000:1000', '/scratch']
+            env:
+              MAGPIE_AGENT_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
         containers:
           main:
             image: &agentImage
@@ -85,6 +100,7 @@ spec:
         pod:
           nodeSelector:
             feature.node.kubernetes.io/pci-0300_1002.present: 'true'
+        initContainers: *agentInit
         containers:
           main:
             image: *agentImage
@@ -143,8 +159,10 @@ spec:
             main:
               - path: /media
           agent-intel:
-            main: &agentScratch
+            scratch-owner: &agentScratch
               - path: /scratch
                 subPathExpr: magpie-scratch/$(MAGPIE_AGENT_NAME)
+            main: *agentScratch
           agent-amd:
+            scratch-owner: *agentScratch
             main: *agentScratch
