@@ -3,8 +3,12 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: immich
+  annotations:
+    lab.bwees/upgrade-rollback: disabled
 spec:
   interval: 1h
+  # A new ML image recompiles every MIGraphX model before it reports ready.
+  timeout: 60m
   chartRef:
     kind: OCIRepository
     name: immich
@@ -120,12 +124,10 @@ spec:
                 MACHINE_LEARNING_PRELOAD__OCR__DETECTION: 'PP-OCRv5_mobile'
                 MACHINE_LEARNING_PRELOAD__OCR__RECOGNITION: 'PP-OCRv5_mobile'
               probes:
-                liveness:
+                # ~13 minutes to compile after an image bump; allow 45
+                startup:
                   spec:
-                    failureThreshold: 1024
-                readiness:
-                  spec:
-                    failureThreshold: 1024
+                    failureThreshold: 270
               resources:
                 requests:
                   cpu: 100m

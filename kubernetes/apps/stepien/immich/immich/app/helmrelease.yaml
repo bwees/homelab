@@ -3,6 +3,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: immich
+  annotations:
+    lab.bwees/upgrade-rollback: disabled
 spec:
   interval: 1h
   chartRef:
