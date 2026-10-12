@@ -49,9 +49,9 @@ spec:
         # The kubelet creates the per-node scratch subpath as root.
         initContainers: &agentInit
           scratch-owner:
-            image:
+            image: &agentImage
               repository: ghcr.io/bwees/magpie-agent
-              tag: 'v0.1.0'
+              tag: 'v0.1.1'
             command: ['chown', '1000:1000', '/scratch']
             env:
               MAGPIE_AGENT_NAME:
@@ -63,9 +63,7 @@ spec:
               runAsNonRoot: false
         containers:
           main:
-            image: &agentImage
-              repository: ghcr.io/bwees/magpie-agent
-              tag: 'v0.1.1'
+            image: *agentImage
             env: &agentEnv
               TZ: America/Chicago
               MAGPIE_URL: http://magpie.media.svc.cluster.local:3000
