@@ -122,10 +122,10 @@ spec:
               probes:
                 liveness:
                   spec:
-                    failureThreshold: 120
+                    failureThreshold: 1024
                 readiness:
                   spec:
-                    failureThreshold: 120
+                    failureThreshold: 1024
               resources:
                 requests:
                   cpu: 100m
