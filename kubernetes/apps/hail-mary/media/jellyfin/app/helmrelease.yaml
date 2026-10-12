@@ -107,10 +107,6 @@ spec:
       media:
         existingClaim: media-library
         globalMounts:
-          - path: /tv
-            subPath: tv
-          - path: /movies
-            subPath: movies
           # Same paths Magpie sees, so it can match Jellyfin's items to its files.
           - path: /media/tv
             subPath: tv
