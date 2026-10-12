@@ -1,0 +1,58 @@
+---
+# Same generic-device-plugin as the AMD component: 16 pods can share the render node.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: intel-device-plugin
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: intel-device-plugin
+  values:
+    controllers:
+      main:
+        type: daemonset
+        pod:
+          priorityClassName: system-node-critical
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_8086.present: 'true'
+            kubernetes.io/arch: amd64
+          tolerations:
+            - key: CriticalAddonsOnly
+              operator: Exists
+        containers:
+          main:
+            image:
+              repository: docker.io/squat/generic-device-plugin
+              tag: '0.2.0'
+            args:
+              - --domain=gpu.intel.com
+              - --device={"name":"i915","groups":[{"count":16,"paths":[{"path":"/dev/dri/renderD*"}]}]}
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                memory: 64Mi
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
+    persistence:
+      device-plugins:
+        type: hostPath
+        hostPath: /var/lib/kubelet/device-plugins
+        globalMounts:
+          - path: /var/lib/kubelet/device-plugins
+      dev:
+        type: hostPath
+        hostPath: /dev
+        globalMounts:
+          - path: /dev

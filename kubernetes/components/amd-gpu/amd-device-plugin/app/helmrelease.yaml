@@ -1,30 +1,59 @@
 ---
+# squat's generic-device-plugin instead of ROCm's: ROCm can't share a GPU, this hands
+# /dev/kfd and the render node to up to 16 pods, like the Intel plugin's sharedDevNum.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: amd-device-plugin
 spec:
   interval: 1h
-  chart:
-    spec:
-      # renovate: datasource=helm depName=amd-gpu registryUrl=https://rocm.github.io/k8s-device-plugin/
-      chart: amd-gpu
-      version: 0.22.0
-      sourceRef:
-        kind: HelmRepository
-        name: rocm
+  chartRef:
+    kind: OCIRepository
+    name: amd-device-plugin
   values:
-    nfd:
-      enabled: false
-    labeller:
-      enabled: false
+    controllers:
+      main:
+        type: daemonset
+        pod:
+          priorityClassName: system-node-critical
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_1002.present: 'true'
+            kubernetes.io/arch: amd64
+          tolerations:
+            - key: CriticalAddonsOnly
+              operator: Exists
+        containers:
+          main:
+            image:
+              repository: docker.io/squat/generic-device-plugin
+              tag: '0.2.0'
+            args:
+              - --domain=amd.com
+              - --device={"name":"gpu","groups":[{"count":16,"paths":[{"path":"/dev/kfd"},{"path":"/dev/dri/renderD*"}]}]}
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                memory: 64Mi
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
 
-    node_selector_enabled: true
-
-    dp:
-      resources:
-        requests:
-          cpu: 10m
-          memory: 32Mi
-        limits:
-          memory: 128Mi
+    persistence:
+      device-plugins:
+        type: hostPath
+        hostPath: /var/lib/kubelet/device-plugins
+        globalMounts:
+          - path: /var/lib/kubelet/device-plugins
+      dev:
+        type: hostPath
+        hostPath: /dev
+        globalMounts:
+          - path: /dev
