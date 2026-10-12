@@ -14,6 +14,7 @@
     ../../../lib/miroir.nix
     ../../../lib/miroir-drbd.nix
     ../../../lib/garbage-collect.nix
+    ../../../lib/network-tuning.nix
     ../../../lib/tailscale.nix
     ../../../lib/tailscale-pod-nat.nix
   ];

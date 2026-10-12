@@ -10,6 +10,7 @@
     ../../lib/bwees.nix
     ../../lib/docker.nix
     ../../lib/garbage-collect.nix
+    ../../lib/network-tuning.nix
     ../../lib/tailscale.nix
   ];
 

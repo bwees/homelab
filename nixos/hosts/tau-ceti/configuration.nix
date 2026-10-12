@@ -10,6 +10,7 @@
     ../../lib/beszel.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
+    ../../lib/network-tuning.nix
     ../../lib/tailscale.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
