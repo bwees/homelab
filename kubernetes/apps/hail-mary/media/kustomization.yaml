@@ -16,5 +16,3 @@ resources:
   - seerr/ks.yaml
   - tdarr/ks.yaml
   - flaresolverr/ks.yaml
-  - shelfarr/ks.yaml
-  - audiobookshelf/ks.yaml
