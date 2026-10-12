@@ -10,6 +10,7 @@ spec:
   values:
     controllers:
       main:
+        replicas: 0
         containers:
           main:
             image:
