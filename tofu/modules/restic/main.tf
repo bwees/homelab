@@ -1,10 +1,5 @@
-import {
-  to = b2_bucket.restic
-  id = "d6a62e72e6aa5e119bb20413"
-}
-
 resource "b2_bucket" "restic" {
-  bucket_name = "bwees-restic"
+  bucket_name = var.bucket_name
   bucket_type = "allPrivate"
 
   default_server_side_encryption {
@@ -40,7 +35,7 @@ resource "b2_application_key" "restic" {
 }
 
 resource "onepassword_item" "b2_restic" {
-  vault    = data.onepassword_vault.homelab_deployment.uuid
+  vault    = var.vault_uuid
   title    = "b2-restic"
   category = "password"
 

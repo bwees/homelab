@@ -1,34 +1,37 @@
 provider "onepassword" {}
 
-data "onepassword_item" "cloudflare" {
-  vault = "Homelab Deployment"
+data "onepassword_item" "credentials" {
+  vault = local.vault_name
   title = "tofu-credentials"
 }
 
+locals {
+  credentials = data.onepassword_item.credentials.section_map
+}
+
 provider "cloudflare" {
-  api_token = data.onepassword_item.cloudflare.section_map["cloudflare"].field_map["api_token"].value
+  api_token = local.credentials["cloudflare"].field_map["api_token"].value
 }
 
 provider "github" {
-  owner = "bwees"
-  token = data.onepassword_item.cloudflare.section_map["github"].field_map["token"].value
+  owner = local.github_owner
+  token = local.credentials["github"].field_map["token"].value
 }
 
 provider "contabo" {
-  oauth2_client_id     = data.onepassword_item.cloudflare.section_map["contabo"].field_map["client_id"].value
-  oauth2_client_secret = data.onepassword_item.cloudflare.section_map["contabo"].field_map["client_secret"].value
-  oauth2_user          = data.onepassword_item.cloudflare.section_map["contabo"].field_map["user"].value
-  oauth2_pass          = data.onepassword_item.cloudflare.section_map["contabo"].field_map["password"].value
+  oauth2_client_id     = local.credentials["contabo"].field_map["client_id"].value
+  oauth2_client_secret = local.credentials["contabo"].field_map["client_secret"].value
+  oauth2_user          = local.credentials["contabo"].field_map["user"].value
+  oauth2_pass          = local.credentials["contabo"].field_map["password"].value
 }
 
 provider "b2" {
-  application_key_id = data.onepassword_item.cloudflare.section_map["backblaze"].field_map["key_id"].value
-  application_key    = data.onepassword_item.cloudflare.section_map["backblaze"].field_map["application_key"].value
+  application_key_id = local.credentials["backblaze"].field_map["key_id"].value
+  application_key    = local.credentials["backblaze"].field_map["application_key"].value
 }
 
 provider "tailscale" {
-  oauth_client_id     = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_id"].value
-  oauth_client_secret = data.onepassword_item.cloudflare.section_map["tailscale"].field_map["client_secret"].value
+  oauth_client_id     = local.credentials["tailscale"].field_map["client_id"].value
+  oauth_client_secret = local.credentials["tailscale"].field_map["client_secret"].value
   tailnet             = local.tailnet
 }
-

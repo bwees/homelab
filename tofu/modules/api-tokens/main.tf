@@ -1,5 +1,5 @@
 resource "cloudflare_account_token" "cert_manager" {
-  account_id = data.cloudflare_account.main.id
+  account_id = var.account_id
   name       = "k3s cert-manager DNS01"
 
   policies = [
@@ -10,16 +10,14 @@ resource "cloudflare_account_token" "cert_manager" {
         { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_io.zone_id}"        = "*"
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}"       = "*"
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.maroonrides_app.zone_id}" = "*"
+        for zone_id in var.cert_manager_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*"
       })
     }
   ]
 }
 
 resource "onepassword_item" "cf_cert_manager" {
-  vault    = data.onepassword_vault.homelab_deployment.uuid
+  vault    = var.vault_uuid
   title    = "cf-cert-manager"
   category = "password"
 
@@ -36,7 +34,7 @@ resource "onepassword_item" "cf_cert_manager" {
 }
 
 resource "cloudflare_account_token" "external_dns" {
-  account_id = data.cloudflare_account.main.id
+  account_id = var.account_id
   name       = "k3s external-dns"
 
   policies = [
@@ -47,15 +45,14 @@ resource "cloudflare_account_token" "external_dns" {
         { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.bwees_dev.zone_id}"       = "*"
-        "com.cloudflare.api.account.zone.${data.cloudflare_zone.maroonrides_app.zone_id}" = "*"
+        for zone_id in var.external_dns_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*"
       })
     }
   ]
 }
 
 resource "onepassword_item" "cf_external_dns" {
-  vault    = data.onepassword_vault.homelab_deployment.uuid
+  vault    = var.vault_uuid
   title    = "cf-external-dns"
   category = "password"
 
@@ -72,7 +69,7 @@ resource "onepassword_item" "cf_external_dns" {
 }
 
 resource "cloudflare_account_token" "pages_deployment" {
-  account_id = data.cloudflare_account.main.id
+  account_id = var.account_id
   name       = "Pages Deployment"
 
   policies = [
@@ -82,14 +79,14 @@ resource "cloudflare_account_token" "pages_deployment" {
         { id = "8d28297797f24fb8a0c332fe0866ec89" }, # Pages Edit
       ]
       resources = jsonencode({
-        "com.cloudflare.api.account.${data.cloudflare_account.main.id}" = "*"
+        "com.cloudflare.api.account.${var.account_id}" = "*"
       })
     }
   ]
 }
 
 resource "onepassword_item" "cf_pages_deployment" {
-  vault    = data.onepassword_vault.homelab_deployment.uuid
+  vault    = var.vault_uuid
   title    = "cf-pages-deployment"
   category = "password"
 

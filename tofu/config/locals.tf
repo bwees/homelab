@@ -15,10 +15,23 @@ data "cloudflare_zone" "maroonrides_app" {
 }
 
 data "onepassword_vault" "homelab_deployment" {
-  name = "Homelab Deployment"
+  name = local.vault_name
 }
 
 locals {
-  tailnet  = "tail72746.ts.net"
-  clusters = ["tau-ceti", "hail-mary", "stepien", "eridani"]
+  vault_name   = "Homelab Deployment"
+  github_owner = "bwees"
+  admin        = "brandonwees@gmail.com"
+  tailnet      = "tail72746.ts.net"
+  clusters     = ["tau-ceti", "hail-mary", "stepien", "eridani"]
+
+  mullvad_nodes = [
+    "brandon-iphone-17",
+    "brandon-ipad-air",
+    "brandon-macbook-pro",
+    "qbittorrent",
+  ]
+
+  account_id = data.cloudflare_account.main.account_id
+  vault_uuid = data.onepassword_vault.homelab_deployment.uuid
 }

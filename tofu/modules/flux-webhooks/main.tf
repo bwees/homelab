@@ -10,14 +10,14 @@ locals {
 }
 
 resource "random_password" "flux_webhook" {
-  for_each = toset(local.clusters)
+  for_each = var.clusters
 
   length  = 40
   special = false
 }
 
 resource "onepassword_item" "flux_webhooks" {
-  vault    = data.onepassword_vault.homelab_deployment.uuid
+  vault    = var.vault_uuid
   title    = "flux-webhooks"
   category = "password"
 
@@ -34,13 +34,13 @@ resource "onepassword_item" "flux_webhooks" {
 }
 
 resource "github_repository_webhook" "flux" {
-  for_each = toset(local.clusters)
+  for_each = var.clusters
 
-  repository = "homelab"
+  repository = var.repository
   events     = ["push"]
 
   configuration {
-    url          = "https://fluxhook-${each.key}.bwees.io${local.flux_webhook_paths[each.key]}"
+    url          = "https://fluxhook-${each.key}.${var.domain}${local.flux_webhook_paths[each.key]}"
     content_type = "json"
     secret       = random_password.flux_webhook[each.key].result
   }
