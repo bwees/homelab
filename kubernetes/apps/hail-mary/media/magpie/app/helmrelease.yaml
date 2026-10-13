@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/magpie
-              tag: 'v0.4.0'
+              tag: 'v0.5.0'
             env:
               TZ: America/Chicago
               MAGPIE_BASE_URL: https://magpie.bwees.dev
