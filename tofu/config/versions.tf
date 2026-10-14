@@ -30,6 +30,11 @@ terraform {
       version = "0.14.0"
     }
 
+    null = {
+      source  = "hashicorp/null"
+      version = "3.3.2"
+    }
+
     random = {
       source  = "hashicorp/random"
       version = "3.9.1"

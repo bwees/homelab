@@ -15,3 +15,11 @@ resource "contabo_instance" "tau_ceti" {
     ]
   }
 }
+
+module "nixos" {
+  source = "../nixos-host"
+
+  hostname    = "tau-ceti"
+  target_host = contabo_instance.tau_ceti.ip_config[0].v4[0].ip
+  instance_id = contabo_instance.tau_ceti.id
+}
