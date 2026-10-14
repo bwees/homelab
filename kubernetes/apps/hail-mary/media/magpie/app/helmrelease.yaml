@@ -138,6 +138,7 @@ spec:
             namespace: networking
         hostnames:
           - magpie.bwees.dev
+          - magpie.bwees.io
         rules:
           - backendRefs:
               - identifier: main
