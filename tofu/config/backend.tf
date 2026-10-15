@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "tofu"
+    bucket = "homelab-tofu-state"
     key    = "terraform.tfstate"
     region = "auto"
 
