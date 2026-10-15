@@ -37,7 +37,7 @@
       interface-name = "iot0";
     };
     vlan = {
-      parent = "enp7s0";
+      parent = "enp6s0";
       id = "30";
     };
     ipv4.method = "auto";
@@ -56,7 +56,7 @@
 
   # hostNetwork pods bind on the node, so envoy arrives over the LAN (masqueraded
   # to its node's IP) instead of the pod CIDR that k3s already accepts.
-  networking.firewall.interfaces."enp7s0".allowedTCPPorts = [
+  networking.firewall.interfaces."enp6s0".allowedTCPPorts = [
     8123 # Home Assistant
     5580 # Matter server websocket
   ];
