@@ -7,7 +7,6 @@ module "dns" {
 
   bwees_io_zone_id         = data.cloudflare_zone.bwees_io.zone_id
   bwees_dev_zone_id        = data.cloudflare_zone.bwees_dev.zone_id
-  maroonrides_app_zone_id  = data.cloudflare_zone.maroonrides_app.zone_id
   public_ingress_ipv4      = module.contabo.public_ipv4
   bwees_dev_static_records = local.bwees_dev_static_records
 }
@@ -21,12 +20,10 @@ module "api_tokens" {
   cert_manager_zone_ids = [
     data.cloudflare_zone.bwees_io.zone_id,
     data.cloudflare_zone.bwees_dev.zone_id,
-    data.cloudflare_zone.maroonrides_app.zone_id,
   ]
 
   external_dns_zone_ids = [
     data.cloudflare_zone.bwees_dev.zone_id,
-    data.cloudflare_zone.maroonrides_app.zone_id,
   ]
 }
 
