@@ -1,0 +1,59 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: maroonrides-auth
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: maroonrides-auth
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/maroon-rides/api-auth
+              tag: latest
+              pullPolicy: Always
+            securityContext:
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: &port 8080
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - auth.maroonrides.app
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

@@ -5,3 +5,4 @@ namespace: maroonrides
 resources:
   - namespace.yaml
   - api/ks.yaml
+  - auth/ks.yaml
