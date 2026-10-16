@@ -13,7 +13,6 @@ configMapGenerator:
       - config/alerting.yml
       - config/bwees.yml
       - config/eridani.yml
-      - config/maroonrides.yml
       - config/misc.yml
       - config/starforge.yml
       - config/stepien.yml

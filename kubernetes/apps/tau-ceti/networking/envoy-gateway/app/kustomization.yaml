@@ -3,16 +3,3 @@ kind: Kustomization
 
 resources:
   - ../../../../base/networking/envoy-gateway/app
-
-patches:
-  - target:
-      kind: ClientTrafficPolicy
-      name: public-client-tuning
-    patch: |-
-      - op: add
-        path: /spec/targetRefs/-
-        value:
-          group: gateway.networking.k8s.io
-          kind: Gateway
-          name: envoy-ingress
-          sectionName: https-maroonrides
