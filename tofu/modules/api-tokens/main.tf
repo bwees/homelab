@@ -101,3 +101,38 @@ resource "onepassword_item" "cf_pages_deployment" {
     }
   }
 }
+
+resource "cloudflare_account_token" "unifi_ddns" {
+  account_id = var.account_id
+  name       = "UniFi DDNS"
+
+  policies = [
+    {
+      effect = "allow"
+      permission_groups = [
+        { id = "4755a26eedb94da69e1066d98aa820be" }, # DNS Write
+        { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
+      ]
+      resources = jsonencode({
+        for zone_id in var.external_dns_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*"
+      })
+    }
+  ]
+}
+
+resource "onepassword_item" "unifi_ddns" {
+  vault    = var.vault_uuid
+  title    = "unifi-ddns"
+  category = "password"
+
+  section_map = {
+    "credentials" = {
+      field_map = {
+        "token" = {
+          type  = "CONCEALED"
+          value = cloudflare_account_token.unifi_ddns.value
+        }
+      }
+    }
+  }
+}
