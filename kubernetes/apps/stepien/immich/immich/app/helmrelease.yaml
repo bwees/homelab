@@ -73,7 +73,7 @@ spec:
               TZ: America/New_York
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-              tag: 'v3.3.3'
+              tag: 'v3.3.4'
 
     server:
       controllers:
