@@ -21,6 +21,19 @@ resource "tailscale_acl" "acls" {
       },
     ],
 
+    grants : [
+      {
+        // tau-ceti's gatus sidecars read every cluster's routes through the operator API proxy
+        src : ["tag:tau-ceti"],
+        dst : ["tag:kube-operator"],
+        app : {
+          "tailscale.com/cap/kubernetes" : [
+            { impersonate : { groups : ["gatus-reader"] } },
+          ],
+        },
+      },
+    ],
+
     nodeAttrs : [
       for mullvad_device in data.tailscale_device.mullvad_nodes : {
         target : [mullvad_device.addresses[0]],

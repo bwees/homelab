@@ -102,6 +102,9 @@ spec:
               readOnly: true
       route:
         main:
+          annotations:
+            gatus.home-operations.com/endpoint: |
+              name: immich
           parentRefs:
             - name: envoy-ingress
               namespace: networking

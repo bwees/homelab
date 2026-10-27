@@ -89,6 +89,10 @@ spec:
 
     route:
       main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - '[STATUS] == 401'
         parentRefs:
           - name: envoy-ingress
             namespace: networking

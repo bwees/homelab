@@ -1,0 +1,54 @@
+endpoints:
+  - name: grace
+    group: hail-mary
+    url: 'icmp://100.65.90.4'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
+  - name: rocky
+    group: hail-mary
+    url: 'icmp://100.110.137.55'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
+  - name: astrophage
+    group: hail-mary
+    url: 'icmp://100.80.89.123'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
+  - name: xenonite
+    group: hail-mary
+    url: 'icmp://100.118.190.95'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
+  - name: homelab-router
+    group: hail-mary
+    url: 'icmp://100.85.70.91'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
+
+  - name: exit-node
+    group: hail-mary
+    url: 'icmp://100.107.103.20'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord

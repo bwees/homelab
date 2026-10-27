@@ -98,6 +98,9 @@ spec:
                   gpu.intel.com/i915: '1'
       route:
         main:
+          annotations:
+            gatus.home-operations.com/endpoint: |
+              name: immich
           parentRefs:
             - name: envoy-ingress
               namespace: networking

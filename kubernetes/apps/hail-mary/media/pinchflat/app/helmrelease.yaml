@@ -58,6 +58,11 @@ spec:
     route:
       # Internal: full access, no path filtering.
       internal:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            name: pinchflat
+            conditions:
+              - '[STATUS] == 401'
         parentRefs:
           - name: envoy-ingress
             namespace: networking
@@ -70,6 +75,8 @@ spec:
 
       # External: only expose the public podcast feed/media endpoints.
       external:
+        annotations:
+          gatus.home-operations.com/enabled: 'false'
         parentRefs:
           - name: envoy-ingress
             namespace: networking

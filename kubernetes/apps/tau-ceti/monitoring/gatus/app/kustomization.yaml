@@ -11,12 +11,17 @@ configMapGenerator:
   - name: gatus-config
     files:
       - config/alerting.yml
-      - config/bwees.yml
       - config/eridani.yml
+      - config/hail-mary.yml
       - config/misc.yml
       - config/starforge.yml
       - config/stepien.yml
-      - config/vps.yml
+      - config/tau-ceti.yml
+  - name: gatus-kubeconfig
+    files:
+      - kubeconfig/eridani
+      - kubeconfig/hail-mary
+      - kubeconfig/stepien
 
 generatorOptions:
   disableNameSuffixHash: true

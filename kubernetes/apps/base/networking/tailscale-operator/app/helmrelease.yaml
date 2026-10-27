@@ -24,3 +24,6 @@ spec:
     proxyConfig:
       # chart renders this verbatim into the PROXY_TAGS env string (not a list)
       defaultTags: "tag:${CLUSTER},tag:kube-service"
+    apiServerProxyConfig:
+      mode: "true"
+      allowImpersonation: "true"

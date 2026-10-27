@@ -3,6 +3,5 @@ kind: Kustomization
 
 namespace: monitoring
 resources:
-  - namespace.yaml
   - beszel/ks.yaml
   - gatus/ks.yaml

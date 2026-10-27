@@ -133,6 +133,9 @@ spec:
 
     route:
       main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            path: /api/health
         parentRefs:
           - name: envoy-ingress
             namespace: networking

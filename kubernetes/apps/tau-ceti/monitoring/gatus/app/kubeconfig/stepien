@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Config
+clusters:
+  - name: stepien
+    cluster:
+      server: https://tailscale-operator-stepien.tail72746.ts.net
+users:
+  - name: tailnet
+    user: {}
+contexts:
+  - name: stepien
+    context: {cluster: stepien, user: tailnet}
+current-context: stepien

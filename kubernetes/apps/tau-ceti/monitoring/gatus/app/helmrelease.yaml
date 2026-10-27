@@ -11,7 +11,11 @@ spec:
     controllers:
       main:
         annotations:
-          configmap.reloader.stakater.com/reload: gatus-config
+          configmap.reloader.stakater.com/reload: gatus-config,gatus-kubeconfig
+        serviceAccount:
+          name: gatus-reader
+        pod:
+          automountServiceAccountToken: true
         containers:
           main:
             image:
@@ -37,6 +41,55 @@ spec:
                 enabled: true
               readiness: *probes
 
+          sidecar-tau-ceti:
+            image: &sidecarImage
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.5.5
+            args:
+              - --auto-httproute
+              - --gateway-name=envoy-ingress
+              - --output=/config/tau-ceti.yaml
+            resources: &sidecarResources
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+          sidecar-hail-mary:
+            image: *sidecarImage
+            args:
+              - --auto-httproute
+              - --gateway-name=envoy-ingress
+              - --output=/config/hail-mary.yaml
+            env:
+              # blank so the sidecar skips in-cluster auth and reads KUBECONFIG
+              KUBERNETES_SERVICE_HOST: ''
+              KUBECONFIG: /kubeconfig/hail-mary
+            resources: *sidecarResources
+
+          sidecar-eridani:
+            image: *sidecarImage
+            args:
+              - --auto-httproute
+              - --gateway-name=envoy-ingress
+              - --output=/config/eridani.yaml
+            env:
+              KUBERNETES_SERVICE_HOST: ''
+              KUBECONFIG: /kubeconfig/eridani
+            resources: *sidecarResources
+
+          sidecar-stepien:
+            image: *sidecarImage
+            args:
+              - --auto-httproute
+              - --gateway-name=envoy-ingress
+              - --output=/config/stepien.yaml
+            env:
+              KUBERNETES_SERVICE_HOST: ''
+              KUBECONFIG: /kubeconfig/stepien
+            resources: *sidecarResources
+
     service:
       main:
         controller: main
@@ -46,6 +99,8 @@ spec:
 
     route:
       main:
+        annotations:
+          gatus.home-operations.com/enabled: 'false'
         parentRefs:
           - name: envoy-ingress
             namespace: networking
@@ -58,11 +113,29 @@ spec:
 
     persistence:
       config:
-        type: configMap
-        name: gatus-config
+        type: emptyDir
         globalMounts:
           - path: /config
+      static-config:
+        type: configMap
+        name: gatus-config
+        advancedMounts:
+          main:
+            main:
+              - path: /config/static
+      kubeconfig:
+        type: configMap
+        name: gatus-kubeconfig
+        advancedMounts:
+          main:
+            sidecar-hail-mary: &kubeconfigMount
+              - path: /kubeconfig
+                readOnly: true
+            sidecar-eridani: *kubeconfigMount
+            sidecar-stepien: *kubeconfigMount
       data:
         existingClaim: gatus-data
-        globalMounts:
-          - path: /data
+        advancedMounts:
+          main:
+            main:
+              - path: /data

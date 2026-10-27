@@ -40,6 +40,10 @@ spec:
 
     route:
       main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - '[STATUS] < 500'
         parentRefs:
           - name: envoy-ingress
             namespace: networking

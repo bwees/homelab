@@ -4,6 +4,11 @@ kind: Gateway
 metadata:
   name: envoy-ingress
   namespace: networking
+  annotations:
+    gatus.home-operations.com/endpoint: |
+      group: ${CLUSTER}
+      alerts:
+        - type: discord
 spec:
   gatewayClassName: envoy-ingress
   listeners:

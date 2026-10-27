@@ -1,6 +1,6 @@
 endpoints:
-  - name: homelab-vps
-    group: vps
+  - name: tau-ceti
+    group: tau-ceti
     url: 'icmp://100.105.77.106'
     interval: 1m
     conditions:
@@ -8,17 +8,8 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: beszel
-    group: vps
-    url: 'https://beszel.bwees.dev/'
-    interval: 1m
-    conditions:
-      - '[STATUS] == 200'
-    alerts:
-      - type: discord
-
   - name: dns
-    group: vps
+    group: tau-ceti
     # confirms external-dns is still publishing into the bwees.dev Cloudflare zone
     url: '1.1.1.1'
     dns:
