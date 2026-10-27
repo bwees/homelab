@@ -16,7 +16,7 @@ spec:
           main:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: '12.3'
+              tag: '12.4'
             env:
               TZ: America/New_York
               JELLYFIN_PublishedServerUrl: jellyfin.home.bwees.dev
