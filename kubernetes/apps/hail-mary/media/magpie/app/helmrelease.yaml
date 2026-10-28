@@ -51,7 +51,7 @@ spec:
           scratch-owner:
             image: &agentImage
               repository: ghcr.io/bwees/magpie-agent
-              tag: 'v0.7.2'
+              tag: 'v0.8.0'
             command: ['chown', '1000:1000', '/scratch']
             env:
               MAGPIE_AGENT_NAME:
