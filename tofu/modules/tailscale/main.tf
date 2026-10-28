@@ -43,6 +43,10 @@ resource "tailscale_acl" "acls" {
 
     autoApprovers : {
       "exitNode" : ["tag:nixos", var.admin],
+      "routes" : {
+        // hail-mary IoT VLAN, advertised by homelab-router
+        "192.168.30.0/24" : [var.admin],
+      },
       "services" : {
         for cluster in var.clusters : "svc:${cluster}-ingress" => ["tag:kube-service"]
       },

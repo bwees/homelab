@@ -52,3 +52,12 @@ endpoints:
       - '[CONNECTED] == true'
     alerts:
       - type: discord
+
+  - name: mqtt
+    group: hail-mary
+    url: 'tcp://mqtt.bwees.dev:1883'
+    interval: 1m
+    conditions:
+      - '[CONNECTED] == true'
+    alerts:
+      - type: discord
