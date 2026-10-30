@@ -30,6 +30,11 @@ terraform {
       version = "0.14.1"
     }
 
+    opwan = {
+      source  = "registry.terraform.io/slop-place/opwan"
+      version = "0.1.0"
+    }
+
     null = {
       source  = "hashicorp/null"
       version = "3.3.2"

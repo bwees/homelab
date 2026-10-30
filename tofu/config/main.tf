@@ -2,12 +2,17 @@ module "contabo" {
   source = "../modules/contabo"
 }
 
+module "opwan" {
+  source = "../modules/opwan"
+
+  vault_uuid = local.vault_uuid
+}
 module "dns" {
   source = "../modules/dns"
 
   bwees_io_zone_id         = data.cloudflare_zone.bwees_io.zone_id
   bwees_dev_zone_id        = data.cloudflare_zone.bwees_dev.zone_id
-  public_ingress_ipv4      = local.opwan_dfw_ipv4
+  public_ingress_ipv4      = module.opwan.dfw_ipv4
   bwees_dev_static_records = local.bwees_dev_static_records
 }
 

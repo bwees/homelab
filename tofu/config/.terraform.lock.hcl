@@ -236,3 +236,24 @@ provider "registry.opentofu.org/tailscale/tailscale" {
     "zh:e3c82ae0041c932552c930818e3f9ac69b233719df430f9cc77e86ea4a90a8c8",
   ]
 }
+
+provider "registry.terraform.io/slop-place/opwan" {
+  version     = "0.1.0"
+  constraints = "0.1.0"
+  hashes = [
+    "h1:NoATBlVcVGsQGzVUTXCRRVQAoRzLxVkTXR99MmJX46Y=",
+    "zh:11336c564f3493be82f42998ab0251658f0d836661816c3ad00d0083b06256f7",
+    "zh:39e7a31454e71e2c946e2fc66296f441e29f2bd99a766f21aac4b4ce0b8f0c82",
+    "zh:3ffc913a3334d5dea8dcde5baaec6bbe5abd13a7dbd7e526dbed7fa0970d8a37",
+    "zh:4dc85142db3dfd34a9e4c8a8e836801788d8ac4a14ddccc8f441ac157ff44b6c",
+    "zh:4f2242674c799ccdac43dd61c644ed185d727294ee413c0915a899f9676ca17f",
+    "zh:5905f11edc76414abead98e10675b763f19a93c6fea1b8110bf6c7f8f7511577",
+    "zh:85d7ce83dd54b2cc8cd9234c84db9c8893abcddf525e3ce988143d85a3abc8b7",
+    "zh:ae56aacaf198cc58c3d47328eea44eb9bb40f5a91dbf1d5040de3774a693f112",
+    "zh:e03fe3059ccf5443cbe5e4550e1822a3379d0e7e551a700bb72ff8e86ef49b25",
+    "zh:e58f17aa905fe6eb1a1496f5ef7cd05475c5e067580be3eb76aff0a85ab0589a",
+    "zh:ea8e6aae0d463e549700482cc7687bc6c1aa6d0e9b28b73187e569609c7dbed4",
+    "zh:f4eeb46d17a98df099436c0e48d9d7e98ccf1312930c7c47cd68d8c36a365967",
+    "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
+  ]
+}

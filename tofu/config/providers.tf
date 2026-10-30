@@ -30,6 +30,10 @@ provider "b2" {
   application_key    = local.credentials["backblaze"].field_map["application_key"].value
 }
 
+provider "opwan" {
+  api_token = local.credentials["opwan"].field_map["api_key"].value
+}
+
 provider "tailscale" {
   oauth_client_id     = local.credentials["tailscale"].field_map["client_id"].value
   oauth_client_secret = local.credentials["tailscale"].field_map["client_secret"].value
