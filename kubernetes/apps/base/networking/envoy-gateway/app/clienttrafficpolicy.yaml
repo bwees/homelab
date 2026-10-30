@@ -16,7 +16,7 @@ spec:
     bufferLimit: 32Mi
 
 ---
-# Public hosts reach this gateway through tau-ceti's TCP-only passthrough, so
+# Public hosts reach this gateway through hail-mary's TCP-only passthrough, so
 # advertising HTTP/3 to them makes browsers try UDP, fail, and bounce between
 # h2 and h3. A listener-level policy replaces the gateway one rather than
 # merging, so the HTTP/2 settings are repeated.

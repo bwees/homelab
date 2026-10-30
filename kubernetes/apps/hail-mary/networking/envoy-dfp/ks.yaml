@@ -13,8 +13,10 @@ spec:
     - name: envoy-gateway
     - name: bind9
     - name: cert-manager-issuers
+    - name: onepassword
+      namespace: secrets
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/apps/tau-ceti/networking/envoy-dfp/app
+  path: ./kubernetes/apps/hail-mary/networking/envoy-dfp/app

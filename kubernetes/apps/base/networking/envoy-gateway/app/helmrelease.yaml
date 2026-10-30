@@ -35,7 +35,7 @@ spec:
             deploy:
               type: GatewayNamespace
         extensionApis:
-          # required for the DynamicResolver Backend on tau-ceti
+          # required for the DynamicResolver Backend on hail-mary
           enableBackend: true
           # required for the QUIC listener socket settings
           enableEnvoyPatchPolicy: true

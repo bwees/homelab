@@ -45,7 +45,7 @@ A few things worth calling out about the cluster setup:
 
 ## Networking
 
-Tailscale is used for all private networking between nodes and clients. Public traffic is routed via Cloudflare Tunnels, which forward requests into the cluster without exposing any inbound ports.
+Tailscale is used for all private networking between nodes and clients. Public traffic arrives on a static address from opwan, carried over a WireGuard tunnel into a pod on hail-mary, so no home router port is opened.
 
 I run two domains:
 
@@ -54,7 +54,7 @@ I run two domains:
 
 Both zones live in Cloudflare. Kubernetes external-dns writes every `bwees.dev` record straight into the zone, so the names resolve publicly even though they point at addresses that are only reachable over Tailscale or on the LAN. That keeps DNS-01 available for real Let's Encrypt certificates on internal services, so there is no private CA to distribute.
 
-`bwees.io` is the exception: its public wildcard points at `tau-ceti`, which forward-proxies by SNI to whichever cluster owns the hostname. Resolving that needs a split-horizon view, which is a static `hosts` block in `tau-ceti`'s CoreDNS - adding a `bwees.io` route means adding an entry there too.
+`bwees.io` is the exception: its public wildcard points at the opwan address held by hail-mary's `envoy-dfp`, which forward-proxies by SNI over Tailscale to whichever cluster owns the hostname. It resolves those names from a split-horizon view in hail-mary's bind9, which every cluster's external-dns keeps up to date from its own routes.
 
 ## OpenTofu
 

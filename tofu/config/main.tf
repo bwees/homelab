@@ -7,7 +7,7 @@ module "dns" {
 
   bwees_io_zone_id         = data.cloudflare_zone.bwees_io.zone_id
   bwees_dev_zone_id        = data.cloudflare_zone.bwees_dev.zone_id
-  public_ingress_ipv4      = module.contabo.public_ipv4
+  public_ingress_ipv4      = local.opwan_dfw_ipv4
   bwees_dev_static_records = local.bwees_dev_static_records
 }
 

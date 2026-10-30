@@ -10,7 +10,7 @@ spec:
   # one unhealthy object would hold the reconcile - and the whole bwees.io view -
   # for an hour before retrying.
   timeout: 5m
-  path: ./kubernetes/apps/tau-ceti/networking/bind9/app
+  path: ./kubernetes/apps/hail-mary/networking/bind9/app
   prune: true
   wait: true
   sourceRef:

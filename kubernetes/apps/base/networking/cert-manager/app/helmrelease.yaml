@@ -16,7 +16,7 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    # bwees.io has a split-horizon view (tau-ceti's bind9) that holds no
+    # bwees.io has a split-horizon view (hail-mary's bind9) that holds no
     # _acme-challenge records, so the self check must not follow cluster DNS.
     dns01RecursiveNameservers: 1.1.1.1:53,1.0.0.1:53
     dns01RecursiveNameserversOnly: true

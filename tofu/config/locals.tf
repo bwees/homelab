@@ -21,6 +21,9 @@ locals {
   tailnet      = "tail72746.ts.net"
   clusters     = ["tau-ceti", "hail-mary", "stepien", "eridani"]
 
+  // hail-mary's envoy-dfp holds this address over its opwan tunnel
+  opwan_dfw_ipv4 = "72.244.89.3"
+
   mullvad_nodes = [
     "brandon-iphone-17",
     "brandon-ipad-air",

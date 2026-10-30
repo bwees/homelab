@@ -6,3 +6,4 @@ resources:
   - ./routes.yaml
   - ./clienttrafficpolicy.yaml
   - ./backendtrafficpolicy.yaml
+  - ./externalsecret.yaml

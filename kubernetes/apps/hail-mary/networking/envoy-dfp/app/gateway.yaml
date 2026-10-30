@@ -23,14 +23,22 @@ spec:
     kubernetes:
       envoyService:
         type: ClusterIP
-        patch:
-          type: StrategicMerge
-          value:
-            spec:
-              externalIPs:
-                - 45.137.192.163
       envoyDeployment:
+        # opwan routes the public address to whichever peer handshook last, so a
+        # second replica holding the same key would steal the tunnel back and forth.
         replicas: 1
+        pod:
+          # The default is five minutes on a dead node before rescheduling, which
+          # is five minutes of every public hostname being down.
+          tolerations:
+            - key: node.kubernetes.io/not-ready
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 30
+            - key: node.kubernetes.io/unreachable
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 30
         # The dynamic resolver has to see the split-horizon view of bwees.io, so
         # bind9 answers for these pods instead of CoreDNS. It is deliberately the
         # only nameserver: resolv.conf falls through on timeout, and a fallback
@@ -56,6 +64,39 @@ spec:
                     options:
                       - name: ndots
                         value: '1'
+                  # The public address terminates in this pod's network namespace,
+                  # so Envoy sees real client addresses and needs no extra hop.
+                  containers:
+                    - name: opwan
+                      image: lscr.io/linuxserver/wireguard:1.0.20260223
+                      command:
+                        - sh
+                        - -c
+                        - |
+                          wg-quick down opwan 2>/dev/null
+                          wg-quick up opwan || exit 1
+                          trap 'wg-quick down opwan; exit 0' TERM
+                          sleep infinity & wait
+                      securityContext:
+                        runAsUser: 0
+                        runAsNonRoot: false
+                        capabilities:
+                          add: ['NET_ADMIN']
+                      resources:
+                        requests:
+                          cpu: 10m
+                          memory: 16Mi
+                        limits:
+                          memory: 64Mi
+                      volumeMounts:
+                        - name: opwan
+                          mountPath: /etc/wireguard
+                          readOnly: true
+                  volumes:
+                    - name: opwan
+                      secret:
+                        secretName: opwan-wireguard
+                        defaultMode: 0400
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
