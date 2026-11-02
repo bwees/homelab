@@ -1,0 +1,13 @@
+---
+# Voice cache only. Not backed up: voices download again on start.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wyoming-piper-data
+  namespace: smarthome
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 1Gi

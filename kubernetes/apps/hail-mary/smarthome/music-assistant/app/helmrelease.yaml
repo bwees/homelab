@@ -1,0 +1,77 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: music-assistant
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: music-assistant
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/music-assistant/server
+              tag: '2.10.8'
+            env:
+              TZ: America/Chicago
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8095
+                  timeoutSeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8095
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 30
+
+    defaultPodOptions:
+      # Finds Sendspin players over mDNS on the node's iot0 VLAN interface
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: xenonite
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8095
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - music.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8095
+
+    persistence:
+      data:
+        existingClaim: music-assistant-data
+        globalMounts:
+          - path: /data

@@ -1,0 +1,13 @@
+---
+# Model cache only. Not backed up: models download again on start.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wyoming-whisper-data
+  namespace: smarthome
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 5Gi

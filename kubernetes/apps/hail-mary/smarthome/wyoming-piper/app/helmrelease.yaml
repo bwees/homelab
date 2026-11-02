@@ -1,0 +1,70 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wyoming-piper
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: wyoming-piper
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: docker.io/rhasspy/wyoming-piper
+              tag: '2.5.2'
+            env:
+              TZ: America/Chicago
+            args:
+              - --voice
+              - en_US-lessac-medium
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10200
+                  timeoutSeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10200
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 30
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          wyoming:
+            port: 10200
+
+    persistence:
+      data:
+        existingClaim: wyoming-piper-data
+        globalMounts:
+          - path: /data

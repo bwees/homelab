@@ -7,3 +7,6 @@ resources:
   - home-assistant/ks.yaml
   - matter-server/ks.yaml
   - mosquitto/ks.yaml
+  - music-assistant/ks.yaml
+  - wyoming-piper/ks.yaml
+  - wyoming-whisper/ks.yaml

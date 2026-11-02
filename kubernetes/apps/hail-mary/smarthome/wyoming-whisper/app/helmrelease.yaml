@@ -1,0 +1,78 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wyoming-whisper
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: wyoming-whisper
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              # whisper.cpp on Vulkan; the official rhasspy image has no AMD GPU support
+              repository: docker.io/franc2002/wyoming-whisper-cpp
+              tag: 'vulkan-2026-02-23'
+            env:
+              TZ: America/Chicago
+            args:
+              - --language
+              - en
+              - --model
+              - large-v3-turbo-q5_0
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+                amd.com/gpu: '1'
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10300
+                  timeoutSeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 10300
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  # First start downloads the model before listening
+                  failureThreshold: 60
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 303
+
+    service:
+      main:
+        controller: main
+        ports:
+          wyoming:
+            port: 10300
+
+    persistence:
+      data:
+        existingClaim: wyoming-whisper-data
+        globalMounts:
+          - path: /data
