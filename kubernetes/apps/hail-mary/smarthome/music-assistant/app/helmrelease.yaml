@@ -65,6 +65,7 @@ spec:
             namespace: networking
         hostnames:
           - music.bwees.dev
+          - music.bwees.io
         rules:
           - backendRefs:
               - identifier: main
