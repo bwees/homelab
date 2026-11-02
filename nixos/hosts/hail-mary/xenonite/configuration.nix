@@ -60,6 +60,7 @@
   networking.firewall.interfaces."enp6s0".allowedTCPPorts = [
     8123 # Home Assistant
     5580 # Matter server websocket
+    8095 # Music Assistant
   ];
 
   services.tailscale.extraUpFlags = [
