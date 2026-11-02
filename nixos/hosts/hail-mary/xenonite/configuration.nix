@@ -47,6 +47,7 @@
   networking.firewall.interfaces."iot0" = {
     allowedTCPPorts = [
       1883 # MQTT broker
+      8123 # Home Assistant
     ];
     allowedUDPPorts = [
       5353 # mDNS service discovery
