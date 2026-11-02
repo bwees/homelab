@@ -62,6 +62,13 @@
     5580 # Matter server websocket
     8095 # Music Assistant
   ];
+  networking.firewall.interfaces."enp6s0".allowedUDPPortRanges = [
+    # Music Assistant AirPlay receiver audio
+    {
+      from = 6001;
+      to = 6010;
+    }
+  ];
 
   services.tailscale.extraUpFlags = [
     "--advertise-tags=tag:hail-mary,tag:nixos"
