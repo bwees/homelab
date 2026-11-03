@@ -24,6 +24,12 @@ spec:
               - en
               - --model
               - large-v3-turbo-q5_0
+              - --beam-size
+              - '1'
+              # Without -ac every command is encoded as a 30s window (~2.7s vs
+              # ~0.6s); 768 caps a command at ~15s. The = keeps argparse from
+              # reading -fa as its own flag.
+              - --whisper-cpp-args=-fa -ac 768
             resources:
               requests:
                 cpu: 100m
