@@ -48,10 +48,17 @@ spec:
                   failureThreshold: 30
 
     defaultPodOptions:
-      # Needs the node's iot0 VLAN interface for mDNS discovery
-      hostNetwork: true
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot",
+            "namespace": "networking",
+            "interface": "iot0",
+            "ips": ["192.168.30.128/24"],
+            "mac": "02:34:4d:2e:4c:ba"
+          }]
       nodeSelector:
-        kubernetes.io/hostname: xenonite
+        lab.bwees/iot-vlan: 'true'
       securityContext:
         runAsUser: 568
         runAsGroup: 568

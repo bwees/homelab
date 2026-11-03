@@ -56,12 +56,19 @@ spec:
                   failureThreshold: 30
 
     defaultPodOptions:
-      # Matter needs IPv6 multicast/mDNS on the LAN, which the flannel pod
-      # network cannot carry, so the server shares the node's network stack.
-      # That binds 5580 on the host, hence the pin and the Recreate strategy.
-      hostNetwork: true
+      # Matter needs IPv6 multicast/mDNS on the IoT VLAN, which the flannel pod
+      # network cannot carry. The interface picks up its IPv6 addresses by SLAAC.
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot",
+            "namespace": "networking",
+            "interface": "iot0",
+            "ips": ["192.168.30.131/24"],
+            "mac": "02:17:f4:8a:4a:51"
+          }]
       nodeSelector:
-        kubernetes.io/hostname: xenonite
+        lab.bwees/iot-vlan: 'true'
 
     service:
       main:
