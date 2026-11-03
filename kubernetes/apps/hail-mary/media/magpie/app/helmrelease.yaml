@@ -41,13 +41,10 @@ spec:
                     port: 3000
               readiness: *probes
 
-      agent-intel:
+      agent:
         type: daemonset
-        pod:
-          nodeSelector:
-            feature.node.kubernetes.io/pci-0300_8086.present: 'true'
         # The kubelet creates the per-node scratch subpath as root.
-        initContainers: &agentInit
+        initContainers:
           scratch-owner:
             image: &agentImage
               repository: ghcr.io/bwees/magpie-agent
@@ -64,17 +61,17 @@ spec:
         containers:
           main:
             image: *agentImage
-            env: &agentEnv
+            env:
               TZ: America/Chicago
               MAGPIE_URL: http://magpie.media.svc.cluster.local:3000
               MAGPIE_AGENT_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-            envFrom: &agentEnvFrom
+            envFrom:
               - secretRef:
                   name: magpie-secret
-            securityContext: &agentSecurityContext
+            securityContext:
               runAsUser: 1000
               runAsGroup: 1000
               runAsNonRoot: true
@@ -84,35 +81,14 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 8Gi
-                gpu.intel.com/i915: '1'
-            probes: &agentProbes
+                gpu.bwees.dev/render: '1'
+            probes:
               liveness:
                 enabled: false
               readiness:
                 enabled: false
               startup:
                 enabled: false
-
-      agent-amd:
-        type: daemonset
-        pod:
-          nodeSelector:
-            feature.node.kubernetes.io/pci-0300_1002.present: 'true'
-        initContainers: *agentInit
-        containers:
-          main:
-            image: *agentImage
-            env: *agentEnv
-            envFrom: *agentEnvFrom
-            securityContext: *agentSecurityContext
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1Gi
-              limits:
-                memory: 8Gi
-                amd.com/gpu: '1'
-            probes: *agentProbes
 
     defaultPodOptions:
       securityContext:
@@ -160,11 +136,8 @@ spec:
           main:
             main:
               - path: /media
-          agent-intel:
+          agent:
             scratch-owner: &agentScratch
               - path: /scratch
                 subPathExpr: magpie-scratch/$(MAGPIE_AGENT_NAME)
-            main: *agentScratch
-          agent-amd:
-            scratch-owner: *agentScratch
             main: *agentScratch

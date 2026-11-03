@@ -74,3 +74,25 @@ cluster token. The token is a secret and is **not** in the repo — it lives at
 mise run cluster:shutdown hail-mary
 mise run cluster:startup  hail-mary
 ```
+
+### Portable GPU workloads
+
+The Magpie agent requests `gpu.bwees.dev/render`. The render-device-plugin
+advertises 16 shared allocations per `/dev/dri/renderD*` device on each amd64 node.
+This lets the scheduler use Intel iGPUs or xenonite's AMD dGPU without vendor or
+hostname selectors. Magpie runs one agent DaemonSet. Its image includes Vulkan
+drivers for Intel and AMD, and also uses VA-API.
+No `/dev/kfd` is needed for these render-device APIs.
+
+The Intel and AMD plugins remain for other applications. Their allocation counts
+are independent of the render plugin, so these are shared access slots, not GPU
+memory or compute reservations. Nodes without a render device cannot run these
+workloads. On a host with multiple GPUs, the plugin allocates one render device;
+it does not implement a preference for a discrete GPU.
+
+After reconciliation, check `gpu.bwees.dev/render` in node allocatable resources,
+verify one Magpie agent per GPU node and GPU processing on both Intel and AMD.
+
+Whisper retains its `amd.com/gpu` requirement, which keeps it on xenonite. The
+current large-v3-turbo-q5_0 model was about 18 times slower on Grace's Intel HD 630
+in isolated inference tests, so Whisper does not use the portable resource.
