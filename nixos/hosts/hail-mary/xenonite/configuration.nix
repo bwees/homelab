@@ -19,6 +19,7 @@
     ../../../lib/tailscale.nix
     ../../../lib/tailscale-pod-nat.nix
     ../../../lib/docker.nix
+    ../../../lib/iot-vlan.nix
     ../../../lib/amd-gpu.nix
   ];
 
@@ -29,46 +30,7 @@
   networking.networkmanager.enable = true;
   time.timeZone = "America/Chicago";
 
-  # IoT VLAN
-  networking.networkmanager.ensureProfiles.profiles.iot0 = {
-    connection = {
-      id = "iot0";
-      type = "vlan";
-      interface-name = "iot0";
-    };
-    vlan = {
-      parent = "enp6s0";
-      id = "30";
-    };
-    ipv4.method = "auto";
-    ipv6.method = "auto";
-  };
-
-  networking.firewall.interfaces."iot0" = {
-    allowedTCPPorts = [
-      1883 # MQTT broker
-      8123 # Home Assistant
-    ];
-    allowedUDPPorts = [
-      5353 # mDNS service discovery
-      5540 # Matter operational traffic
-    ];
-  };
-
-  # hostNetwork pods bind on the node, so envoy arrives over the LAN (masqueraded
-  # to its node's IP) instead of the pod CIDR that k3s already accepts.
-  networking.firewall.interfaces."enp6s0".allowedTCPPorts = [
-    8123 # Home Assistant
-    5580 # Matter server websocket
-    8095 # Music Assistant
-  ];
-  networking.firewall.interfaces."enp6s0".allowedUDPPortRanges = [
-    # Music Assistant AirPlay receiver audio
-    {
-      from = 6001;
-      to = 6010;
-    }
-  ];
+  homelab.iotVlan.parent = "enp6s0";
 
   services.tailscale.extraUpFlags = [
     "--advertise-tags=tag:hail-mary,tag:nixos"

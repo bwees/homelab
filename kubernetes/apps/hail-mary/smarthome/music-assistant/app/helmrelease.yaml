@@ -46,10 +46,17 @@ spec:
                   failureThreshold: 30
 
     defaultPodOptions:
-      # Finds Sendspin players over mDNS on the node's iot0 VLAN interface
-      hostNetwork: true
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot",
+            "namespace": "networking",
+            "interface": "iot0",
+            "ips": ["192.168.30.129/24"],
+            "mac": "02:38:a9:1b:60:0f"
+          }]
       nodeSelector:
-        kubernetes.io/hostname: xenonite
+        lab.bwees/iot-vlan: 'true'
 
     service:
       main:

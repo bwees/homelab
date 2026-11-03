@@ -17,6 +17,7 @@
     ../../../lib/network-tuning.nix
     ../../../lib/tailscale.nix
     ../../../lib/tailscale-pod-nat.nix
+    ../../../lib/iot-vlan.nix
   ];
 
   system.stateVersion = "25.05";
@@ -25,6 +26,8 @@
   networking.hostName = "rocky";
   networking.networkmanager.enable = true;
   time.timeZone = "America/Chicago";
+
+  homelab.iotVlan.parent = "enp1s0";
 
   services.tailscale.extraUpFlags = [
     "--advertise-tags=tag:hail-mary,tag:nixos"

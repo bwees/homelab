@@ -11,6 +11,11 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
+    - name: multus-networks
+      namespace: networking
     - name: miroir-config
       namespace: storage
   targetNamespace: smarthome
+  postBuild:
+    substitute:
+      IOT_ADDRESS: 192.168.30.130
