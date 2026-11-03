@@ -20,7 +20,7 @@ spec:
               TZ: America/Chicago
             args:
               - --voice
-              - en_US-lessac-medium
+              - en_US-amy-low
             resources:
               requests:
                 cpu: 50m
