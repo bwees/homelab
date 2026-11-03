@@ -11,6 +11,7 @@ data "onepassword_item" "dfw_wireguard" {
 }
 
 resource "opwan_tunnel" "dfw" {
+  name       = "DFW Public"
   location   = "dfw"
   public_key = data.onepassword_item.dfw_wireguard.section_map["wireguard"].field_map["public_key"].value
 }

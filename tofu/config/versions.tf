@@ -32,7 +32,7 @@ terraform {
 
     opwan = {
       source  = "registry.terraform.io/slop-place/opwan"
-      version = "0.1.0"
+      version = "0.2.0"
     }
 
     null = {
