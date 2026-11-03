@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: multus
+  annotations:
+    # Built on app-template, so the injected `controllers.main` would render a
+    # second, imageless workload.
+    lab.bwees/probe-defaults: disabled
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: multus
+  # The chart hardcodes the container args. Without this, the generated CNI
+  # config points at the stock /etc/cni path, which does not exist on k3s.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: DaemonSet
+              name: multus
+            patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --multus-kubeconfig-file-host=/var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
+  values:
+    cni:
+      netPath: /var/lib/rancher/k3s/agent/etc/cni/net.d
+      binPath: /var/lib/rancher/k3s/data/cni
+    controllers:
+      multus:
+        initContainers:
+          cni-plugins:
+            # The image copies every upstream plugin by default, which would
+            # overwrite the k3s-managed ones in the same directory.
+            command:
+              - rsync
+              - -av
+              - /plugins/macvlan
+              - /plugins/static
+              - /host/opt/cni/bin/
+    multus:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          memory: 128Mi
