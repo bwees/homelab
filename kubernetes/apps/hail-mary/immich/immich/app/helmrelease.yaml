@@ -82,7 +82,7 @@ spec:
               TZ: America/Chicago
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-              tag: 'v3.3.5'
+              tag: 'v3.3.6'
 
     server:
       controllers:
@@ -123,7 +123,7 @@ spec:
             main:
               image:
                 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: 'v3.3.5-rocm'
+                tag: 'v3.3.6-rocm'
               env:
                 GUNICORN_CMD_ARGS: '--no-control-socket'
                 # Without this, MIGraphX recompiles every model on every start.
