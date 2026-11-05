@@ -1,0 +1,209 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zulip-demo
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: zulip-demo
+  values:
+    controllers:
+      zulip:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/zulip/zulip-server
+              tag: '12.3-0'
+            env:
+              SETTING_EXTERNAL_HOST: zulip-demo.bwees.io
+              SETTING_ZULIP_ADMINISTRATOR: admin@bwees.io
+              SETTING_REMOTE_POSTGRES_HOST: zulip-demo-postgres
+              SETTING_MEMCACHED_LOCATION: zulip-demo-memcached:11211
+              SETTING_RABBITMQ_HOST: zulip-demo-rabbitmq
+              SETTING_REDIS_HOST: zulip-demo-redis
+              SETTING_SEND_LOGIN_EMAILS: 'False'
+              # envoy-ingress terminates TLS and forwards from the pod network.
+              LOADBALANCER_IPS: 10.42.0.0/16
+              CONFIG_application_server__queue_workers_multiprocess: 'false'
+              AUTO_BACKUP_ENABLED: 'False'
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 3Gi
+            probes:
+              # First boot migrates the database, which takes several minutes.
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 80
+                  periodSeconds: 10
+                  failureThreshold: 90
+              liveness: &tcp
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 80
+              readiness: *tcp
+
+      postgres:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: zulip/zulip-postgresql
+              tag: '14'
+            env:
+              POSTGRES_DB: zulip
+              POSTGRES_USER: zulip
+              POSTGRES_PASSWORD_FILE: /run/secrets/zulip__postgres_password
+              PGDATA: /var/lib/postgresql/data/pgdata
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+      memcached:
+        containers:
+          main:
+            image:
+              repository: memcached
+              tag: '1.6-alpine'
+            command:
+              - sh
+              - -euc
+              - |
+                echo 'mech_list: plain' > "$SASL_CONF_PATH"
+                echo "zulip@$HOSTNAME:$(cat $MEMCACHED_PASSWORD_FILE)" > "$MEMCACHED_SASL_PWDB"
+                echo "zulip@localhost:$(cat $MEMCACHED_PASSWORD_FILE)" >> "$MEMCACHED_SASL_PWDB"
+                exec memcached -S
+            env:
+              SASL_CONF_PATH: /home/memcache/memcached.conf
+              MEMCACHED_SASL_PWDB: /home/memcache/memcached-sasl-db
+              MEMCACHED_PASSWORD_FILE: /run/secrets/zulip__memcached_password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+      rabbitmq:
+        containers:
+          main:
+            image:
+              repository: rabbitmq
+              tag: '4.2'
+            command:
+              - sh
+              - -euc
+              - |
+                export RABBITMQ_DEFAULT_PASS="$(cat $RABBITMQ_PASSWORD_FILE)"
+                echo 'default_user = $(RABBITMQ_DEFAULT_USER)' >> /etc/rabbitmq/rabbitmq.conf
+                echo 'default_pass = $(RABBITMQ_DEFAULT_PASS)' >> /etc/rabbitmq/rabbitmq.conf
+                exec docker-entrypoint.sh rabbitmq-server
+            env:
+              RABBITMQ_DEFAULT_USER: zulip
+              RABBITMQ_PASSWORD_FILE: /run/secrets/zulip__rabbitmq_password
+            resources:
+              requests:
+                cpu: 20m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+      redis:
+        containers:
+          main:
+            image:
+              repository: redis
+              tag: '8-alpine'
+            command:
+              - sh
+              - -euc
+              - exec /usr/local/bin/docker-entrypoint.sh redis-server --requirepass "$(cat $REDIS_PASSWORD_FILE)"
+            env:
+              REDIS_PASSWORD_FILE: /run/secrets/zulip__redis_password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    defaultPodOptions:
+      # The token mounts under /run/secrets, which is the read-only zulip secret volume.
+      automountServiceAccountToken: false
+
+    service:
+      zulip:
+        controller: zulip
+        ports:
+          http:
+            port: 80
+      postgres:
+        controller: postgres
+        ports:
+          postgres:
+            port: 5432
+      memcached:
+        controller: memcached
+        ports:
+          memcached:
+            port: 11211
+      rabbitmq:
+        controller: rabbitmq
+        ports:
+          amqp:
+            port: 5672
+      redis:
+        controller: redis
+        ports:
+          redis:
+            port: 6379
+
+    route:
+      main:
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - zulip-demo.bwees.io
+        rules:
+          - backendRefs:
+              - identifier: zulip
+                port: 80
+
+    persistence:
+      secrets:
+        type: secret
+        name: zulip-demo-secret
+        globalMounts:
+          - path: /run/secrets
+            readOnly: true
+      data:
+        existingClaim: zulip-demo-data
+        advancedMounts:
+          zulip:
+            main:
+              - path: /data
+      postgres:
+        existingClaim: zulip-demo-postgres
+        advancedMounts:
+          postgres:
+            main:
+              - path: /var/lib/postgresql/data
+      rabbitmq:
+        type: emptyDir
+        advancedMounts:
+          rabbitmq:
+            main:
+              - path: /var/lib/rabbitmq
