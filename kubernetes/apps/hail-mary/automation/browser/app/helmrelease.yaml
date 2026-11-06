@@ -13,11 +13,21 @@ spec:
         # One Chromium owns /config/agent-profile, so a second replica during a
         # rollout would find the profile locked.
         strategy: Recreate
-        containers:
-          main:
-            image:
+        initContainers:
+          # A pod that dies without closing Chromium leaves a SingletonLock
+          # naming its hostname. The next pod sees a "profile in use on another
+          # computer" lock and never opens the debugging port.
+          clear-profile-lock:
+            image: &image
               repository: ghcr.io/linuxserver/chromium
               tag: '6edd71b2-ls16'
+            command:
+              - sh
+              - -c
+              - rm -f /config/agent-profile/SingletonLock /config/agent-profile/SingletonCookie /config/agent-profile/SingletonSocket
+        containers:
+          main:
+            image: *image
             env:
               PUID: 1000
               PGID: 1000
