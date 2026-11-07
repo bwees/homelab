@@ -14,7 +14,7 @@ spec:
           main:
             image:
               repository: ghcr.io/raylabshq/gitea-mirror
-              tag: 'v3.51.3'
+              tag: 'v3.51.5'
             envFrom:
               - secretRef:
                   name: gitea-mirror-secret
