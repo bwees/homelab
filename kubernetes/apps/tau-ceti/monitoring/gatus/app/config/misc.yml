@@ -4,3 +4,16 @@ ui:
 storage:
   type: sqlite
   path: /data/gatus.db
+
+endpoints:
+  - name: is-zack-a-dad
+    group: misc
+    url: 'https://iszacka.dad/api/status'
+    interval: 5m
+    conditions:
+      - '[STATUS] == 200'
+      - '[BODY].isZackADad == false'
+    alerts:
+      - type: discord
+        failure-threshold: 1
+        description: 'Zack is a dad'
