@@ -39,12 +39,7 @@
   # for zfs
   networking.hostId = "9806791d";
 
-  # Users
   users.users.bwees.uid = 3000;
-  users.users.homelab = {
-    isNormalUser = true;
-    createHome = false;
-  };
 
   services.k3s.serverAddr = "https://192.168.50.110:6443";
   services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";

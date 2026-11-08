@@ -1,8 +1,40 @@
 {
+  config,
   ...
 }:
 
+let
+  homelabRoot = "/mnt/main/homelab";
+  personalRoot = "/mnt/main/personal/bwees";
+
+  # Every pod on hail-mary runs as 1000:1000, so the NAS owns homelab data as that id.
+  homelabId = 1000;
+  homelabUser = config.users.users.homelab.name;
+  homelabGroup = config.users.groups.homelab.name;
+
+  homelabFolders = [
+    "dropla"
+    "games"
+    "gitea"
+    "media"
+    "photos"
+  ];
+
+  nfsOptions = "rw,sync,no_subtree_check,fsid=0,all_squash,anonuid=${toString homelabId},anongid=${toString homelabId}";
+in
 {
+  users.groups.homelab.gid = homelabId;
+  users.users.homelab = {
+    uid = homelabId;
+    group = "homelab";
+    isSystemUser = true;
+  };
+  users.users.bwees.extraGroups = [ "homelab" ];
+
+  systemd.tmpfiles.rules = map (dir: "d ${dir} 2775 ${homelabUser} ${homelabGroup} -") (
+    [ homelabRoot ] ++ map (folder: "${homelabRoot}/${folder}") homelabFolders
+  );
+
   services.samba = {
     enable = true;
     openFirewall = true;
@@ -28,15 +60,21 @@
       };
 
       personal = {
-        "path" = "/mnt/main/personal/bwees";
+        "path" = personalRoot;
         "writable" = "yes";
         "browseable" = "yes";
+        "valid users" = "bwees";
       };
 
       homelab = {
-        "path" = "/mnt/main/homelab";
+        "path" = homelabRoot;
         "writable" = "yes";
         "browseable" = "yes";
+        "valid users" = "bwees";
+        "force user" = homelabUser;
+        "force group" = homelabGroup;
+        "create mask" = "0664";
+        "directory mask" = "2775";
       };
     };
   };
@@ -65,8 +103,8 @@
     statdPort = 4000;
 
     exports = ''
-      /mnt/main/homelab   192.168.50.0/24(rw,sync,no_subtree_check,no_root_squash,fsid=0)
-      /mnt/main/homelab   100.64.0.0/10(rw,sync,no_subtree_check,no_root_squash,fsid=0,insecure)
+      ${homelabRoot}   192.168.50.0/24(${nfsOptions})
+      ${homelabRoot}   100.64.0.0/10(${nfsOptions},insecure)
     '';
   };
 
