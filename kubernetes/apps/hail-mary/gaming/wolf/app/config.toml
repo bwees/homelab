@@ -161,6 +161,48 @@ name = 'WolfEglantine'
 ports = []
 type = 'docker'
 
+[[profiles.apps]]
+icon_png_path = ''
+start_virtual_compositor = true
+title = 'Lichii'
+
+[profiles.apps.runner]
+base_create_json = '''{
+  "HostConfig": {
+    "IpcMode": "host",
+    "Privileged": false,
+    "CapAdd": ["NET_RAW", "MKNOD", "NET_ADMIN"],
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"],
+    "Ulimits": [{"Name": "nofile", "Hard": 10240, "Soft": 10240}],
+    "Mounts": [
+      {
+        "Type": "volume",
+        "Source": "switch2-roms",
+        "Target": "/games",
+        "ReadOnly": true,
+        "VolumeOptions": {
+          "DriverConfig": {
+            "Name": "local",
+            "Options": {
+              "type": "nfs",
+              "o": "addr=nas.bwees.dev,nfsvers=4.1,nolock,soft,ro",
+              "device": ":/games/switch2"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+'''
+devices = []
+env = [ 'RUN_SWAY=true', 'GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*' ]
+image = 'ghcr.io/bwees/lichii-fedora:latest'
+mounts = []
+name = 'WolfLichii'
+ports = []
+type = 'docker'
+
 
 [[profiles.apps]]
 title = "Minecraft"
