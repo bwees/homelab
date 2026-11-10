@@ -28,6 +28,7 @@
     exclude = [
       "/mnt/main/homelab/media/movies"
       "/mnt/main/homelab/media/tv"
+      "/mnt/main/homelab/media/downloads"
       "/mnt/main/restic"
     ];
 
