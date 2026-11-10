@@ -1,5 +1,7 @@
 # The name that will be displayed in Moonlight
 hostname = "Xenonite"
+# Moonlight rejects hosts without a stable uuid
+uuid = "8bfede3c-29ab-4446-93f8-846359f9c1b2"
 # The version of this config file
 config_version = 7
 # A list of paired clients that will be allowed to stream
