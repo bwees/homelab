@@ -1,6 +1,6 @@
-# NixOS Anywhere
+# New Host Template
 
-Based on https://github.com/edouardparis/nixos-ovh-vps-example
+`lib/common.nix` is added to every host by `mkHost`, so a new host only needs its hostname, timezone, disk and hardware config.
 
 ## Install Steps
 
@@ -16,10 +16,10 @@ Based on https://github.com/edouardparis/nixos-ovh-vps-example
    nixos-generate-config --show-hardware-config --no-filesystems
    ```
 
-4. Copy `base/` for the new host
+4. Copy `base/` for the new host and add it to `nixosConfigurations` in `flake.nix`
 
 5. Copy the generated hardware config to `hardware-configuration.nix`
 
-6. Verify the disk device names in `disk-config.nix` are correct using `lsblk` on the target machine.
+6. Set `homelab.disk.device` to the install disk, checked with `lsblk` on the target machine.
 
-7. `just anywhere <hostname> <machine-ip>`
+7. `mise run nixos:anywhere <hostname> <machine-ip>`
