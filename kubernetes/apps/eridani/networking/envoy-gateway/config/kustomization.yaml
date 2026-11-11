@@ -5,11 +5,6 @@ resources:
   - ../../../../base/networking/envoy-gateway/config
 
 patches:
-  # home.bwees.dev is public DNS with a single answer, so it points at the LAN IP:
-  # family devices reach it without Tailscale, and the tailnet still gets there via
-  # the 10.0.1.0/24 subnet route this node advertises. The tailnet ingress address
-  # is only used by hail-mary's forward proxy, which resolves bwees.io out of
-  # bind9 - where external-dns-bind overrides this target with the ingress VIP.
   - target:
       kind: Gateway
       name: envoy-ingress
@@ -19,22 +14,4 @@ patches:
       metadata:
         name: envoy-ingress
         annotations:
-          external-dns.kubernetes.io/target: 10.0.1.2
-  - target:
-      kind: EnvoyProxy
-      name: envoy-ingress
-    patch: |-
-      apiVersion: gateway.envoyproxy.io/v1alpha1
-      kind: EnvoyProxy
-      metadata:
-        name: envoy-ingress
-      spec:
-        provider:
-          kubernetes:
-            envoyService:
-              patch:
-                type: StrategicMerge
-                value:
-                  spec:
-                    externalIPs:
-                      - 10.0.1.2
+          external-dns.kubernetes.io/target: 100.108.214.28 # eridani-ingress tailnet IP
