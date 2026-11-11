@@ -30,11 +30,4 @@
   ];
 
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
-
-  # Expose the envoy ingress Service on the LAN, bound to the node IP 10.0.1.2.
-  # Public DNS resolves *.home.bwees.dev here, so family devices reach it directly.
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 }
