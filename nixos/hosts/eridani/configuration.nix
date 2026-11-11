@@ -17,10 +17,7 @@
 
   homelab.disk = {
     device = "/dev/sda";
-    subvolumes = {
-      "@storage" = "/storage";
-      "@miroir" = "/var/lib/miroir";
-    };
+    subvolumes."@miroir" = "/var/lib/miroir";
   };
 
   services.tailscale.extraSetFlags = [

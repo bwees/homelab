@@ -17,10 +17,7 @@
 
   homelab.disk = {
     device = "/dev/nvme0n1";
-    subvolumes = {
-      "@storage" = "/storage";
-      "@miroir" = "/var/lib/miroir";
-    };
+    subvolumes."@miroir" = "/var/lib/miroir";
   };
 
   # Prefer IPv4 over IPv6 due to IPv6 issues with ISP
