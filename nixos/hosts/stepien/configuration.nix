@@ -5,29 +5,26 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./disk-config.nix
-    ../../lib/base-packages.nix
-    ../../lib/beszel.nix
     ../../lib/beszel-intel-gpu.nix
-    ../../lib/bwees.nix
-    ../../lib/garbage-collect.nix
-    ../../lib/network-tuning.nix
-    ../../lib/tailscale.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
   ];
 
   system.stateVersion = "25.11";
 
-  # Networking/Clock
   networking.hostName = "stepien";
   time.timeZone = "America/New_York";
 
+  homelab.disk = {
+    device = "/dev/nvme0n1";
+    subvolumes = {
+      "@storage" = "/storage";
+      "@miroir" = "/var/lib/miroir";
+    };
+  };
+
   # Prefer IPv4 over IPv6 due to IPv6 issues with ISP
   networking.enableIPv6 = false;
-
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
 
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
 

@@ -4,7 +4,10 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-26.05";
-    disko.url = "github:nix-community/disko";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -15,51 +18,16 @@
       ...
     }:
     let
-      utils = import ./lib/utils.nix { inherit nixpkgs nixpkgs-stable; };
-      inherit (utils) mkHost;
+      utils = import ./lib/utils.nix { inherit nixpkgs nixpkgs-stable disko; };
     in
     {
-      nixosConfigurations.grace = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/hail-mary/grace/configuration.nix
-        ];
-      };
-      nixosConfigurations.rocky = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/hail-mary/rocky/configuration.nix
-        ];
-      };
-      nixosConfigurations.astrophage = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/hail-mary/astrophage/configuration.nix
-        ];
-      };
-      nixosConfigurations.xenonite = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/hail-mary/xenonite/configuration.nix
-        ];
-      };
-      nixosConfigurations.stepien = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/stepien/configuration.nix
-        ];
-      };
-      nixosConfigurations.eridani = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/eridani/configuration.nix
-        ];
+      nixosConfigurations = builtins.mapAttrs (_: utils.mkHost) {
+        grace = ./hosts/hail-mary/grace/configuration.nix;
+        rocky = ./hosts/hail-mary/rocky/configuration.nix;
+        astrophage = ./hosts/hail-mary/astrophage/configuration.nix;
+        xenonite = ./hosts/hail-mary/xenonite/configuration.nix;
+        stepien = ./hosts/stepien/configuration.nix;
+        eridani = ./hosts/eridani/configuration.nix;
       };
     };
 }

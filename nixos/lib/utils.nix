@@ -1,13 +1,22 @@
-{ nixpkgs, nixpkgs-stable }:
+{
+  nixpkgs,
+  nixpkgs-stable,
+  disko,
+}:
 {
   mkHost =
-    { system, modules }:
+    configuration:
     let
+      system = "x86_64-linux";
       pkgs-stable = import nixpkgs-stable { inherit system; };
     in
     nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = { inherit pkgs-stable; };
-      inherit modules;
+      modules = [
+        disko.nixosModules.disko
+        ./common.nix
+        configuration
+      ];
     };
 }

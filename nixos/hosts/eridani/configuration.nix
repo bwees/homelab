@@ -5,14 +5,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./disk-config.nix
-    ../../lib/base-packages.nix
-    ../../lib/beszel.nix
     ../../lib/beszel-intel-gpu.nix
-    ../../lib/bwees.nix
-    ../../lib/garbage-collect.nix
-    ../../lib/network-tuning.nix
-    ../../lib/tailscale.nix
     ../../lib/k3s.nix
     ../../lib/miroir.nix
   ];
@@ -22,8 +15,13 @@
   networking.hostName = "eridani";
   time.timeZone = "America/New_York";
 
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
+  homelab.disk = {
+    device = "/dev/sda";
+    subvolumes = {
+      "@storage" = "/storage";
+      "@miroir" = "/var/lib/miroir";
+    };
+  };
 
   services.tailscale.extraSetFlags = [
     "--advertise-exit-node"
