@@ -8,6 +8,4 @@ resources:
   - pod-gc/ks.yaml
 
 components:
-  - ../../../components/intel-gpu
-  - ../../../components/amd-gpu
-  - ../../../components/render-gpu
+  - ../../../components/gpu

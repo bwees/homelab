@@ -1,23 +1,13 @@
 {
+  lib,
   ...
 }:
 
 {
   imports = [
     ./hardware-configuration.nix
-    ./disk-config.nix
-    ../../../lib/base-packages.nix
-    ../../../lib/k3s.nix
-    ../../../lib/k3s-multinode.nix
-    ../../../lib/miroir.nix
-    ../../../lib/miroir-drbd.nix
-    ../../../lib/bwees.nix
-    ../../../lib/beszel.nix
+    ../common.nix
     ../../../lib/beszel-intel-gpu.nix
-    ../../../lib/garbage-collect.nix
-    ../../../lib/network-tuning.nix
-    ../../../lib/tailscale.nix
-    ../../../lib/tailscale-pod-nat.nix
     ./storage.nix
     ./shares.nix
     ./backups.nix
@@ -25,25 +15,19 @@
 
   system.stateVersion = "25.05";
 
-  # Networking/Clock
   networking.hostName = "astrophage";
-  networking.networkmanager.enable = true;
-  time.timeZone = "America/Chicago";
 
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
-
-  services.tailscale.extraUpFlags = [
-    "--advertise-tags=tag:hail-mary,tag:nixos"
-  ];
+  homelab.disk = {
+    device = "/dev/sda";
+    flatRoot = true;
+  };
+  boot.loader.grub.devices = lib.mkForce [ "nodev" ];
 
   # for zfs
   networking.hostId = "9806791d";
 
   users.users.bwees.uid = 3000;
 
-  services.k3s.serverAddr = "https://192.168.50.110:6443";
-  services.k3s.tokenFile = "/etc/rancher/k3s/cluster-token";
   services.k3s.extraFlags = [
     "--node-label=lab.bwees/role=nas"
   ];

@@ -95,7 +95,7 @@ spec:
                   memory: 1.5Gi
                 limits:
                   memory: 3Gi
-                  gpu.intel.com/i915: '1'
+                  gpu.bwees.dev/render: '1'
       route:
         main:
           annotations:
@@ -149,7 +149,7 @@ spec:
                   memory: 4Gi
                 limits:
                   memory: 12Gi
-                  amd.com/gpu: '1'
+                  gpu.bwees.dev/rocm: '1'
 
       service:
         main:

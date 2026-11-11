@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: render-device-plugin
+  name: gpu-device-plugin
 spec:
   interval: 1h
   url: oci://ghcr.io/bjw-s-labs/helm/app-template

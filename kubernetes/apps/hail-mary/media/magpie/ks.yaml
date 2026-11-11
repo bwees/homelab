@@ -18,9 +18,7 @@ spec:
     - name: onepassword
       namespace: secrets
     - name: media-library
-    - name: intel-device-plugins
-      namespace: operators
-    - name: amd-device-plugin
+    - name: gpu-device-plugin
       namespace: operators
   components:
     - ../../../../../components/volsync

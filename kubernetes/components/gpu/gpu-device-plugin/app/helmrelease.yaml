@@ -1,14 +1,16 @@
 ---
-# Same generic-device-plugin as the AMD component: 16 pods can share the render node.
+# Each GPU is shared by up to 16 pods.
+# render: Vulkan and VA-API on any vendor.
+# rocm: also hands out /dev/kfd, so it only exists on AMD nodes.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: intel-device-plugin
+  name: gpu-device-plugin
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: intel-device-plugin
+    name: gpu-device-plugin
   values:
     controllers:
       main:
@@ -16,8 +18,7 @@ spec:
         pod:
           priorityClassName: system-node-critical
           nodeSelector:
-            feature.node.kubernetes.io/pci-0300_8086.present: 'true'
-            kubernetes.io/arch: amd64
+            gpu.bwees.dev/present: 'true'
           tolerations:
             - key: CriticalAddonsOnly
               operator: Exists
@@ -27,8 +28,9 @@ spec:
               repository: docker.io/squat/generic-device-plugin
               tag: '0.2.0'
             args:
-              - --domain=gpu.intel.com
-              - --device={"name":"i915","groups":[{"count":16,"paths":[{"path":"/dev/dri/renderD*"}]}]}
+              - --domain=gpu.bwees.dev
+              - --device={"name":"render","groups":[{"count":16,"paths":[{"path":"/dev/dri/renderD*"}]}]}
+              - --device={"name":"rocm","groups":[{"count":16,"paths":[{"path":"/dev/kfd"},{"path":"/dev/dri/renderD*"}]}]}
             securityContext:
               privileged: true
             resources:

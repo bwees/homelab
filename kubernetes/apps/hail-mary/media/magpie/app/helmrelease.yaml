@@ -43,6 +43,9 @@ spec:
 
       agent:
         type: daemonset
+        pod:
+          nodeSelector:
+            gpu.bwees.dev/present: 'true'
         # The kubelet creates the per-node scratch subpath as root.
         initContainers:
           scratch-owner:

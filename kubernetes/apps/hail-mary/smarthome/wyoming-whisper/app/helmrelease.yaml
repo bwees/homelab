@@ -11,6 +11,10 @@ spec:
     controllers:
       main:
         strategy: Recreate
+        pod:
+          # ~18x slower on the Intel iGPUs than xenonite's dGPU.
+          nodeSelector:
+            kubernetes.io/hostname: xenonite
         containers:
           main:
             image:
@@ -36,7 +40,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
-                amd.com/gpu: '1'
+                gpu.bwees.dev/render: '1'
             probes:
               liveness: &probes
                 enabled: true

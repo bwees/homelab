@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: operators
 
 components:
-  - ../../../components/intel-gpu
+  - ../../../components/gpu

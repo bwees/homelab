@@ -75,24 +75,23 @@ mise run cluster:shutdown hail-mary
 mise run cluster:startup  hail-mary
 ```
 
-### Portable GPU workloads
+### GPU workloads
 
-The Magpie agent requests `gpu.bwees.dev/render`. The render-device-plugin
-advertises 16 shared allocations per `/dev/dri/renderD*` device on each amd64 node.
-This lets the scheduler use Intel iGPUs or xenonite's AMD dGPU without vendor or
-hostname selectors. Magpie runs one agent DaemonSet. Its image includes Vulkan
-drivers for Intel and AMD, and also uses VA-API.
-No `/dev/kfd` is needed for these render-device APIs.
+NFD labels every node with a display-class PCI device `gpu.bwees.dev/present=true`.
+The gpu-device-plugin DaemonSet runs on those nodes and advertises two resources,
+each shared by up to 16 pods:
 
-The Intel and AMD plugins remain for other applications. Their allocation counts
-are independent of the render plugin, so these are shared access slots, not GPU
-memory or compute reservations. Nodes without a render device cannot run these
-workloads. On a host with multiple GPUs, the plugin allocates one render device;
-it does not implement a preference for a discrete GPU.
+- `gpu.bwees.dev/render`: `/dev/dri/renderD*`, for Vulkan and VA-API on any vendor.
+  Jellyfin, Immich, Magpie and Whisper use it.
+- `gpu.bwees.dev/rocm`: `/dev/kfd` plus the render node, so it only exists on AMD
+  nodes. Immich ML uses it.
 
-After reconciliation, check `gpu.bwees.dev/render` in node allocatable resources,
-verify one Magpie agent per GPU node and GPU processing on both Intel and AMD.
+These are shared access slots, not GPU memory or compute reservations. On a host
+with multiple GPUs the plugin hands out one render device and does not prefer a
+discrete GPU.
 
-Whisper retains its `amd.com/gpu` requirement, which keeps it on xenonite. The
-current large-v3-turbo-q5_0 model was about 18 times slower on Grace's Intel HD 630
-in isolated inference tests, so Whisper does not use the portable resource.
+The Magpie agent DaemonSet selects `gpu.bwees.dev/present`, so it runs one agent
+per GPU node.
+
+Whisper is pinned to xenonite: large-v3-turbo-q5_0 was about 18 times slower on
+Grace's Intel HD 630 in isolated inference tests.

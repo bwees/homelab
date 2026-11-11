@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - tofu/**
+      - mise.toml
+      - .github/workflows/tofu.yml
   workflow_dispatch:
 
 concurrency:

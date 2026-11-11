@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: intel-device-plugins
+  name: gpu-device-plugin
 spec:
   interval: 1h
   retryInterval: 2m
@@ -15,5 +15,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/components/intel-gpu/intel-device-plugins/app
+  path: ./kubernetes/components/gpu/gpu-device-plugin/app
   targetNamespace: operators
