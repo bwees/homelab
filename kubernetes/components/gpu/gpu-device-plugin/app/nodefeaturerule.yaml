@@ -11,6 +11,28 @@ spec:
       matchFeatures:
         - feature: pci.device
           matchExpressions:
-            class:
+            class: &displayClasses
               op: In
               value: ['0300', '0380']
+
+    - name: gpu-quicksync
+      labels:
+        gpu.bwees.dev/quicksync: 'true'
+      matchFeatures:
+        - feature: pci.device
+          matchExpressions:
+            class: *displayClasses
+            vendor:
+              op: In
+              value: ['8086']
+
+    - name: gpu-rocm
+      labels:
+        gpu.bwees.dev/rocm: 'true'
+      matchFeatures:
+        - feature: pci.device
+          matchExpressions:
+            class: *displayClasses
+            vendor:
+              op: In
+              value: ['1002']

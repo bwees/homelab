@@ -77,7 +77,9 @@ mise run cluster:startup  hail-mary
 
 ### GPU workloads
 
-NFD labels every node with a display-class PCI device `gpu.bwees.dev/present=true`.
+NFD labels every node with a display-class PCI device `gpu.bwees.dev/present=true`,
+plus `gpu.bwees.dev/quicksync=true` for Intel or `gpu.bwees.dev/rocm=true` for AMD.
+Jellyfin selects `quicksync` because its transcoding is configured for QSV.
 The gpu-device-plugin DaemonSet runs on those nodes and advertises two resources,
 each shared by up to 16 pods:
 
