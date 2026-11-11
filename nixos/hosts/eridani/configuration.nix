@@ -8,6 +8,7 @@
     ./disk-config.nix
     ../../lib/base-packages.nix
     ../../lib/beszel.nix
+    ../../lib/beszel-intel-gpu.nix
     ../../lib/bwees.nix
     ../../lib/garbage-collect.nix
     ../../lib/network-tuning.nix

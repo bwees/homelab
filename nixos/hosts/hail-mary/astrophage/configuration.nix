@@ -13,6 +13,7 @@
     ../../../lib/miroir-drbd.nix
     ../../../lib/bwees.nix
     ../../../lib/beszel.nix
+    ../../../lib/beszel-intel-gpu.nix
     ../../../lib/garbage-collect.nix
     ../../../lib/network-tuning.nix
     ../../../lib/tailscale.nix
