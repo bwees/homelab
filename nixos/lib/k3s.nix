@@ -33,7 +33,6 @@ in
     ];
   };
 
-  services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];
 
   services.logind.settings.Login.InhibitDelayMaxSec = 130;
@@ -49,11 +48,9 @@ in
   users.users.bwees.extraGroups = [ "k3s" ];
 
   environment.variables.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
-  virtualisation.containerd.enable = true;
 
   environment.systemPackages = with pkgs; [
     fluxcd
     k9s
-    nfs-utils
   ];
 }
