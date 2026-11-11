@@ -1,10 +1,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: readme-stats
+  name: gatus
 spec:
   interval: 1h
-  path: ./kubernetes/apps/tau-ceti/misc/readme-stats/app
+  path: ./kubernetes/apps/hail-mary/monitoring/gatus/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -13,4 +13,6 @@ spec:
   dependsOn:
     - name: onepassword
       namespace: secrets
-  targetNamespace: misc
+    - name: miroir-config
+      namespace: storage
+  targetNamespace: monitoring

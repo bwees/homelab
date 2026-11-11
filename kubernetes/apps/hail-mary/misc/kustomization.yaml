@@ -7,3 +7,4 @@ resources:
   - crosshatch/ks.yaml
   - zulu-notifyd/ks.yaml
   - zulip-demo/ks.yaml
+  - readme-stats/ks.yaml

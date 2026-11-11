@@ -41,32 +41,20 @@ spec:
                 enabled: true
               readiness: *probes
 
-          sidecar-tau-ceti:
+          sidecar-hail-mary:
             image: &sidecarImage
               repository: ghcr.io/home-operations/gatus-sidecar
               tag: 0.6.1
             args:
               - --auto-httproute
               - --gateway-name=envoy-ingress
-              - --output=/config/tau-ceti.yaml
+              - --output=/config/hail-mary.yaml
             resources: &sidecarResources
               requests:
                 cpu: 5m
                 memory: 32Mi
               limits:
                 memory: 128Mi
-
-          sidecar-hail-mary:
-            image: *sidecarImage
-            args:
-              - --auto-httproute
-              - --gateway-name=envoy-ingress
-              - --output=/config/hail-mary.yaml
-            env:
-              # blank so the sidecar skips in-cluster auth and reads KUBECONFIG
-              KUBERNETES_SERVICE_HOST: ''
-              KUBECONFIG: /kubeconfig/hail-mary
-            resources: *sidecarResources
 
           sidecar-eridani:
             image: *sidecarImage
@@ -75,6 +63,7 @@ spec:
               - --gateway-name=envoy-ingress
               - --output=/config/eridani.yaml
             env:
+              # blank so the sidecar skips in-cluster auth and reads KUBECONFIG
               KUBERNETES_SERVICE_HOST: ''
               KUBECONFIG: /kubeconfig/eridani
             resources: *sidecarResources
@@ -128,10 +117,9 @@ spec:
         name: gatus-kubeconfig
         advancedMounts:
           main:
-            sidecar-hail-mary: &kubeconfigMount
+            sidecar-eridani: &kubeconfigMount
               - path: /kubeconfig
                 readOnly: true
-            sidecar-eridani: *kubeconfigMount
             sidecar-stepien: *kubeconfigMount
       data:
         existingClaim: gatus-data

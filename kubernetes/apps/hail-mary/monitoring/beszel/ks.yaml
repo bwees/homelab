@@ -4,7 +4,7 @@ metadata:
   name: beszel
 spec:
   interval: 1h
-  path: ./kubernetes/apps/tau-ceti/monitoring/beszel/app
+  path: ./kubernetes/apps/hail-mary/monitoring/beszel/app
   prune: true
   sourceRef:
     kind: GitRepository

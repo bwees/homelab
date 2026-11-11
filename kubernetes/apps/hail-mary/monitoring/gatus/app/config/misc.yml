@@ -17,3 +17,16 @@ endpoints:
       - type: discord
         failure-threshold: 1
         description: 'Zack is a dad'
+
+  - name: dns
+    group: misc
+    # confirms external-dns is still publishing into the bwees.dev Cloudflare zone
+    url: '1.1.1.1'
+    dns:
+      query-name: 'nas.bwees.dev'
+      query-type: 'A'
+    conditions:
+      - '[BODY] == 192.168.50.4'
+      - '[DNS_RCODE] == NOERROR'
+    alerts:
+      - type: discord

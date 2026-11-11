@@ -16,11 +16,9 @@ configMapGenerator:
       - config/misc.yml
       - config/starforge.yml
       - config/stepien.yml
-      - config/tau-ceti.yml
   - name: gatus-kubeconfig
     files:
       - kubeconfig/eridani
-      - kubeconfig/hail-mary
       - kubeconfig/stepien
 
 generatorOptions:
