@@ -23,8 +23,8 @@ resource "tailscale_acl" "acls" {
 
     grants : [
       {
-        // tau-ceti's gatus sidecars read every cluster's routes through the operator API proxy
-        src : ["tag:tau-ceti"],
+        // hail-mary's gatus sidecars read every cluster's routes through the operator API proxy
+        src : ["tag:hail-mary"],
         dst : ["tag:kube-operator"],
         app : {
           "tailscale.com/cap/kubernetes" : [
