@@ -30,7 +30,7 @@ spec:
           sockpuppetbrowser:
             image:
               repository: dgtlmoon/sockpuppetbrowser
-              tag: '0.0.3'
+              tag: '0.0.4'
             env:
               DEFAULT_LAUNCH_ARGS: '["--window-size=1920,1080"]'
             probes:
