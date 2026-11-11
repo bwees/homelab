@@ -27,10 +27,8 @@ spec:
       # external-dns reads the zone back by AXFR to work out what it already owns.
       - --rfc2136-axfr
       - --rfc2136-min-ttl=60s
-      # The Gateway's target annotation is the bwees.dev answer, which on eridani
-      # is a LAN address the forward proxy cannot reach. Override it: this view
-      # always points at the cluster's ingress VIPService, as a CNAME so no
-      # tailnet address is ever pinned in config.
+      # The Gateway's target annotation is a pinned tailnet IP. Point this view
+      # at the ingress VIPService by name instead, so the address can change.
       - --default-targets=${CLUSTER}-ingress.tail72746.ts.net
       - --force-default-targets
     triggerLoopOnEvent: true

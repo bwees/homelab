@@ -8,5 +8,5 @@ spec:
   secretRef:
     name: github-status-token
   # Every cluster reconciles the same commit, so the status context has to carry
-  # the cluster name or the four of them overwrite each other on GitHub.
+  # the cluster name or the clusters overwrite each other on GitHub.
   commitStatusExpr: "'${CLUSTER}/' + event.involvedObject.namespace + '/' + event.involvedObject.name"

@@ -8,7 +8,7 @@ This repository houses the infrastructure configuration for my homelab. The enti
 
 ## NixOS
 
-Every node runs NixOS, defined in [nixos/](nixos/). Each host has its own directory under [nixos/hosts/](nixos/hosts/), and shared functionality lives in reusable modules under [nixos/lib/](nixos/lib/) (k3s, Tailscale, Docker, Longhorn prerequisites, backups, garbage collection, and so on). The [flake](nixos/flake.nix) wires each host configuration into a `nixosConfiguration`.
+Every node runs NixOS, defined in [nixos/](nixos/). Each host has its own directory under [nixos/hosts/](nixos/hosts/), and shared functionality lives in reusable modules under [nixos/lib/](nixos/lib/) (k3s, Tailscale, Docker, miroir/DRBD, Beszel, garbage collection, and so on). The [flake](nixos/flake.nix) wires each host configuration into a `nixosConfiguration`.
 
 Nodes are partitioned with Disko and can be provisioned from scratch using nixos-anywhere. Once a machine is up, configuration changes are pushed with `nixos-rebuild switch`. Both of these are wrapped as mise tasks:
 
@@ -37,7 +37,7 @@ I run several clusters, each with a different purpose:
 
 A few things worth calling out about the cluster setup:
 
-- **Storage** is handled by Longhorn, with volsync taking scheduled backups of persistent volumes.
+- **Storage** is handled by miroir, with volsync taking scheduled backups of persistent volumes.
 - **Secrets** come from 1Password through External Secrets.
 - **Databases** run on CloudNative-PG.
 - **Ingress** is served through Envoy Gateway, with cert-manager issuing certificates.
