@@ -12,6 +12,10 @@ spec:
   values:
     controllers:
       main:
+        pod:
+          # Transcoding is configured for QuickSync
+          nodeSelector:
+            feature.node.kubernetes.io/pci-0300_8086.present: 'true'
         containers:
           main:
             image:
