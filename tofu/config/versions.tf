@@ -20,11 +20,6 @@ terraform {
       version = "6.13.0"
     }
 
-    contabo = {
-      source  = "contabo/contabo"
-      version = "0.1.44"
-    }
-
     b2 = {
       source  = "Backblaze/b2"
       version = "0.14.1"
@@ -33,11 +28,6 @@ terraform {
     opwan = {
       source  = "registry.terraform.io/slop-place/opwan"
       version = "0.2.0"
-    }
-
-    null = {
-      source  = "hashicorp/null"
-      version = "3.3.2"
     }
 
     random = {

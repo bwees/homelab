@@ -19,7 +19,7 @@ locals {
   github_owner = "bwees"
   admin        = "brandonwees@gmail.com"
   tailnet      = "tail72746.ts.net"
-  clusters     = ["tau-ceti", "hail-mary", "stepien", "eridani"]
+  clusters     = ["hail-mary", "stepien", "eridani"]
 
   mullvad_nodes = [
     "brandon-iphone-17",

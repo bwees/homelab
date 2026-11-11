@@ -1,7 +1,3 @@
-module "contabo" {
-  source = "../modules/contabo"
-}
-
 module "opwan" {
   source = "../modules/opwan"
 

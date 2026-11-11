@@ -47,13 +47,6 @@
           ./hosts/hail-mary/xenonite/configuration.nix
         ];
       };
-      nixosConfigurations.tau-ceti = mkHost {
-        system = "x86_64-linux";
-        modules = [
-          disko.nixosModules.disko
-          ./hosts/tau-ceti/configuration.nix
-        ];
-      };
       nixosConfigurations.stepien = mkHost {
         system = "x86_64-linux";
         modules = [

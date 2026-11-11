@@ -21,8 +21,5 @@ Used to manage third-party services with IaC.
   - Permissions
     - all buckets, with `writeKeys` and `writeBuckets`
 
-- Contabo
-  - Account API key
-
 - Tailscale OAuth Client
   - Permissions: all

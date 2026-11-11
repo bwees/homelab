@@ -18,13 +18,6 @@ provider "github" {
   token = local.credentials["github"].field_map["token"].value
 }
 
-provider "contabo" {
-  oauth2_client_id     = local.credentials["contabo"].field_map["client_id"].value
-  oauth2_client_secret = local.credentials["contabo"].field_map["client_secret"].value
-  oauth2_user          = local.credentials["contabo"].field_map["user"].value
-  oauth2_pass          = local.credentials["contabo"].field_map["password"].value
-}
-
 provider "b2" {
   application_key_id = local.credentials["backblaze"].field_map["key_id"].value
   application_key    = local.credentials["backblaze"].field_map["application_key"].value
