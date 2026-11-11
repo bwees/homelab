@@ -13,5 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./kubernetes/components/intel-gpu/node-feature-discovery/app
+  path: ./kubernetes/components/gpu/node-feature-discovery/app
   targetNamespace: operators

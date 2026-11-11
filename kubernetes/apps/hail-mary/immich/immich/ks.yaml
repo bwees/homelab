@@ -18,9 +18,7 @@ spec:
       namespace: operators
     - name: miroir-config
       namespace: storage
-    - name: intel-device-plugins
-      namespace: operators
-    - name: amd-device-plugin
+    - name: gpu-device-plugin
       namespace: operators
     - name: tailscale-operator
       namespace: networking

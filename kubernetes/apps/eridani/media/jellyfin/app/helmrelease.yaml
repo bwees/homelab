@@ -34,7 +34,7 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 2Gi
-                gpu.intel.com/i915: '1'
+                gpu.bwees.dev/render: '1'
             probes:
               liveness: &probes
                 enabled: true

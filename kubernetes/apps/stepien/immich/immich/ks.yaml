@@ -18,7 +18,7 @@ spec:
       namespace: operators
     - name: miroir-config
       namespace: storage
-    - name: intel-device-plugins
+    - name: gpu-device-plugin
       namespace: operators
   postBuild:
     substitute:

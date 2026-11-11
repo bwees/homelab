@@ -13,4 +13,6 @@ spec:
   dependsOn:
     - name: miroir-config
       namespace: storage
+    - name: gpu-device-plugin
+      namespace: operators
   targetNamespace: smarthome

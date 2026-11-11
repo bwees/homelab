@@ -16,6 +16,8 @@ spec:
     enableNodeFeatureApi: true
     master:
       replicaCount: 1
+      extraLabelNs:
+        - gpu.bwees.dev
       resources:
         requests:
           cpu: 25m
