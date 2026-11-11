@@ -26,6 +26,10 @@ module "api_tokens" {
   external_dns_zone_ids = [
     data.cloudflare_zone.bwees_dev.zone_id,
   ]
+
+  unifi_ddns_zone_ids = [
+    data.cloudflare_zone.bwees_dev.zone_id,
+  ]
 }
 
 module "restic" {
