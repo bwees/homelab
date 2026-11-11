@@ -2,6 +2,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: zulip-demo
+  annotations:
+    # No `main` controller, so the injected probes would render an imageless one.
+    lab.bwees/probe-defaults: disabled
 spec:
   interval: 1h
   chartRef:
