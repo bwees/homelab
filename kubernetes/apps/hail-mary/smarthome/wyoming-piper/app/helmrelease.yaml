@@ -15,7 +15,7 @@ spec:
           main:
             image:
               repository: docker.io/rhasspy/wyoming-piper
-              tag: '2.5.2'
+              tag: '2.5.3'
             env:
               TZ: America/Chicago
             args:
