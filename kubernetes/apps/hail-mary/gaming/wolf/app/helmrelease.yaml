@@ -51,6 +51,36 @@ spec:
             securityContext:
               privileged: true
 
+          # Wolf matches streams to sessions by client IP, so clients must
+          # reach it directly instead of through a NATing proxy.
+          tailscale:
+            image:
+              repository: tailscale/tailscale
+              tag: 'v1.104.7'
+            env:
+              TZ: America/Chicago
+              TS_USERSPACE: 'false'
+              TS_HOSTNAME: wolf
+              TS_EXTRA_ARGS: '--advertise-tags=tag:hail-mary,tag:kube-service'
+              TS_STATE_DIR: /var/lib/tailscale
+              TS_KUBE_SECRET: ''
+              TS_ACCEPT_DNS: 'false'
+            envFrom:
+              - secretRef:
+                  name: wolf-tailscale
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ['NET_ADMIN', 'NET_RAW']
+            resources:
+              requests:
+                cpu: 25m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
     defaultPodOptions:
       nodeSelector:
         kubernetes.io/hostname: xenonite
@@ -58,9 +88,6 @@ spec:
     service:
       main:
         controller: main
-        annotations:
-          tailscale.com/expose: 'true'
-          tailscale.com/hostname: wolf
         ports:
           https:
             port: 47989
@@ -122,6 +149,24 @@ spec:
           main:
             main:
               - path: /var/run/docker
+
+      tailscale-state:
+        type: hostPath
+        hostPath: /etc/wolf/tailscale
+        hostPathType: DirectoryOrCreate
+        advancedMounts:
+          main:
+            tailscale:
+              - path: /var/lib/tailscale
+
+      dev-net-tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        hostPathType: CharDevice
+        advancedMounts:
+          main:
+            tailscale:
+              - path: /dev/net/tun
 
       dev:
         type: hostPath
