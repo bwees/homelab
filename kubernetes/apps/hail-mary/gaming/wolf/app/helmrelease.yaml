@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/games-on-whales/wolf
-              tag: stable
+              tag: stable@sha256:47ce7a0b67ee6645d2c6fefd8fdda7fee49a00e327c39597a04e84a0cd052910
             env:
               HOST_APPS_STATE_FOLDER: /etc/wolf
               XDG_RUNTIME_DIR: /run/user/wolf
