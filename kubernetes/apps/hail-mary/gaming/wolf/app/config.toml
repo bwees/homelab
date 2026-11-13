@@ -157,7 +157,7 @@ base_create_json = '''{
 '''
 devices = []
 env = [ 'RUN_SWAY=true', 'GOW_REQUIRED_DEVICES=/dev/input/* /dev/dri/* /dev/nvidia*', 'EDEN_NX2_FRAMES_AHEAD=1' ]
-image = 'ghcr.io/bwees/eglantine-fedora:latest'
+image = 'ghcr.io/bwees/eglantine-fedora:daily-20261112@sha256:8d47bae7d4bde2322e3314d3d684089ca577b5947d8d94b6fd00629eceee855c'
 mounts = []
 name = 'WolfEglantine'
 ports = []

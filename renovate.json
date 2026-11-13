@@ -28,10 +28,31 @@
       "automerge": true
     },
 
+    // Bumping a Wolf app image restarts Wolf and drops every stream, so only
+    // merge overnight (UTC hours).
+    {
+      "matchPackageNames": ["/^ghcr\\.io/bwees/eglantine-/"],
+      "automerge": true,
+      "schedule": ["* 8-11 * * *"],
+      "automergeSchedule": ["* 8-11 * * *"]
+    },
+
     // Groups
     {
       "matchFileNames": ["**/flux-system/**"],
       "groupName": "fluxcd"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Eglantine nightly images in the Wolf app config",
+      "managerFilePatterns": ["/kubernetes/apps/hail-mary/gaming/wolf/app/config\\.toml$/"],
+      "matchStrings": [
+        "image = '(?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})'"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^daily-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$"
     }
   ],
   "ignoreTests": true
