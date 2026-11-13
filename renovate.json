@@ -21,6 +21,13 @@
       "automerge": false
     },
 
+    // Wolf only publishes a moving `stable` tag, so updates arrive as digests.
+    {
+      "matchPackageNames": ["ghcr.io/games-on-whales/wolf"],
+      "matchUpdateTypes": ["digest"],
+      "automerge": true
+    },
+
     // Groups
     {
       "matchFileNames": ["**/flux-system/**"],
