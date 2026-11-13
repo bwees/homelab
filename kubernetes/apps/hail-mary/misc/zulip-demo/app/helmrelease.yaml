@@ -18,7 +18,7 @@ spec:
           main:
             image:
               repository: ghcr.io/zulip/zulip-server
-              tag: '12.4-0'
+              tag: '13.2-0'
             env:
               SETTING_EXTERNAL_HOST: zulip-demo.bwees.io
               SETTING_ZULIP_ADMINISTRATOR: admin@bwees.io
