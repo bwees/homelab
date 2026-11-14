@@ -7,7 +7,7 @@ spec:
   id: 1
   title: Steam
   isHDRSupported: false
-  appAssetWebP: ""
+  appAssetWebP: AA== # placeholder until icons are added
   volumeClaimTemplate:
     spec:
       accessModes: [ReadWriteOnce]

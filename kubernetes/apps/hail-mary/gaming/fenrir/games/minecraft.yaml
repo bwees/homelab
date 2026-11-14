@@ -7,7 +7,7 @@ spec:
   id: 4
   title: Minecraft
   isHDRSupported: false
-  appAssetWebP: ""
+  appAssetWebP: AA== # placeholder until icons are added
   volumeClaimTemplate:
     spec:
       accessModes: [ReadWriteOnce]
