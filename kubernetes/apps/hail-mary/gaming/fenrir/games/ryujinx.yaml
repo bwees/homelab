@@ -1,0 +1,42 @@
+---
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: App
+metadata:
+  name: ryujinx
+spec:
+  id: 2
+  title: Ryujinx
+  isHDRSupported: false
+  appAssetWebP: ""
+  volumeClaimTemplate:
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: miroir
+      resources:
+        requests:
+          storage: 20Gi
+  template:
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/bwees/ryujinx-fedora:latest
+          command: [/bin/bash, /opt/fenrir/launch.sh]
+          securityContext:
+            # Wolf hotplugs controllers under /dev/input at runtime.
+            privileged: true
+          env:
+            - { name: LIBVA_DRIVER_NAME, value: radeonsi }
+            - { name: RUN_SWAY, value: "true" }
+            - { name: GOW_REQUIRED_DEVICES, value: /dev/input/* /dev/dri/* }
+          volumeMounts:
+            - { name: launcher, mountPath: /opt/fenrir }
+            - { name: roms, mountPath: /games, readOnly: true }
+      volumes:
+        - name: launcher
+          configMap:
+            name: fenrir-launcher
+        - name: roms
+          nfs:
+            server: nas.bwees.dev
+            path: /games/switch
+            readOnly: true

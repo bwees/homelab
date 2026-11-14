@@ -1,0 +1,36 @@
+---
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: App
+metadata:
+  name: minecraft
+spec:
+  id: 4
+  title: Minecraft
+  isHDRSupported: false
+  appAssetWebP: ""
+  volumeClaimTemplate:
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: miroir
+      resources:
+        requests:
+          storage: 20Gi
+  template:
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/games-on-whales/prismlauncher:edge
+          command: [/bin/bash, /opt/fenrir/launch.sh]
+          securityContext:
+            # Wolf hotplugs controllers under /dev/input at runtime.
+            privileged: true
+          env:
+            - { name: LIBVA_DRIVER_NAME, value: radeonsi }
+            - { name: RUN_SWAY, value: "1" }
+            - { name: GOW_REQUIRED_DEVICES, value: /dev/input/event* /dev/dri/* }
+          volumeMounts:
+            - { name: launcher, mountPath: /opt/fenrir }
+      volumes:
+        - name: launcher
+          configMap:
+            name: fenrir-launcher

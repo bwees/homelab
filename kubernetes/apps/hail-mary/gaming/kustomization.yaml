@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: gaming
 resources:
   - namespace.yaml
-  - wolf/ks.yaml
+  - fenrir/ks.yaml

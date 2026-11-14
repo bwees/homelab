@@ -1,0 +1,37 @@
+---
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: App
+metadata:
+  name: steam
+spec:
+  id: 1
+  title: Steam
+  isHDRSupported: false
+  appAssetWebP: ""
+  volumeClaimTemplate:
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: miroir
+      resources:
+        requests:
+          storage: 500Gi
+  template:
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/games-on-whales/steam:edge
+          command: [/bin/bash, /opt/fenrir/launch.sh]
+          securityContext:
+            # Wolf hotplugs controllers under /dev/input at runtime.
+            privileged: true
+          env:
+            - { name: LIBVA_DRIVER_NAME, value: radeonsi }
+            - { name: RUN_SWAY, value: "true" }
+            - { name: PROTON_LOG, value: "1" }
+            - { name: GOW_REQUIRED_DEVICES, value: /dev/input/* /dev/dri/* }
+          volumeMounts:
+            - { name: launcher, mountPath: /opt/fenrir }
+      volumes:
+        - name: launcher
+          configMap:
+            name: fenrir-launcher

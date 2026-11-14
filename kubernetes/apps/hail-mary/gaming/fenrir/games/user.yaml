@@ -1,0 +1,11 @@
+---
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: User
+metadata:
+  name: bwees
+spec:
+  sidecarPolicies:
+    # Privileged gets wolf /dev/dri, /dev/uinput and /dev/uhid from the host.
+    wolf:
+      securityContext:
+        privileged: true

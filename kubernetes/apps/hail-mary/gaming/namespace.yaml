@@ -3,5 +3,5 @@ kind: Namespace
 metadata:
   name: gaming
   labels:
-    # Wolf runs a privileged, docker-socket, hostPath pod
+    # Fenrir game pods run privileged for GPU and input devices
     pod-security.kubernetes.io/enforce: privileged

@@ -21,15 +21,7 @@
       "automerge": false
     },
 
-    // Wolf only publishes a moving `stable` tag, so updates arrive as digests.
-    {
-      "matchPackageNames": ["ghcr.io/games-on-whales/wolf"],
-      "matchUpdateTypes": ["digest"],
-      "automerge": true
-    },
-
-    // Bumping a Wolf app image restarts Wolf and drops every stream, so only
-    // merge overnight (UTC hours).
+    // Eglantine publishes nightly; only merge overnight (UTC hours).
     {
       "matchPackageNames": ["/^ghcr\\.io/bwees/eglantine-/"],
       "automerge": true,
@@ -46,10 +38,10 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Eglantine nightly images in the Wolf app config",
-      "managerFilePatterns": ["/kubernetes/apps/hail-mary/gaming/wolf/app/config\\.toml$/"],
+      "description": "Eglantine nightly images in the Fenrir App",
+      "managerFilePatterns": ["/kubernetes/apps/hail-mary/gaming/fenrir/games/eglantine\\.yaml$/"],
       "matchStrings": [
-        "image = '(?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})'"
+        "image: (?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "regex:^daily-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$"

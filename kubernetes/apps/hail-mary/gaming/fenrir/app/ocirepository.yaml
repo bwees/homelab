@@ -1,0 +1,14 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: fenrir
+spec:
+  interval: 1h
+  url: oci://ghcr.io/bwees-forks/charts/direwolf-operator
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    # main builds publish <version>-<run id>-SNAPSHOT
+    semver: '>=0.0.1-0'

@@ -1,0 +1,43 @@
+---
+apiVersion: direwolf.games-on-whales.github.io/v1alpha1
+kind: App
+metadata:
+  name: eglantine
+spec:
+  id: 3
+  title: Eglantine
+  isHDRSupported: false
+  appAssetWebP: ""
+  volumeClaimTemplate:
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: miroir
+      resources:
+        requests:
+          storage: 20Gi
+  template:
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/bwees/eglantine-fedora:daily-20261114@sha256:0054a1709c0b7e77ed305d0782f523116be6ec1787dd95b5aa2c73194eb30876
+          command: [/bin/bash, /opt/fenrir/launch.sh]
+          securityContext:
+            # Wolf hotplugs controllers under /dev/input at runtime.
+            privileged: true
+          env:
+            - { name: LIBVA_DRIVER_NAME, value: radeonsi }
+            - { name: RUN_SWAY, value: "true" }
+            - { name: GOW_REQUIRED_DEVICES, value: /dev/input/* /dev/dri/* }
+            - { name: EDEN_NX2_FRAMES_AHEAD, value: "1" }
+          volumeMounts:
+            - { name: launcher, mountPath: /opt/fenrir }
+            - { name: roms, mountPath: /games, readOnly: true }
+      volumes:
+        - name: launcher
+          configMap:
+            name: fenrir-launcher
+        - name: roms
+          nfs:
+            server: nas.bwees.dev
+            path: /games/switch2
+            readOnly: true
