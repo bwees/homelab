@@ -26,7 +26,7 @@ spec:
             privileged: true
           env:
             - { name: LIBVA_DRIVER_NAME, value: radeonsi }
-            - { name: RUN_SWAY, value: "true" }
+            - { name: RUN_GAMESCOPE, value: "true" } # sway crashes on Wolf's duplicate wl_drm
             - { name: GOW_REQUIRED_DEVICES, value: /dev/input/* /dev/dri/* }
             - { name: EDEN_NX2_FRAMES_AHEAD, value: "1" }
           volumeMounts:
