@@ -1,13 +1,9 @@
-{
-  pkgs,
-  ...
-}:
+{ ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ../common.nix
-    ../../../lib/docker.nix
     ../../../lib/iot-vlan.nix
     ../../../lib/amd-gpu.nix
   ];
@@ -25,13 +21,4 @@
 
   # Keep simpledrm from holding the display before amdgpu loads
   boot.kernelParams = [ "initcall_blacklist=simpledrm_platform_driver_init" ];
-
-  # create additional docker socket that can be folder mounted by wolf
-  virtualisation.docker.daemon.settings.hosts = [
-    "unix:///var/run/docker/docker.sock"
-  ];
-
-  systemd.services.docker.serviceConfig.ExecStartPre = [
-    "${pkgs.coreutils}/bin/mkdir -p /var/run/docker"
-  ];
 }
