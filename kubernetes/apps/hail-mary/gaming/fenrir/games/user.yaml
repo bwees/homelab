@@ -9,8 +9,3 @@ spec:
     wolf:
       securityContext:
         privileged: true
-      # Wolf's supervisord must start as root; the operator defaults to ubuntu.
-      env:
-        - { name: PUID, value: "0" }
-        - { name: PGID, value: "0" }
-        - { name: UNAME, value: root }
