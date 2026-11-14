@@ -1,1 +1,63 @@
-{"$schema":"https://docs.renovatebot.com/renovate-schema.json","extends":["github>home-operations/renovate-presets"],"packageRules":[{"matchUpdateTypes":["minor","patch"],"automerge":true},{"matchUpdateTypes":["major","minor","patch"],"semanticCommitType":"chore"},{"matchPackageNames":["ghcr.io/home-operations/charts-mirror/external-dns"],"matchUpdateTypes":["minor"],"automerge":false},{"matchPackageNames":["ghcr.io/games-on-whales/wolf","ghcr.io/games-on-whales/pulseaudio","ghcr.io/games-on-whales/base"],"matchUpdateTypes":["digest"],"automerge":true},{"matchPackageNames":["/^ghcr\\.io/bwees/eglantine-/"],"automerge":true,"schedule":["* 8-11 * * *"],"automergeSchedule":["* 8-11 * * *"]},{"matchFileNames":["**/flux-system/**"],"groupName":"fluxcd"}],"customManagers":[{"customType":"regex","description":"Eglantine nightly images in the Fenrir App","managerFilePatterns":["/kubernetes/apps/hail-mary/gaming/fenrir/games/eglantine\\.yaml$/"],"matchStrings":["image: (?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})"],"datasourceTemplate":"docker","versioningTemplate":"regex:^daily-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$"}],"ignoreTests":true}
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>home-operations/renovate-presets"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "semanticCommitType": "chore"
+    },
+    // External-DNS maintainers seem to love https://0ver.org/ and enjoy
+    // releasing large breaking changes in a minor release. This shit is
+    // required to keep their updates from taking everything down.
+    {
+      "matchPackageNames": [
+        "ghcr.io/home-operations/charts-mirror/external-dns"
+      ],
+      "matchUpdateTypes": ["minor"],
+      "automerge": false
+    },
+
+    // Games on Whales only publishes moving tags, so updates arrive as digests.
+    // New digests only apply to game pods created after the merge.
+    {
+      "matchPackageNames": [
+        "ghcr.io/games-on-whales/wolf",
+        "ghcr.io/games-on-whales/pulseaudio",
+        "ghcr.io/games-on-whales/base"
+      ],
+      "matchUpdateTypes": ["digest"],
+      "automerge": true
+    },
+
+    // Eglantine publishes nightly; only merge overnight (UTC hours).
+    {
+      "matchPackageNames": ["/^ghcr\\.io/bwees/eglantine-/"],
+      "automerge": true,
+      "schedule": ["* 8-11 * * *"],
+      "automergeSchedule": ["* 8-11 * * *"]
+    },
+
+    // Groups
+    {
+      "matchFileNames": ["**/flux-system/**"],
+      "groupName": "fluxcd"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Eglantine nightly images in the Fenrir App",
+      "managerFilePatterns": ["/kubernetes/apps/hail-mary/gaming/fenrir/games/eglantine\\.yaml$/"],
+      "matchStrings": [
+        "image: (?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^daily-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$"
+    }
+  ],
+  "ignoreTests": true
+}
