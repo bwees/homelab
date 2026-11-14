@@ -16,6 +16,17 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
+    gameImages:
+      wolf:
+        repository: ghcr.io/games-on-whales/wolf
+        tag: stable@sha256:47ce7a0b67ee6645d2c6fefd8fdda7fee49a00e327c39597a04e84a0cd052910
+      pulseaudio:
+        repository: ghcr.io/games-on-whales/pulseaudio
+        tag: edge@sha256:67055b6dec5e1d17d10835762a900d41b71e6ed949593e07a2a546ec03f76f29
+      init:
+        repository: ghcr.io/games-on-whales/base
+        tag: edge@sha256:158dc1c3aee186deebfa2b6ef2431cd58c10983f21a7182bb40265e9e9572732
+
     gamePods:
       nodeSelector:
         kubernetes.io/hostname: xenonite
