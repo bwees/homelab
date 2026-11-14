@@ -32,8 +32,14 @@ spec:
             - { name: EDEN_NX2_FRAMES_AHEAD, value: "1" }
           volumeMounts:
             - { name: launcher, mountPath: /opt/fenrir }
+            # Host /dev/input, so controllers Wolf creates mid-session appear here.
+            - { name: input-devices, mountPath: /dev/input }
             - { name: roms, mountPath: /games, readOnly: true }
       volumes:
+        - name: input-devices
+          hostPath:
+            path: /dev/input
+            type: Directory
         - name: launcher
           configMap:
             name: fenrir-launcher

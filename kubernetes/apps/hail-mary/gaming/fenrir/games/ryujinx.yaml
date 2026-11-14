@@ -30,8 +30,14 @@ spec:
             - { name: GOW_REQUIRED_DEVICES, value: /dev/input/* /dev/dri/* }
           volumeMounts:
             - { name: launcher, mountPath: /opt/fenrir }
+            # Host /dev/input, so controllers Wolf creates mid-session appear here.
+            - { name: input-devices, mountPath: /dev/input }
             - { name: roms, mountPath: /games, readOnly: true }
       volumes:
+        - name: input-devices
+          hostPath:
+            path: /dev/input
+            type: Directory
         - name: launcher
           configMap:
             name: fenrir-launcher
