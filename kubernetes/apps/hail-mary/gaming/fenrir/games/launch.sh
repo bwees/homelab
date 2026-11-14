@@ -17,4 +17,17 @@ if command -v pactl >/dev/null; then
   export PULSE_SOURCE="${PULSE_SINK}.monitor"
 fi
 
+# GoW's launcher only sets gamescope's output size, so games render at
+# gamescope's 1280x720 default. Shadow gamescope to add the render size.
+GAMESCOPE_SHIM_DIR=/tmp/fenrir-bin
+if real_gamescope="$(command -v gamescope)"; then
+  mkdir -p "$GAMESCOPE_SHIM_DIR"
+  cat > "$GAMESCOPE_SHIM_DIR/gamescope" <<EOF
+#!/bin/bash
+exec "$real_gamescope" -w "\${GAMESCOPE_WIDTH}" -h "\${GAMESCOPE_HEIGHT}" "\$@"
+EOF
+  chmod 755 "$GAMESCOPE_SHIM_DIR/gamescope"
+  export PATH="$GAMESCOPE_SHIM_DIR:$PATH"
+fi
+
 exec /entrypoint.sh
