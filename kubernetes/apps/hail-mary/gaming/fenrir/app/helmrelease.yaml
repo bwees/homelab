@@ -30,5 +30,6 @@ spec:
     streamService:
       type: ClusterIP
       externalIPs:
-        - 192.168.50.106 # xenonite
+        - 192.168.50.106 # xenonite LAN
+        - 100.118.190.95 # xenonite tailnet
       externalTrafficPolicy: Local
