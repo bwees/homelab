@@ -11,6 +11,7 @@ spec:
   values:
     controllers:
       main:
+        replicas: 0
         strategy: Recreate
         pod:
           nodeSelector:
