@@ -33,9 +33,12 @@
       "automerge": true
     },
 
-    // Eglantine publishes nightly; only merge overnight (UTC hours).
+    // Track gow-apps release tags (v0.1.0-rc4); only merge overnight (UTC hours).
     {
       "matchPackageNames": ["/^ghcr\\.io/bwees/eglantine-/"],
+      "versioning": "semver",
+      "allowedVersions": "/^v\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.]+)?$/",
+      "ignoreUnstable": false,
       "automerge": true,
       "schedule": ["* 8-11 * * *"],
       "automergeSchedule": ["* 8-11 * * *"]
@@ -45,18 +48,6 @@
     {
       "matchFileNames": ["**/flux-system/**"],
       "groupName": "fluxcd"
-    }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Eglantine nightly images in the Fenrir App",
-      "managerFilePatterns": ["/kubernetes/apps/hail-mary/gaming/fenrir/games/eglantine\\.yaml$/"],
-      "matchStrings": [
-        "image: (?<depName>ghcr\\.io/bwees/eglantine-[a-z]+):(?<currentValue>daily-\\d{8})@(?<currentDigest>sha256:[a-f0-9]{64})"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "regex:^daily-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})$"
     }
   ],
   "ignoreTests": true
