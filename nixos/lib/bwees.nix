@@ -20,6 +20,7 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.KbdInteractiveAuthentication = false;
 
   users.users.root.openssh.authorizedKeys.keys = lib.concatLists [
     config.users.users.bwees.openssh.authorizedKeys.keys
