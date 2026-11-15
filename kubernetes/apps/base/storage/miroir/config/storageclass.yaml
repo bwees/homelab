@@ -24,3 +24,17 @@ volumeBindingMode: WaitForFirstConsumer
 parameters:
   miroir.home-operations.com/replicas: '1'
   csi.storage.k8s.io/fstype: ext4
+---
+# Restic caches rebuild from the repository, so they need no replicas and
+# should not outlive the ReplicationSource that made them.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: miroir-volsync-cache
+provisioner: miroir.home-operations.com
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  miroir.home-operations.com/replicas: '1'
+  csi.storage.k8s.io/fstype: ext4

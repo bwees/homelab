@@ -15,7 +15,7 @@ spec:
     # Snapshot storage class, 1 replica,
     # Delete reclaim policy to prevent ballooning
     storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'
-    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir-volsync-cache}'
     cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
     moverSecurityContext:
       runAsUser: ${VOLSYNC_UID:=1000}
@@ -42,7 +42,7 @@ spec:
     copyMethod: Snapshot
     volumeSnapshotClassName: '${VOLSYNC_SNAPSHOTCLASS:=miroir}'
     storageClassName: '${VOLSYNC_PIT_STORAGECLASS:=miroir-volsync-src}'
-    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir}'
+    cacheStorageClassName: '${VOLSYNC_STORAGECLASS:=miroir-volsync-cache}'
     cacheCapacity: '${VOLSYNC_CACHE_CAPACITY:=2Gi}'
     moverSecurityContext:
       runAsUser: ${VOLSYNC_UID:=1000}
