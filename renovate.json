@@ -44,6 +44,14 @@
       "automergeSchedule": ["* 8-11 * * *"]
     },
 
+    // Flux 2.9 only serves notification.toolkit.fluxcd.io/v1beta3 for Provider and Alert.
+    // Remove once the installed CRDs serve v1.
+    {
+      "matchDatasources": ["kubernetes-api"],
+      "matchCurrentValue": "/^notification\\.toolkit\\.fluxcd\\.io//",
+      "enabled": false
+    },
+
     // Groups
     {
       "matchFileNames": ["**/flux-system/**"],
