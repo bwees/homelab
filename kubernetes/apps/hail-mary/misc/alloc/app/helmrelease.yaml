@@ -16,7 +16,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bwees/alloc
-              tag: 'v0.2.0'
+              tag: 'v0.3.0'
             env:
               PORT: '3000'
               DATA_DIR: /data
