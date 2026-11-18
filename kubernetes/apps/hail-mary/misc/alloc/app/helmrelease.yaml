@@ -1,0 +1,83 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloc
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: alloc
+  values:
+    controllers:
+      main:
+        # SQLite on an RWO volume: two pods would fight over the file.
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bwees/alloc
+              tag: 'v0.1.0'
+            env:
+              PORT: '3000'
+              DATA_DIR: /data
+              TZ: America/Chicago
+            securityContext:
+              runAsUser: 10001
+              runAsGroup: 10001
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/server
+                    port: 3000
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 3000
+
+    route:
+      main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            path: /api/v1/server
+        parentRefs:
+          - name: envoy-ingress
+            namespace: networking
+        hostnames:
+          - alloc.bwees.dev
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 3000
+
+    persistence:
+      data:
+        existingClaim: alloc-data
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

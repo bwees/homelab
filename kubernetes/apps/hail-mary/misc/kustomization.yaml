@@ -8,3 +8,4 @@ resources:
   - zulu-notifyd/ks.yaml
   - zulip-demo/ks.yaml
   - readme-stats/ks.yaml
+  - alloc/ks.yaml
