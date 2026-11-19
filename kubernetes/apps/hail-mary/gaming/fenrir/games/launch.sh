@@ -1,14 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
+SOCKET_POLL_SECONDS=0.1
+
+echo "fenrir: waiting for wayland display" >&2
 until [ -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; do
-  echo "fenrir: waiting for wayland display" >&2
-  sleep 1
+  sleep "$SOCKET_POLL_SECONDS"
 done
 
+echo "fenrir: waiting for pulse socket" >&2
 until [ -S "$XDG_RUNTIME_DIR/pulse-socket" ]; do
-  echo "fenrir: waiting for pulse socket" >&2
-  sleep 1
+  sleep "$SOCKET_POLL_SECONDS"
 done
 
 if command -v pactl >/dev/null; then
