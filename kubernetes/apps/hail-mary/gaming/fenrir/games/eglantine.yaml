@@ -11,7 +11,7 @@ spec:
   volumeClaimTemplate:
     spec:
       accessModes: [ReadWriteOnce]
-      storageClassName: miroir
+      storageClassName: miroir-games
       resources:
         requests:
           storage: 20Gi
