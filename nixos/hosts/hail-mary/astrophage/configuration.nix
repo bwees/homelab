@@ -18,7 +18,9 @@
   networking.hostName = "astrophage";
 
   homelab.disk = {
-    device = "/dev/sda";
+    # by-id: the ZFS disks are also sd*, and kernel names can reorder across boots
+    device = "/dev/disk/by-id/ata-NGFF_2280_256GB_SSD_20240926113198";
+    layout = "lvm";
     flatRoot = true;
   };
   boot.loader.grub.devices = lib.mkForce [ "nodev" ];
