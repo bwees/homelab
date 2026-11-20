@@ -106,6 +106,18 @@ spec:
         existingClaim: jellyfin-config
         globalMounts:
           - path: /config
+      # Re-downloadable data, kept out of the config PVC so volsync skips it.
+      redownloadable:
+        existingClaim: jellyfin-cache
+        globalMounts:
+          - path: /config/cache
+            subPath: cache
+          - path: /config/data/metadata
+            subPath: metadata
+          - path: /config/data/data/subtitles
+            subPath: subtitles
+          - path: /config/data/data/attachments
+            subPath: attachments
 
       media:
         existingClaim: media-library

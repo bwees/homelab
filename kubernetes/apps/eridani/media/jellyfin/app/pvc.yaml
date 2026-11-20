@@ -10,3 +10,15 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-cache
+  namespace: media
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: miroir
+  resources:
+    requests:
+      storage: 5Gi
