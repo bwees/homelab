@@ -8,4 +8,4 @@ spec:
   storageClassName: miroir
   resources:
     requests:
-      storage: 100Mi
+      storage: 512Mi
