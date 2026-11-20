@@ -16,7 +16,7 @@
 
   homelab.disk = {
     device = "/dev/nvme0n1";
-    subvolumes."@miroir" = "/var/lib/miroir";
+    layout = "lvm";
   };
 
   homelab.iotVlan.parent = "enp1s0";
