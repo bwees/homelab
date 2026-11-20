@@ -12,3 +12,17 @@ spec:
       - name: default
         loopfile:
           baseDir: /var/lib/miroir
+---
+apiVersion: miroir.home-operations.com/v1alpha1
+kind: MiroirNodeGroup
+metadata:
+  name: thin
+spec:
+  nodeSelector:
+    matchLabels:
+      storage.miroir.home-operations.com/class: thin
+  template:
+    pools:
+      # vg-miroir is created by disko (nixos lib/disk.nix); the thin pool takes its free space
+      - name: default
+        lvmthin: {}
