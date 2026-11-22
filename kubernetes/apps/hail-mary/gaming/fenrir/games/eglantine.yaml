@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/bwees/eglantine-fedora:daily-20261119@sha256:132320b6afa22a2e7fb74bb208ffe00f3b6056e970fac03338615a422ee15e05
+          image: ghcr.io/bwees/eglantine-fedora:daily-20261122@sha256:bc5d1ff3288743c1a87a6e96a5d7a26bd62c5115526b27eca30c5c7232861bfe
           command: [/bin/bash, /opt/fenrir/launch.sh]
           securityContext:
             # Wolf hotplugs controllers under /dev/input at runtime.
