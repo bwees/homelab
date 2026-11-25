@@ -15,7 +15,7 @@ spec:
       - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
         valueFrom:
           secretKeyRef:
-            name: external-dns-rfc2136
+            name: external-dns-bind-secret
             key: TSIG_SECRET
     extraArgs:
       - --gateway-name=envoy-ingress

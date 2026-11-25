@@ -88,24 +88,3 @@ resource "tailscale_oauth_client" "operator" {
   scopes      = ["devices:core", "auth_keys", "services"]
   tags        = ["tag:kube-operator"]
 }
-
-resource "onepassword_item" "operator" {
-  vault    = var.vault_uuid
-  title    = "tailscale-operator"
-  category = "password"
-
-  section_map = {
-    "credentials" = {
-      field_map = {
-        "client_id" = {
-          type  = "STRING"
-          value = tailscale_oauth_client.operator.id
-        }
-        "client_secret" = {
-          type  = "CONCEALED"
-          value = tailscale_oauth_client.operator.key
-        }
-      }
-    }
-  }
-}

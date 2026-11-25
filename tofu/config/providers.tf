@@ -1,34 +1,39 @@
-provider "onepassword" {}
+provider "infisical" {}
 
-data "onepassword_item" "credentials" {
-  vault = local.vault_name
-  title = "tofu-credentials"
+data "infisical_projects" "tofu" {
+  slug = "opentofu"
+}
+
+data "infisical_secrets" "credentials" {
+  workspace_id = data.infisical_projects.tofu.id
+  env_slug     = "prod"
+  folder_path  = "/"
 }
 
 locals {
-  credentials = data.onepassword_item.credentials.section_map
+  credentials = data.infisical_secrets.credentials.secrets
 }
 
 provider "cloudflare" {
-  api_token = local.credentials["cloudflare"].field_map["api_token"].value
+  api_token = local.credentials["CLOUDFLARE_API_TOKEN"].value
 }
 
 provider "github" {
   owner = local.github_owner
-  token = local.credentials["github"].field_map["token"].value
+  token = local.credentials["GITHUB_TOKEN"].value
 }
 
 provider "b2" {
-  application_key_id = local.credentials["backblaze"].field_map["key_id"].value
-  application_key    = local.credentials["backblaze"].field_map["application_key"].value
+  application_key_id = local.credentials["B2_APPLICATION_KEY_ID"].value
+  application_key    = local.credentials["B2_APPLICATION_KEY"].value
 }
 
 provider "opwan" {
-  api_token = local.credentials["opwan"].field_map["api_key"].value
+  api_token = local.credentials["OPWAN_API_KEY"].value
 }
 
 provider "tailscale" {
-  oauth_client_id     = local.credentials["tailscale"].field_map["client_id"].value
-  oauth_client_secret = local.credentials["tailscale"].field_map["client_secret"].value
+  oauth_client_id     = local.credentials["TAILSCALE_OAUTH_CLIENT_ID"].value
+  oauth_client_secret = local.credentials["TAILSCALE_OAUTH_CLIENT_SECRET"].value
   tailnet             = local.tailnet
 }

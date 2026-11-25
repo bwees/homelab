@@ -4,7 +4,7 @@ This repository houses the infrastructure configuration for my homelab. The enti
 
 - **NixOS** provisions and configures every machine. Updates are manually applied.
 - **Kubernetes** (k3s) runs the applications, managed with Flux via GitOps.
-- **OpenTofu** manages the external services used by the homelab (Cloudflare, Tailscale, and 1Password).
+- **OpenTofu** manages the external services used by the homelab (Cloudflare, Tailscale, and Infisical).
 
 ## NixOS
 
@@ -38,7 +38,7 @@ I run several clusters, each with a different purpose:
 A few things worth calling out about the cluster setup:
 
 - **Storage** is handled by miroir, with volsync taking scheduled backups of persistent volumes.
-- **Secrets** come from 1Password through External Secrets.
+- **Secrets** come from Infisical through External Secrets. See [docs/secrets.md](docs/secrets.md).
 - **Databases** run on CloudNative-PG.
 - **Ingress** is served through Envoy Gateway, with cert-manager issuing certificates.
 
@@ -61,9 +61,9 @@ The external services that live outside of Kubernetes are managed with OpenTofu 
 
 - **Cloudflare** - Zero Trust tunnels and the public DNS records that point at them.
 - **Tailscale** - ACLs, DNS preferences, nameservers, and split DNS configuration.
-- **1Password** - storing generated secrets (such as tunnel tokens) back into the vault so the clusters can consume them.
+- **Infisical** - the project, a read-only identity per cluster, and the secret folders. Generated secrets (such as API tokens) are written straight into it.
 
-State is stored in a Cloudflare R2 bucket, and all provider credentials are pulled from 1Password at plan/apply time.
+State is stored in a Cloudflare R2 bucket, and all provider credentials are pulled from Infisical at plan/apply time.
 
 ## CI/CD
 

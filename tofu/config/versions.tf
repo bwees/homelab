@@ -1,10 +1,5 @@
 terraform {
   required_providers {
-    onepassword = {
-      source  = "1Password/onepassword"
-      version = "3.4.1"
-    }
-
     cloudflare = {
       source  = "cloudflare/cloudflare"
       version = "5.29.0"
@@ -28,6 +23,11 @@ terraform {
     opwan = {
       source  = "registry.terraform.io/slop-place/opwan"
       version = "0.2.0"
+    }
+
+    infisical = {
+      source  = "Infisical/infisical"
+      version = "0.20.21"
     }
 
     random = {

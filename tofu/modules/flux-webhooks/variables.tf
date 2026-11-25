@@ -9,7 +9,3 @@ variable "repository" {
 variable "domain" {
   type = string
 }
-
-variable "vault_uuid" {
-  type = string
-}

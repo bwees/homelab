@@ -16,23 +16,6 @@ resource "random_password" "flux_webhook" {
   special = false
 }
 
-resource "onepassword_item" "flux_webhooks" {
-  vault    = var.vault_uuid
-  title    = "flux-webhooks"
-  category = "password"
-
-  section_map = {
-    "credentials" = {
-      field_map = {
-        for cluster, token in random_password.flux_webhook : cluster => {
-          type  = "CONCEALED"
-          value = token.result
-        }
-      }
-    }
-  }
-}
-
 resource "github_repository_webhook" "flux" {
   for_each = var.clusters
 

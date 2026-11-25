@@ -17,7 +17,7 @@ spec:
       namespace: storage
     - name: volsync
       namespace: storage
-    - name: onepassword
+    - name: infisical
       namespace: secrets
   components:
     - ../../../../../components/volsync

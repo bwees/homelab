@@ -6,8 +6,5 @@ terraform {
     random = {
       source = "hashicorp/random"
     }
-    onepassword = {
-      source = "1Password/onepassword"
-    }
   }
 }

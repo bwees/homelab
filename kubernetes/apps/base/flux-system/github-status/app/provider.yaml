@@ -6,7 +6,7 @@ spec:
   type: github
   address: https://github.com/bwees/homelab
   secretRef:
-    name: github-status-token
+    name: github-status-secret
   # Every cluster reconciles the same commit, so the status context has to carry
   # the cluster name or the clusters overwrite each other on GitHub.
   commitStatusExpr: "'${CLUSTER}/' + event.involvedObject.namespace + '/' + event.involvedObject.name"

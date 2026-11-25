@@ -15,7 +15,3 @@ variable "mullvad_nodes" {
   type        = set(string)
   default     = []
 }
-
-variable "vault_uuid" {
-  type = string
-}

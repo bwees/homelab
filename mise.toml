@@ -29,21 +29,7 @@ echo "==> Creating namespaces"
 ensure_ns secrets
 ensure_ns flux-system
 
-echo "==> Seeding 1Password Connect credentials"
-token=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/access_token" | base64 | tr -d '\n')
-creds=$(op read --no-newline "op://Homelab Deployment/1password-connect/credentials/1password-credentials.json" | base64 | tr -d '\n')
-
-cat <<EOF | apply
-apiVersion: v1
-kind: Secret
-metadata:
-  name: onepassword-connect-secret
-  namespace: secrets
-type: Opaque
-data:
-  token: $token
-  1password-credentials.json: $creds
-EOF
+mise run infisical:seed "$usage_host" "$cluster" "$usage_user"
 
 echo "==> Creating the Flux git deploy key"
 keydir=$(mktemp -d)
@@ -75,6 +61,38 @@ ssh "$remote" 'sudo k3s kubectl wait --for=condition=Available \
 sed "s|\${CLUSTER}|$cluster|g" "$instance" | apply_in flux-system
 
 echo "==> $cluster bootstrapped; Flux will now reconcile kubernetes/clusters/$cluster"
+'''
+
+[tasks."infisical:seed"]
+usage = '''
+arg "host"
+arg "cluster" default=""
+arg "user" default="bwees"
+'''
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+cluster="${usage_cluster:-$usage_host}"
+tf() { mise -C tofu exec -- tofu -chdir=config "$@"; }
+
+echo "==> Seeding Infisical credentials for $cluster"
+tf init -input=false >/dev/null
+credentials=$(tf output -json infisical_cluster_credentials | jq -e --arg cluster "$cluster" '.[$cluster]')
+client_id=$(jq -j .client_id <<<"$credentials" | base64 | tr -d '\n')
+client_secret=$(jq -j .client_secret <<<"$credentials" | base64 | tr -d '\n')
+
+cat <<EOF | ssh "$usage_user@$usage_host" 'sudo k3s kubectl apply --server-side --force-conflicts -f -'
+apiVersion: v1
+kind: Secret
+metadata:
+  name: infisical-universal-auth
+  namespace: secrets
+type: Opaque
+data:
+  clientId: $client_id
+  clientSecret: $client_secret
+EOF
 '''
 
 [tasks."cluster:shutdown"]

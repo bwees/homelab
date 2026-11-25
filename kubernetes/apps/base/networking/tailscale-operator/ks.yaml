@@ -16,5 +16,5 @@ spec:
   path: ./kubernetes/apps/base/networking/tailscale-operator/app
   targetNamespace: networking
   dependsOn:
-    - name: onepassword
+    - name: infisical
       namespace: secrets

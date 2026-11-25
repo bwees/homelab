@@ -13,25 +13,21 @@ locals {
   tokens = {
     cert_manager = {
       name              = "k3s cert-manager DNS01"
-      item_title        = "cf-cert-manager"
       permission_groups = local.dns_permission_groups
       resources         = { for zone_id in var.cert_manager_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*" }
     }
     external_dns = {
       name              = "k3s external-dns"
-      item_title        = "cf-external-dns"
       permission_groups = local.dns_permission_groups
       resources         = { for zone_id in var.external_dns_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*" }
     }
     pages_deployment = {
       name              = "Pages Deployment"
-      item_title        = "cf-pages-deployment"
       permission_groups = [local.permission_groups.pages_edit]
       resources         = { "com.cloudflare.api.account.${var.account_id}" = "*" }
     }
     unifi_ddns = {
       name              = "UniFi DDNS"
-      item_title        = "unifi-ddns"
       permission_groups = local.dns_permission_groups
       resources         = { for zone_id in var.unifi_ddns_zone_ids : "com.cloudflare.api.account.zone.${zone_id}" => "*" }
     }
@@ -51,23 +47,4 @@ resource "cloudflare_account_token" "this" {
       resources         = jsonencode(each.value.resources)
     }
   ]
-}
-
-resource "onepassword_item" "this" {
-  for_each = local.tokens
-
-  vault    = var.vault_uuid
-  title    = each.value.item_title
-  category = "password"
-
-  section_map = {
-    "credentials" = {
-      field_map = {
-        "token" = {
-          type  = "CONCEALED"
-          value = cloudflare_account_token.this[each.key].value
-        }
-      }
-    }
-  }
 }

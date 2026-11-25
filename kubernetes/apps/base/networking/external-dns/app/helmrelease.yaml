@@ -15,7 +15,7 @@ spec:
       - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: external-dns-cloudflare
+            name: external-dns-secret
             key: CF_API_TOKEN
     extraArgs:
       - --gateway-name=envoy-ingress

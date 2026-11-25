@@ -33,28 +33,3 @@ resource "b2_application_key" "restic" {
     "deleteFiles",
   ]
 }
-
-resource "onepassword_item" "b2_restic" {
-  vault    = var.vault_uuid
-  title    = "b2-restic"
-  category = "password"
-
-  section_map = {
-    "credentials" = {
-      field_map = {
-        "key_id" = {
-          type  = "STRING"
-          value = b2_application_key.restic.application_key_id
-        }
-        "application_key" = {
-          type  = "CONCEALED"
-          value = b2_application_key.restic.application_key
-        }
-        "repository" = {
-          type  = "STRING"
-          value = "s3:${trimprefix(data.b2_account_info.main.s3_api_url, "https://")}/${b2_bucket.restic.bucket_name}"
-        }
-      }
-    }
-  }
-}

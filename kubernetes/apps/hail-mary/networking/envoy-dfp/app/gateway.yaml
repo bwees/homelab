@@ -95,7 +95,7 @@ spec:
                   volumes:
                     - name: opwan
                       secret:
-                        secretName: opwan-wireguard
+                        secretName: envoy-dfp-wireguard
                         defaultMode: 0400
 
 ---

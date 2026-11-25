@@ -28,7 +28,7 @@ spec:
   wait: false
   dependsOn:
     - name: cert-manager
-    - name: onepassword
+    - name: infisical
       namespace: secrets
   sourceRef:
     kind: GitRepository

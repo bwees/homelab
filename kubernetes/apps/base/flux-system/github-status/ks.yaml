@@ -11,6 +11,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: onepassword
+    - name: infisical
       namespace: secrets
   targetNamespace: flux-system

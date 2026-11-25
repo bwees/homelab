@@ -13,7 +13,3 @@ variable "external_dns_zone_ids" {
 variable "unifi_ddns_zone_ids" {
   type = set(string)
 }
-
-variable "vault_uuid" {
-  type = string
-}

@@ -10,12 +10,7 @@ data "cloudflare_zone" "bwees_dev" {
   zone_id = "16abc0a51d3df8322d69e9b3a5928776"
 }
 
-data "onepassword_vault" "homelab_deployment" {
-  name = local.vault_name
-}
-
 locals {
-  vault_name   = "Homelab Deployment"
   github_owner = "bwees"
   admin        = "brandonwees@gmail.com"
   tailnet      = "tail72746.ts.net"
@@ -29,5 +24,4 @@ locals {
   ]
 
   account_id = data.cloudflare_account.main.account_id
-  vault_uuid = data.onepassword_vault.homelab_deployment.uuid
 }

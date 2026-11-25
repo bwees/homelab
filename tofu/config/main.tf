@@ -1,8 +1,7 @@
 module "opwan" {
   source = "../modules/opwan"
-
-  vault_uuid = local.vault_uuid
 }
+
 module "dns" {
   source = "../modules/dns"
 
@@ -16,7 +15,6 @@ module "api_tokens" {
   source = "../modules/api-tokens"
 
   account_id = local.account_id
-  vault_uuid = local.vault_uuid
 
   cert_manager_zone_ids = [
     data.cloudflare_zone.bwees_io.zone_id,
@@ -36,7 +34,6 @@ module "restic" {
   source = "../modules/restic"
 
   bucket_name = "bwees-restic"
-  vault_uuid  = local.vault_uuid
 }
 
 module "tailscale" {
@@ -46,7 +43,6 @@ module "tailscale" {
   admin         = local.admin
   tailnet       = local.tailnet
   mullvad_nodes = toset(local.mullvad_nodes)
-  vault_uuid    = local.vault_uuid
 }
 
 module "flux_webhooks" {
@@ -55,5 +51,10 @@ module "flux_webhooks" {
   clusters   = toset(local.clusters)
   repository = "homelab"
   domain     = "bwees.io"
-  vault_uuid = local.vault_uuid
+}
+
+module "infisical" {
+  source = "../modules/infisical"
+
+  clusters = toset(local.clusters)
 }

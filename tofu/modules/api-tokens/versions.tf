@@ -3,8 +3,5 @@ terraform {
     cloudflare = {
       source = "cloudflare/cloudflare"
     }
-    onepassword = {
-      source = "1Password/onepassword"
-    }
   }
 }
