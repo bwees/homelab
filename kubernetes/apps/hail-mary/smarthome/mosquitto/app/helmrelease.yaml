@@ -14,7 +14,7 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/library/eclipse-mosquitto
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: '2.1.4-alpine'
             resources:
               requests:

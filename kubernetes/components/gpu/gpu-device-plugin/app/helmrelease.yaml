@@ -25,7 +25,7 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/squat/generic-device-plugin
+              repository: ghcr.io/squat/generic-device-plugin
               tag: '0.2.0'
             args:
               - --domain=gpu.bwees.dev
