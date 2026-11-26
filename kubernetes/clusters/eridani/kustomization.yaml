@@ -35,3 +35,4 @@ patches:
                 substitute:
                   CLUSTER: eridani
                   MIROIR_DATA_REPLICAS: '"1"'
+                  MIROIR_CONTROLLER_REPLICAS: '1'

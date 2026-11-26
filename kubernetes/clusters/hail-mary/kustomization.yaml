@@ -35,3 +35,4 @@ patches:
                 substitute:
                   CLUSTER: hail-mary
                   MIROIR_DATA_REPLICAS: '"2"'
+                  MIROIR_CONTROLLER_REPLICAS: '2'

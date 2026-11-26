@@ -13,6 +13,21 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
+    replicaCount: ${MIROIR_CONTROLLER_REPLICAS}
+    global:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: miroir
+                    app.kubernetes.io/component: controller
+    autoEvictAfter: 1h
+    drbd:
+      alExtents: 6007
     agent:
       loopfileBaseDirs:
         - /var/lib/miroir
