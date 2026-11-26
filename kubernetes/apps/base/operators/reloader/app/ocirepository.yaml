@@ -7,4 +7,4 @@ spec:
   interval: 1h
   url: oci://ghcr.io/stakater/charts/reloader
   ref:
-    tag: '2.2.12'
+    tag: '2.2.21'
