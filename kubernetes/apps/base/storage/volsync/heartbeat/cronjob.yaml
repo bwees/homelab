@@ -1,0 +1,62 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: volsync-heartbeat
+spec:
+  schedule: '15 * * * *'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 300
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          serviceAccountName: volsync-heartbeat
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: heartbeat
+              image: alpine/kubectl:1.37.2
+              command: ['/bin/sh', '/scripts/heartbeat.sh']
+              env:
+                - name: CLUSTER
+                  value: ${CLUSTER}
+                - name: GATUS_URL
+                  value: https://status.bwees.dev
+                - name: HOME
+                  value: /tmp
+              envFrom:
+                - secretRef:
+                    name: volsync-heartbeat-secret
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ['ALL']
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 128Mi
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: scripts
+              configMap:
+                name: volsync-heartbeat
+            - name: tmp
+              emptyDir: {}

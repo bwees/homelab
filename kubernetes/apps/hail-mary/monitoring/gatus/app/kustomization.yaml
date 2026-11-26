@@ -11,6 +11,7 @@ configMapGenerator:
   - name: gatus-config
     files:
       - config/alerting.yml
+      - config/backups.yml
       - config/eridani.yml
       - config/hail-mary.yml
       - config/misc.yml

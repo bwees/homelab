@@ -1,0 +1,25 @@
+external-endpoints:
+  - name: volsync-hail-mary
+    group: backups
+    token: '${GATUS_VOLSYNC_HEARTBEAT_TOKEN}'
+    heartbeat:
+      interval: 2h
+    alerts: &alerts
+      - type: discord
+        failure-threshold: 1
+        success-threshold: 1
+        description: 'volsync backups are failing or overdue'
+
+  - name: volsync-eridani
+    group: backups
+    token: '${GATUS_VOLSYNC_HEARTBEAT_TOKEN}'
+    heartbeat:
+      interval: 2h
+    alerts: *alerts
+
+  - name: volsync-stepien
+    group: backups
+    token: '${GATUS_VOLSYNC_HEARTBEAT_TOKEN}'
+    heartbeat:
+      interval: 2h
+    alerts: *alerts
