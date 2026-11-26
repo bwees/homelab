@@ -1,8 +1,10 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: reloader
 spec:
   interval: 1h
-  url: https://stakater.github.io/stakater-charts
+  url: oci://ghcr.io/stakater/charts/reloader
+  ref:
+    tag: '2.2.12'

@@ -1,0 +1,9 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: snapshot-controller
+spec:
+  interval: 1h
+  url: oci://ghcr.io/piraeusdatastore/helm-charts/snapshot-controller
+  ref:
+    tag: '5.1.0'
