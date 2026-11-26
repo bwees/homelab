@@ -1,3 +1,8 @@
+resource "random_password" "volsync_heartbeat" {
+  length  = 40
+  special = false
+}
+
 // Every folder the clusters read from Infisical. Folders are named after the app that
 // consumes them, secret names describe the value, and each ExternalSecret maps them
 // onto whatever keys its app expects.
@@ -31,6 +36,9 @@ module "infisical_secrets" {
       }
       "/external-dns" = {
         CLOUDFLARE_API_TOKEN = module.api_tokens.tokens["external_dns"]
+      }
+      "/gatus" = {
+        VOLSYNC_HEARTBEAT_TOKEN = random_password.volsync_heartbeat.result
       }
       "/pages-deployment" = {
         CLOUDFLARE_API_TOKEN = module.api_tokens.tokens["pages_deployment"]
