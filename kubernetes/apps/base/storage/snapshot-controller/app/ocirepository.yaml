@@ -6,4 +6,4 @@ spec:
   interval: 1h
   url: oci://ghcr.io/piraeusdatastore/helm-charts/snapshot-controller
   ref:
-    tag: '5.1.0'
+    tag: '5.4.1'
