@@ -27,7 +27,7 @@ terraform {
 
     infisical = {
       source  = "Infisical/infisical"
-      version = "0.20.23"
+      version = "0.20.24"
     }
 
     random = {
